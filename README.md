@@ -41,18 +41,19 @@ To use the framework, you need to compile the engine first.
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/nimbus-framework.git
-cd nimbus-framework
+git clone https://github.com/modderboyy/nimbus-engine.git
+cd nimbus-engine
+cd src
 
 # 2. Build the engine (using C# Compiler)
-csc /target:exe /out:nimbus.exe *.cs /reference:System.Xaml.dll /reference:WindowsBase.dll /reference:PresentationCore.dll /reference:PresentationFramework.dll
+build.bat
 
 # 3. Add to PATH (Optional)
 # Move nimbus.exe to a folder in your system PATH to use it globally.
 ```
 
 ### Option 2: Download Release
-Download the latest binary from the [Releases Page](https://github.com/your-username/nimbus-framework/releases).
+Download the latest binary from the [Releases Page](https://github.com/modderboyy/nimbus-engine/releases).
 
 ---
 
@@ -234,6 +235,17 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
+
+## Screenshots
+
+<img width="409" height="767" alt="image" src="https://github.com/user-attachments/assets/e72516d6-626e-4684-8581-8f7f65185405" />
+<img width="413" height="765" alt="image" src="https://github.com/user-attachments/assets/55ee17f4-eabc-4b06-9e70-aed4de17ed3a" />
+<img width="514" height="765" alt="image" src="https://github.com/user-attachments/assets/4410b757-88b3-4c23-b9c3-2821b71880dc" />
+<img width="995" height="681" alt="image" src="https://github.com/user-attachments/assets/488d33b1-7300-4952-aa24-ea10c1970e85" />
+<img width="588" height="393" alt="image" src="https://github.com/user-attachments/assets/ebe78813-d253-47e0-8645-2fe88fe3a12c" />
+<img width="1198" height="747" alt="image" src="https://github.com/user-attachments/assets/ef2fdacb-9892-49ff-9175-940e8c71873e" />
+
+
 
 <p align="center">
   Made with ❤️ by the Nimbus Team
