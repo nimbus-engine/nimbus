@@ -1,0 +1,94 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="My Application"
+    Width="1024"
+    Height="768"
+    AllowsTransparency="True"
+    WindowStyle="None"
+    Background="Transparent"
+    Foreground="#FFFFFF"
+    ResizeMode="CanResize"
+    Opacity="1"
+    WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="#1E1E1E" Padding="20">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="🚀" FontSize="24" VerticalAlignment="Center" />
+                <TextBlock Text="My App" FontSize="20" FontWeight="Bold" Foreground="White" Margin="10,0,0,0" VerticalAlignment="Center" />
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="0" Background="#252526" Padding="10">
+            <StackPanel>
+                <Button Name="btnHome" Content="🏠 Home" Background="Transparent" Foreground="White" HorizontalAlignment="Stretch" Margin="0,5" />
+                <Button Name="btnSettings" Content="⚙️ Settings" Background="Transparent" Foreground="White" HorizontalAlignment="Stretch" Margin="0,5" />
+            </StackPanel>
+        </Border>
+        <ScrollViewer Grid.Row="1" Grid.Column="1" Name="mainContent">
+            <StackPanel Margin="20">
+                <TextBlock Text="Enter your name:" Foreground="White" Margin="0,0,0,5" />
+                <TextBox Name="txtName" Placeholder="Type here..." Style="Input" Width="300" />
+                <Button Name="btnSubmit" Content="Submit" Style="PrimaryButton" Margin="0,20,0,0">
+                    <Button.Effect>
+                        <DropShadowEffect Color="#0078D4" BlurRadius="15" ShadowDepth="0" Direction="315" Opacity="0.5"/>
+                    </Button.Effect>
+                </Button>
+                <TextBlock Name="lblResult" Text="" Foreground="#00D4FF" FontSize="18" Margin="0,20,0,0" />
+                <Border Style="Card" Margin="0,30,0,0" Width="400">
+                    <StackPanel>
+                        <TextBlock Text="📊 Statistics" FontSize="16" FontWeight="Bold" Foreground="White" />
+                        <Grid Margin="0,15,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                                <TextBlock Name="stat1" Text="0" FontSize="28" FontWeight="Bold" Foreground="#00D4FF" />
+                                <TextBlock Text="Users" Foreground="#888888" FontSize="12" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                                <TextBlock Name="stat2" Text="0" FontSize="28" FontWeight="Bold" Foreground="#4CAF50" />
+                                <TextBlock Text="Sales" Foreground="#888888" FontSize="12" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                                <TextBlock Name="stat3" Text="0" FontSize="28" FontWeight="Bold" Foreground="#FF9800" />
+                                <TextBlock Text="Orders" Foreground="#888888" FontSize="12" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <TextBlock Text="Select Theme:" Foreground="White" Margin="0,30,0,10" />
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton Name="rdLight" Content="Light" GroupName="theme" Foreground="White" Margin="0,0,20,0" />
+                    <RadioButton Name="rdDark" Content="Dark" GroupName="theme" Foreground="White" IsChecked="true" Margin="0,0,20,0" />
+                    <RadioButton Name="rdBlue" Content="Blue" GroupName="theme" Foreground="White" />
+                </StackPanel>
+                <TextBlock Text="Volume:" Foreground="White" Margin="0,30,0,10" />
+                <Slider Name="slVolume" Minimum="0" Maximum="100" Value="50" Width="300" />
+                <TextBlock Name="lblVolume" Text="50%" Foreground="#888888" />
+                <TextBlock Text="Progress:" Foreground="White" Margin="0,30,0,10" />
+                <ProgressBar Name="progressBar" Value="35" Maximum="100" Height="10" Width="300" />
+                <Canvas Name="shapesCanvas" Width="400" Height="200" Background="#1E1E1E" Margin="0,30,0,0" />
+            </StackPanel>
+        </ScrollViewer>
+        <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="#007ACC" Padding="10,5">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Name="statusText" Text="Ready" Foreground="White" FontSize="12" />
+                <TextBlock Text=" | " Foreground="White" Opacity="0.5" />
+                <TextBlock Name="clockLabel" Text="00:00:00" Foreground="White" FontSize="12" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

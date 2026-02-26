@@ -1,0 +1,168 @@
+rem @echo off
+rem echo ========================================
+rem echo   Nimbus WPF Engine v3.0 - Build Script
+rem echo ========================================
+rem echo.
+
+rem set CSC=C:\Windows\Microsoft.NET\Framework\v4.0.30319\csc.exe
+rem set WPF=C:\Windows\Microsoft.NET\Framework\v4.0.30319\WPF
+
+rem if not exist "%CSC%" (
+rem     echo ERROR: CSC.exe not found!
+rem     pause
+rem     exit /b 1
+rem )
+
+rem :: Avtomatik WPF yo'lini topish
+rem if not exist "%WPF%\PresentationCore.dll" (
+rem     echo WPF not found in standard path. Trying runtime dir...
+rem     set WPF=C:\Windows\Microsoft.NET\Framework\v4.0.30319
+rem )
+
+rem if not exist "%WPF%\PresentationCore.dll" (
+rem     echo ERROR: WPF DLLs not found!
+rem     pause
+rem     exit /b 1
+rem )
+
+rem if not exist "bin" mkdir bin
+
+rem echo Compiling Nimbus v3.0...
+rem echo.
+
+rem "%CSC%" ^
+rem /target:exe ^
+rem /out:bin\nimbus.exe ^
+rem /optimize+ ^
+rem /warn:0 ^
+rem /r:System.dll ^
+rem /r:System.Core.dll ^
+rem /r:System.Xml.dll ^
+rem /r:System.Xml.Linq.dll ^
+rem /r:System.Xaml.dll ^
+rem /r:System.Net.dll ^
+rem /r:Microsoft.CSharp.dll ^
+rem /r:"%WPF%\WindowsBase.dll" ^
+rem /r:"%WPF%\PresentationCore.dll" ^
+rem /r:"%WPF%\PresentationFramework.dll" ^
+rem WpfEngine.cs ^
+rem WpfUI.cs ^
+rem XamlRenderer.cs ^
+rem LogicRunner.cs ^
+rem CSharpCompiler.cs ^
+rem XmlParser.cs ^
+rem DevToolsServer.cs ^
+rem Program.cs
+
+rem if %ERRORLEVEL% EQU 0 (
+rem     echo.
+rem     echo ========================================
+rem     echo   BUILD SUCCESS!
+rem     echo   Output: bin\nimbus.exe
+rem     echo ========================================
+rem ) else (
+rem     echo.
+rem     echo   BUILD FAILED!
+rem )
+rem pause
+
+
+
+
+@echo off
+echo ========================================
+echo   Nimbus Engine v3.0 - Build Script
+echo ========================================
+echo.
+
+set CSC=C:\Windows\Microsoft.NET\Framework\v4.0.30319\csc.exe
+set WPF=C:\Windows\Microsoft.NET\Framework\v4.0.30319\WPF
+
+if not exist "%CSC%" (
+    echo ERROR: CSC.exe not found!
+    pause
+    exit /b 1
+)
+
+if not exist "%WPF%\PresentationCore.dll" (
+    set WPF=C:\Windows\Microsoft.NET\Framework\v4.0.30319
+)
+
+if not exist "%WPF%\PresentationCore.dll" (
+    echo ERROR: WPF DLLs not found!
+    pause
+    exit /b 1
+)
+
+if not exist "bin" mkdir bin
+
+echo Compiling Nimbus Engine...
+echo.
+
+:: Collect all plugin .cs files
+set PLUGIN_FILES=
+if exist "plugins\*.cs" (
+    for %%f in (plugins\*.cs) do (
+        set PLUGIN_FILES=!PLUGIN_FILES! "%%f"
+    )
+)
+
+:: Enable delayed expansion for plugin files
+setlocal EnableDelayedExpansion
+
+set PLUGIN_LIST=
+if exist "plugins" (
+    for %%f in (plugins\*.cs) do (
+        set PLUGIN_LIST=!PLUGIN_LIST! "%%f"
+    )
+    echo Found external plugins: !PLUGIN_LIST!
+)
+
+"%CSC%" ^
+/target:exe ^
+/out:bin\nimbus.exe ^
+/optimize+ ^
+/warn:0 ^
+/platform:anycpu ^
+/r:System.dll ^
+/r:System.Core.dll ^
+/r:System.Xml.dll ^
+/r:System.Xml.Linq.dll ^
+/r:System.Xaml.dll ^
+/r:System.Net.dll ^
+/r:System.Drawing.dll ^
+/r:Microsoft.CSharp.dll ^
+/r:"%WPF%\WindowsBase.dll" ^
+/r:"%WPF%\PresentationCore.dll" ^
+/r:"%WPF%\PresentationFramework.dll" ^
+WpfEngine.cs ^
+WpfUI.cs ^
+XamlRenderer.cs ^
+LogicRunner.cs ^
+CSharpCompiler.cs ^
+XmlParser.cs ^
+DevToolsServer.cs ^
+Program.cs ^
+ComponentSystem.cs ^
+!PLUGIN_LIST!
+
+endlocal
+
+if %ERRORLEVEL% EQU 0 (
+    echo.
+    echo ========================================
+    echo   BUILD SUCCESS!
+    echo   Output: bin\nimbus.exe
+    echo ========================================
+    echo.
+    echo   Builtin plugins: 10
+    if exist "plugins\*.cs" (
+        echo   External plugins: compiled into binary
+    )
+    echo.
+) else (
+    echo.
+    echo   BUILD FAILED!
+    echo.
+)
+pause
