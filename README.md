@@ -1,4 +1,4 @@
-# 🌩️ Nimbus Framework
+<img width="1095" height="748" alt="image" src="https://github.com/user-attachments/assets/85adab96-7db2-4b23-9788-58938952b0a9" /># 🌩️ Nimbus Framework
 
 <p align="center">
   <img src="https://img.shields.io/badge/version-3.0.0-blue.svg?style=flat-square" alt="Version">
@@ -56,6 +56,7 @@ Download the latest binary from the [Releases Page](https://github.com/your-user
 ---
 
 ## 🚀 Quick Start
+<img width="1095" height="748" alt="image" src="https://github.com/user-attachments/assets/ac560318-dafb-4108-be1b-c9adfbf330a2" />
 
 ### 1. Create a Project
 Create a new file named `App.xml`. This single file can contain your UI, Logic, and Styles.
