@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="Nimbus Secure System"
+     Width="1000" Height="680"
+     Theme="Dark"
+     DarkMode="true"
+     DevMode="true"
+     Background="#0F172A"
+     OnLoad="OnAppLoad">
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!--                    UI LAYOUT                           -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <UI>
+        <Grid>
+            <!-- Background Gradient -->
+            <Grid Background="#0F172A">
+                <Border Width="600" Height="600" CornerRadius="300" 
+                        Background="#4F46E5" Opacity="0.15" Margin="-200,-200,0,0" 
+                        HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Border.Effect><BlurEffect Radius="120"/></Border.Effect>
+                </Border>
+                <Border Width="500" Height="500" CornerRadius="250" 
+                        Background="#EC4899" Opacity="0.1" Margin="0,0,-150,-150" 
+                        HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                    <Border.Effect><BlurEffect Radius="120"/></Border.Effect>
+                </Border>
+            </Grid>
+
+            <!-- ══════════════════════════════════════════ -->
+            <!--              LOGIN SCREEN                  -->
+            <!-- ══════════════════════════════════════════ -->
+            <Grid Name="LoginScreen" Visibility="Visible">
+                <Border Width="400" Background="#1E293BCC" CornerRadius="24"
+                        BorderBrush="#FFFFFF15" BorderThickness="1"
+                        Padding="40">
+                    <Border.Effect><DropShadowEffect Color="Black" BlurRadius="60" Opacity="0.5" ShadowDepth="10"/></Border.Effect>
+                    
+                    <StackPanel>
+                        <!-- Logo -->
+                        <Border Width="72" Height="72" CornerRadius="20" Background="#4F46E5" 
+                                Margin="0,0,0,24" HorizontalAlignment="Center">
+                            <TextBlock Text="🔒" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+
+                        <TextBlock Text="Welcome Back" FontSize="26" FontWeight="Bold" Foreground="White" 
+                                   HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                        <TextBlock Text="Sign in to access your secure dashboard" FontSize="14" Foreground="#94A3B8" 
+                                   HorizontalAlignment="Center" Margin="0,0,0,32"/>
+
+                        <!-- Email Input -->
+                        <TextBlock Text="EMAIL ADDRESS" FontSize="12" FontWeight="Bold" Foreground="#64748B" Margin="0,0,0,8"/>
+                        <Border Background="#0F172A" CornerRadius="12" BorderBrush="#334155" BorderThickness="1" Height="52">
+                            <Grid>
+                                <Grid.ColumnDefinitions>52,*</Grid.ColumnDefinitions>
+                                <TextBlock Text="✉️" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBox Name="txtEmail" Grid.Column="1" Background="Transparent" BorderThickness="0" 
+                                         Foreground="White" FontSize="15" VerticalAlignment="Stretch" 
+                                         VerticalContentAlignment="Center" Margin="0,0,12,0"
+                                         onEnter="OnLoginClick"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Password Input -->
+                        <TextBlock Text="PASSWORD" FontSize="12" FontWeight="Bold" Foreground="#64748B" Margin="0,20,0,8"/>
+                        <Border Background="#0F172A" CornerRadius="12" BorderBrush="#334155" BorderThickness="1" Height="52">
+                            <Grid>
+                                <Grid.ColumnDefinitions>52,*</Grid.ColumnDefinitions>
+                                <TextBlock Text="🔑" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <PasswordBox Name="txtPassword" Grid.Column="1" Background="Transparent" BorderThickness="0" 
+                                             Foreground="White" FontSize="15" VerticalAlignment="Stretch"
+                                             VerticalContentAlignment="Center" Margin="0,0,12,0"
+                                             onEnter="OnLoginClick"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Error Message -->
+                        <Border Name="msgBox" Background="#EF444420" CornerRadius="8" Padding="12" Margin="0,20,0,0" Visibility="Collapsed">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock Text="⚠️" Margin="0,0,8,0" Foreground="#F87171"/>
+                                <TextBlock Name="msgText" Foreground="#F87171" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Login Button -->
+                        <Button Name="btnLogin" Content="Sign In" Background="#4F46E5" Foreground="White" 
+                                CornerRadius="12" Padding="0,16" FontSize="16" FontWeight="Bold" 
+                                Margin="0,28,0,0" Cursor="Hand" onClick="OnLoginClick" 
+                                HoverColor="#4338CA" PressedColor="#3730A3" Shadow="true"/>
+
+                        <!-- Loading Spinner -->
+                        <StackPanel Name="loader" Orientation="Horizontal" HorizontalAlignment="Center" 
+                                    Margin="0,28,0,0" Visibility="Collapsed">
+                            <TextBlock Text="↻" FontSize="20" Foreground="#4F46E5" Margin="0,0,10,0"/>
+                            <TextBlock Text="Verifying credentials..." FontSize="14" Foreground="#94A3B8"/>
+                        </StackPanel>
+
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- ══════════════════════════════════════════ -->
+            <!--              DASHBOARD SCREEN              -->
+            <!-- ══════════════════════════════════════════ -->
+            <Grid Name="DashboardScreen" Visibility="Collapsed">
+                <Grid.ColumnDefinitions>280,*</Grid.ColumnDefinitions>
+
+                <!-- Sidebar -->
+                <Border Grid.Column="0" Background="#1E293B" BorderBrush="#FFFFFF10" BorderThickness="0,0,1,0">
+                    <Grid>
+                        <Grid.RowDefinitions>Auto,*,Auto</Grid.RowDefinitions>
+
+                        <!-- Brand -->
+                        <StackPanel Grid.Row="0" Margin="24,32,24,40">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Width="36" Height="36" CornerRadius="10" Background="#4F46E5">
+                                    <TextBlock Text="N" Foreground="White" FontSize="18" FontWeight="Bold" 
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Nimbus" FontSize="22" FontWeight="Bold" Foreground="White" 
+                                           Margin="12,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Menu -->
+                        <StackPanel Grid.Row="1" Margin="16,0">
+                            <TextBlock Text="MAIN MENU" FontSize="11" FontWeight="Bold" Foreground="#64748B" Margin="12,0,0,12"/>
+                            
+                            <NavItem Name="navDash" Icon="📊" Label="Dashboard" Active="true" 
+                                     AccentColor="#4F46E5" onClick="NavToDashboard"/>
+                            
+                            <NavItem Name="navUsers" Icon="👥" Label="User Management" 
+                                     AccentColor="#4F46E5" onClick="NavToUsers"/>
+                            
+                            <NavItem Name="navFiles" Icon="📁" Label="File Storage" 
+                                     AccentColor="#4F46E5" onClick="NavToFiles"/>
+                            
+                            <NavItem Name="navSettings" Icon="⚙️" Label="System Settings" 
+                                     AccentColor="#4F46E5" onClick="NavToSettings"/>
+                        </StackPanel>
+
+                        <!-- User Profile (Bottom) -->
+                        <Border Grid.Row="2" Margin="16,0,16,24" Background="#0F172A" CornerRadius="12" Padding="12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>Auto,*,Auto</Grid.ColumnDefinitions>
+                                <Border Name="dashAvatar" Width="40" Height="40" CornerRadius="20" Background="#10B981">
+                                    <TextBlock Name="dashInitials" Text="A" Foreground="White" FontWeight="Bold" FontSize="16"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock Name="dashName" Text="Admin User" FontWeight="Bold" Foreground="White" FontSize="14"/>
+                                    <TextBlock Name="dashRole" Text="Administrator" FontSize="12" Foreground="#94A3B8"/>
+                                </StackPanel>
+                                <Button Name="btnLogoutIcon" Content="➔" Background="Transparent" Foreground="#EF4444" 
+                                        FontSize="18" Padding="8" Grid.Column="2" onClick="OnLogoutClick"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Main Content Area -->
+                <Grid Grid.Column="1" Background="#0F172A">
+                    
+                    <!-- 1. DASHBOARD VIEW -->
+                    <ScrollViewer Name="viewDashboard" Visibility="Visible">
+                        <StackPanel Margin="40">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,32">
+                                <StackPanel>
+                                    <TextBlock Text="Overview" FontSize="32" FontWeight="Bold" Foreground="White"/>
+                                    <TextBlock Name="dashWelcome" Text="Welcome back, Admin!" FontSize="16" Foreground="#94A3B8" Margin="0,4,0,0"/>
+                                </StackPanel>
+                                <Border HorizontalAlignment="Right" Margin="400,0,0,0"> <!-- Spacer workaround --> </Border>
+                                <Button Content="Generate Report" Background="#4F46E5" Foreground="White" 
+                                        CornerRadius="8" Padding="20,10" FontWeight="SemiBold"/>
+                            </StackPanel>
+
+                            <!-- Stats Cards -->
+                            <Grid Margin="0,0,0,32">
+                                <Grid.ColumnDefinitions>*,20,*,20,*</Grid.ColumnDefinitions>
+                                <StatCard Grid.Column="0" Icon="👥" Value="1,240" Label="Active Users" AccentColor="#4F46E5"/>
+                                <StatCard Grid.Column="2" Icon="💰" Value="$45.2k" Label="Total Revenue" AccentColor="#10B981"/>
+                                <StatCard Grid.Column="4" Icon="⚡" Value="99.9%" Label="System Uptime" AccentColor="#F59E0B"/>
+                            </Grid>
+
+                            <!-- Activity Log -->
+                            <TextBlock Text="Recent Activity" FontSize="20" FontWeight="Bold" Foreground="White" Margin="0,0,0,16"/>
+                            <Border Background="#1E293B" CornerRadius="16" Padding="24" BorderBrush="#FFFFFF10" BorderThickness="1">
+                                <StackPanel Name="activityLog">
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>Auto,*</Grid.ColumnDefinitions>
+                                        <Border Width="10" Height="10" CornerRadius="5" Background="#10B981" VerticalAlignment="Top" Margin="0,6,16,0"/>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="System initialized successfully" Foreground="White" FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Border Height="1" Background="#334155" Margin="0,0,0,16"/>
+                                    
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>Auto,*</Grid.ColumnDefinitions>
+                                        <Border Width="10" Height="10" CornerRadius="5" Background="#4F46E5" VerticalAlignment="Top" Margin="0,6,16,0"/>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="User database backup completed" Foreground="White" FontWeight="SemiBold"/>
+                                            <TextBlock Text="10:00 AM • Automated Task" Foreground="#64748B" FontSize="12"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Border Height="1" Background="#334155" Margin="0,0,0,16"/>
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>Auto,*</Grid.ColumnDefinitions>
+                                        <Border Width="10" Height="10" CornerRadius="5" Background="#F59E0B" VerticalAlignment="Top" Margin="0,6,16,0"/>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="Security protocols updated (v2.1)" Foreground="White" FontWeight="SemiBold"/>
+                                            <TextBlock Text="09:15 AM • Admin Action" Foreground="#64748B" FontSize="12"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- 2. USERS VIEW (Hidden by default) -->
+                    <ScrollViewer Name="viewUsers" Visibility="Collapsed">
+                        <StackPanel Margin="40">
+                            <TextBlock Text="User Management" FontSize="32" FontWeight="Bold" Foreground="White" Margin="0,0,0,32"/>
+                            
+                            <Border Background="#1E293B" CornerRadius="16" Padding="24">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>*,*,*,*</Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="NAME" FontSize="12" FontWeight="Bold" Foreground="#64748B"/>
+                                        <TextBlock Grid.Column="1" Text="ROLE" FontSize="12" FontWeight="Bold" Foreground="#64748B"/>
+                                        <TextBlock Grid.Column="2" Text="STATUS" FontSize="12" FontWeight="Bold" Foreground="#64748B"/>
+                                        <TextBlock Grid.Column="3" Text="ACTION" FontSize="12" FontWeight="Bold" Foreground="#64748B" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                    <Border Height="1" Background="#334155" Margin="0,0,0,16"/>
+                                    
+                                    <!-- User 1 -->
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>*,*,*,*</Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                            <Border Width="32" Height="32" CornerRadius="16" Background="#EF4444" Margin="0,0,12,0">
+                                                <TextBlock Text="A" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                                            </Border>
+                                            <TextBlock Text="Admin User" Foreground="White" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="1" Text="Administrator" Foreground="#94A3B8" VerticalAlignment="Center"/>
+                                        <Border Grid.Column="2" Background="#10B98120" CornerRadius="4" Padding="8,4" HorizontalAlignment="Left">
+                                            <TextBlock Text="Active" Foreground="#10B981" FontSize="12" FontWeight="SemiBold"/>
+                                        </Border>
+                                        <Button Grid.Column="3" Content="Edit" Background="#334155" Foreground="White" Padding="12,6" 
+                                                CornerRadius="6" HorizontalAlignment="Right" FontSize="12"/>
+                                    </Grid>
+
+                                    <!-- User 2 -->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>*,*,*,*</Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                            <Border Width="32" Height="32" CornerRadius="16" Background="#F59E0B" Margin="0,0,12,0">
+                                                <TextBlock Text="M" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                                            </Border>
+                                            <TextBlock Text="Manager" Foreground="White" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="1" Text="Manager" Foreground="#94A3B8" VerticalAlignment="Center"/>
+                                        <Border Grid.Column="2" Background="#10B98120" CornerRadius="4" Padding="8,4" HorizontalAlignment="Left">
+                                            <TextBlock Text="Active" Foreground="#10B981" FontSize="12" FontWeight="SemiBold"/>
+                                        </Border>
+                                        <Button Grid.Column="3" Content="Edit" Background="#334155" Foreground="White" Padding="12,6" 
+                                                CornerRadius="6" HorizontalAlignment="Right" FontSize="12"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- 3. FILES VIEW (Hidden) -->
+                    <ScrollViewer Name="viewFiles" Visibility="Collapsed">
+                        <StackPanel Margin="40">
+                            <TextBlock Text="File Storage" FontSize="32" FontWeight="Bold" Foreground="White" Margin="0,0,0,32"/>
+                            <TextBlock Text="No files uploaded yet." Foreground="#64748B" HorizontalAlignment="Center" Margin="0,100,0,0"/>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                </Grid>
+            </Grid>
+
+        </Grid>
+    </UI>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!--                        LOGIC                               -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <Logic>
+        
+        <!-- Builtin Plugins -->
+        <Plugin Name="CryptoPlugin"/>
+        <Plugin Name="FilePlugin"/>
+        <Plugin Name="JsonPlugin"/>
+        <Plugin Name="DatePlugin"/>
+
+        <!-- State Variables -->
+        <Var Name="inputEmail" Value="" Type="string"/>
+        <Var Name="inputPassword" Value="" Type="string"/>
+        <Var Name="inputHash" Value="" Type="string"/>
+        <Var Name="currentUser" Value="" Type="string"/>
+        <Var Name="currentRole" Value="" Type="string"/>
+
+        <!-- 3 Users Database -->
+        <Var Name="u1_email" Value="admin@nimbus.io" Type="string"/>
+        <Var Name="u1_hash" Value="{crypto.sha256:admin123}" Type="string"/>
+        <Var Name="u1_name" Value="System Admin" Type="string"/>
+        <Var Name="u1_role" Value="Administrator" Type="string"/>
+
+        <Var Name="u2_email" Value="manager@nimbus.io" Type="string"/>
+        <Var Name="u2_hash" Value="{crypto.sha256:manager123}" Type="string"/>
+        <Var Name="u2_name" Value="Project Manager" Type="string"/>
+        <Var Name="u2_role" Value="Manager" Type="string"/>
+
+        <Var Name="u3_email" Value="user@nimbus.io" Type="string"/>
+        <Var Name="u3_hash" Value="{crypto.sha256:user123}" Type="string"/>
+        <Var Name="u3_name" Value="John Doe" Type="string"/>
+        <Var Name="u3_role" Value="Standard User" Type="string"/>
+
+        <!-- Handler: Navigation -->
+        <Handler Name="NavToDashboard">
+            <Hide Control="viewUsers"/><Hide Control="viewFiles"/>
+            <Show Control="viewDashboard" Animate="true"/>
+            
+            <Set Target="navDash" Property="Active" Value="true"/>
+            <Set Target="navUsers" Property="Active" Value="false"/>
+            <Set Target="navFiles" Property="Active" Value="false"/>
+            <Set Target="navSettings" Property="Active" Value="false"/>
+        </Handler>
+
+        <Handler Name="NavToUsers">
+            <Hide Control="viewDashboard"/><Hide Control="viewFiles"/>
+            <Show Control="viewUsers" Animate="true"/>
+            
+            <Set Target="navDash" Property="Active" Value="false"/>
+            <Set Target="navUsers" Property="Active" Value="true"/>
+            <Set Target="navFiles" Property="Active" Value="false"/>
+            <Set Target="navSettings" Property="Active" Value="false"/>
+        </Handler>
+
+        <Handler Name="NavToFiles">
+            <Hide Control="viewDashboard"/><Hide Control="viewUsers"/>
+            <Show Control="viewFiles" Animate="true"/>
+            
+            <Set Target="navDash" Property="Active" Value="false"/>
+            <Set Target="navUsers" Property="Active" Value="false"/>
+            <Set Target="navFiles" Property="Active" Value="true"/>
+            <Set Target="navSettings" Property="Active" Value="false"/>
+        </Handler>
+
+        <Handler Name="NavToSettings">
+            <Toast Message="Settings coming soon!" Type="Info"/>
+        </Handler>
+
+        <!-- Handler: Login -->
+        <Handler Name="OnLoginClick">
+            <Hide Control="msgBox"/>
+            <Show Control="loader"/>
+            <Hide Control="btnLogin"/>
+            <Timer Name="loginDelay" Interval="1500" Handler="ProcessLogin" Repeat="false"/>
+        </Handler>
+
+        <Handler Name="ProcessLogin">
+            <Get Control="txtEmail" Property="Text" ToState="inputEmail"/>
+            <Get Control="txtPassword" Property="Password" ToState="inputPassword"/>
+            <Set Var="inputHash" Value="{crypto.sha256:{inputPassword}}"/>
+
+            <If Condition="{inputEmail} == {u1_email} &amp;&amp; {inputHash} == {u1_hash}">
+                <Set Var="currentUser" Value="{u1_name}"/>
+                <Set Var="currentRole" Value="{u1_role}"/>
+                <Call Handler="LoginSuccess"/>
+            </If>
+            <If Condition="{inputEmail} == {u2_email} &amp;&amp; {inputHash} == {u2_hash}">
+                <Set Var="currentUser" Value="{u2_name}"/>
+                <Set Var="currentRole" Value="{u2_role}"/>
+                <Call Handler="LoginSuccess"/>
+            </If>
+            <If Condition="{inputEmail} == {u3_email} &amp;&amp; {inputHash} == {u3_hash}">
+                <Set Var="currentUser" Value="{u3_name}"/>
+                <Set Var="currentRole" Value="{u3_role}"/>
+                <Call Handler="LoginSuccess"/>
+            </If>
+
+            <If Condition="{currentUser} == ">
+                <Set Target="msgText" Property="Text" Value="Invalid email or password."/>
+                <Show Control="msgBox"/>
+                <Hide Control="loader"/>
+                <Show Control="btnLogin"/>
+            </If>
+        </Handler>
+
+        <Handler Name="LoginSuccess">
+            <!-- Save Session -->
+            <Plugin Name="FilePlugin" Method="file.write" 
+                    Params="session.json,{'user':'{currentUser}','role':'{currentRole}','time':'{_currentTime}'}"/>
+
+            <!-- Update Dashboard Info -->
+            <Set Target="dashName" Property="Text" Value="{currentUser}"/>
+            <Set Target="dashRole" Property="Text" Value="{currentRole}"/>
+            <Set Target="dashWelcome" Property="Text" Value="Welcome back, {currentUser}!"/>
+            <Set Target="dashInitials" Property="Text" Value="{currentUser.substring:0,1}"/>
+
+            <!-- Role based colors -->
+            <If Condition="{currentRole} == Administrator">
+                <Set Target="dashAvatar" Property="Background" Value="#EF4444"/>
+            </If>
+            <If Condition="{currentRole} == Manager">
+                <Set Target="dashAvatar" Property="Background" Value="#F59E0B"/>
+            </If>
+            
+            <!-- Switch Screen -->
+            <Hide Control="LoginScreen" Animate="true" Duration="300"/>
+            <Show Control="DashboardScreen" Animate="true" Duration="500"/>
+            
+            <Toast Message="Login successful! Welcome {currentUser}." Type="Success"/>
+        </Handler>
+
+        <Handler Name="OnLogoutClick">
+            <Confirm Message="Are you sure you want to sign out?" Title="Logout" Custom="true">
+                <Yes>
+                    <Set Var="currentUser" Value=""/>
+                    <Set Target="txtEmail" Property="Text" Value=""/>
+                    <Set Target="txtPassword" Property="Password" Value=""/>
+                    <Hide Control="DashboardScreen" Animate="true" Duration="300"/>
+                    <Show Control="LoginScreen" Animate="true" Duration="500"/>
+                    <Hide Control="loader"/>
+                    <Show Control="btnLogin"/>
+                </Yes>
+            </Confirm>
+        </Handler>
+
+    </Logic>
+</App>

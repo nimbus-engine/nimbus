@@ -1,0 +1,1073 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="NimbusGPT"
+     Width="1200"
+     Height="800"
+     Theme="Dark"
+     DarkMode="true"
+     DevMode="true"
+     OnLoad="OnAppLoad"
+     Icon="gpt.ico">
+
+    <UI>
+        <Grid Background="#0D0D0D">
+            <Grid.ColumnDefinitions>280,*</Grid.ColumnDefinitions>
+
+            <!-- ═══════════════════════════════════════════════════ -->
+            <!--                    SIDEBAR                          -->
+            <!-- ═══════════════════════════════════════════════════ -->
+            <Border Grid.Column="0" Background="#171717" 
+                    BorderBrush="#2D2D2D" BorderThickness="0,0,1,0">
+                <Grid>
+                    <Grid.RowDefinitions>Auto,Auto,*,Auto,Auto</Grid.RowDefinitions>
+
+                    <!-- Logo & New Chat -->
+                    <Border Grid.Row="0" Padding="16,20,16,16">
+                        <StackPanel>
+                            <!-- Logo -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                                <Border Width="36" Height="36" CornerRadius="8"
+                                        Background="#10A37F">
+                                    <TextBlock Text="⚡" FontSize="18"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="NimbusGPT" FontSize="18"
+                                           FontWeight="SemiBold" Foreground="#ECECEC"
+                                           VerticalAlignment="Center" Margin="12,0,0,0"/>
+                            </StackPanel>
+
+                            <!-- New Chat Button -->
+                            <Border Name="btnNewChat" Background="#2D2D2D"
+                                    CornerRadius="8" Padding="14,12"
+                                    Cursor="Hand" onClick="NewChat"
+                                    BorderBrush="#404040" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto,*,Auto</Grid.ColumnDefinitions>
+                                    <TextBlock Text="+" FontSize="18" Foreground="#ECECEC"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="New chat" FontSize="14"
+                                               Foreground="#ECECEC" VerticalAlignment="Center"
+                                               Margin="12,0,0,0"/>
+                                    <TextBlock Grid.Column="2" Text="⌘N" FontSize="11"
+                                               Foreground="#666666" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Search -->
+                    <Border Grid.Row="1" Padding="16,0,16,16">
+                        <Border Name="searchBarSidebar" Background="#2D2D2D"
+                                CornerRadius="8" Padding="12,10"
+                                BorderBrush="#404040" BorderThickness="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>Auto,*</Grid.ColumnDefinitions>
+                                <TextBlock Text="🔍" FontSize="14" Foreground="#666666"
+                                           VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <TextBox Name="txtSidebarSearch" Grid.Column="1"
+                                         Background="Transparent" BorderThickness="0"
+                                         Foreground="#ECECEC" FontSize="13"
+                                         Placeholder="Search chats..."
+                                         CaretBrush="#10A37F"
+                                         onTextChanged="OnSidebarSearch"/>
+                            </Grid>
+                        </Border>
+                    </Border>
+
+                    <!-- Chat History -->
+                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Hidden"
+                                  Padding="8,0,8,8">
+                        <StackPanel Name="chatHistoryList">
+                            <!-- Section: Today -->
+                            <TextBlock Text="Today" FontSize="11" FontWeight="SemiBold"
+                                       Foreground="#666666" Margin="8,8,0,8"/>
+
+                            <Border Name="chat1" Background="#2D2D2D" CornerRadius="8"
+                                    Padding="12,10" Margin="0,0,0,4" Cursor="Hand"
+                                    onClick="LoadChat1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>*,Auto</Grid.ColumnDefinitions>
+                                    <TextBlock Text="💬 How to learn Python" FontSize="13"
+                                               Foreground="#ECECEC"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    <Border Name="btnDeleteChat1" Grid.Column="1"
+                                            Width="24" Height="24" CornerRadius="4"
+                                            Cursor="Hand" onClick="DeleteChat1"
+                                            Visibility="Collapsed">
+                                        <TextBlock Text="🗑" FontSize="12"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                            <Border Name="chat2" Background="Transparent" CornerRadius="8"
+                                    Padding="12,10" Margin="0,0,0,4" Cursor="Hand"
+                                    onClick="LoadChat2">
+                                <TextBlock Text="🎨 Design system colors" FontSize="13"
+                                           Foreground="#B0B0B0"
+                                           TextTrimming="CharacterEllipsis"/>
+                            </Border>
+
+                            <Border Name="chat3" Background="Transparent" CornerRadius="8"
+                                    Padding="12,10" Margin="0,0,0,4" Cursor="Hand"
+                                    onClick="LoadChat3">
+                                <TextBlock Text="📊 SQL query help" FontSize="13"
+                                           Foreground="#B0B0B0"
+                                           TextTrimming="CharacterEllipsis"/>
+                            </Border>
+
+                            <!-- Section: Yesterday -->
+                            <TextBlock Text="Yesterday" FontSize="11" FontWeight="SemiBold"
+                                       Foreground="#666666" Margin="8,16,0,8"/>
+
+                            <Border Name="chat4" Background="Transparent" CornerRadius="8"
+                                    Padding="12,10" Margin="0,0,0,4" Cursor="Hand"
+                                    onClick="LoadChat4">
+                                <TextBlock Text="🚀 Deploy to server" FontSize="13"
+                                           Foreground="#B0B0B0"
+                                           TextTrimming="CharacterEllipsis"/>
+                            </Border>
+
+                            <Border Name="chat5" Background="Transparent" CornerRadius="8"
+                                    Padding="12,10" Margin="0,0,0,4" Cursor="Hand"
+                                    onClick="LoadChat5">
+                                <TextBlock Text="📝 Write blog post" FontSize="13"
+                                           Foreground="#B0B0B0"
+                                           TextTrimming="CharacterEllipsis"/>
+                            </Border>
+
+                            <!-- Section: Previous 7 Days -->
+                            <TextBlock Text="Previous 7 Days" FontSize="11" FontWeight="SemiBold"
+                                       Foreground="#666666" Margin="8,16,0,8"/>
+
+                            <Border Name="chat6" Background="Transparent" CornerRadius="8"
+                                    Padding="12,10" Margin="0,0,0,4" Cursor="Hand"
+                                    onClick="LoadChat6">
+                                <TextBlock Text="🔧 Fix API errors" FontSize="13"
+                                           Foreground="#B0B0B0"
+                                           TextTrimming="CharacterEllipsis"/>
+                            </Border>
+
+                            <Border Name="chat7" Background="Transparent" CornerRadius="8"
+                                    Padding="12,10" Margin="0,0,0,4" Cursor="Hand"
+                                    onClick="LoadChat7">
+                                <TextBlock Text="💡 App ideas brainstorm" FontSize="13"
+                                           Foreground="#B0B0B0"
+                                           TextTrimming="CharacterEllipsis"/>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- Model Selector -->
+                    <Border Grid.Row="3" Padding="16,8,16,8">
+                        <Border Name="btnModelSelect" Background="#2D2D2D"
+                                CornerRadius="8" Padding="12,10"
+                                Cursor="Hand" onClick="ShowModelSelector"
+                                BorderBrush="#404040" BorderThickness="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>Auto,*,Auto</Grid.ColumnDefinitions>
+                                <TextBlock Text="⚡" FontSize="14" Foreground="#10A37F"
+                                           VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                    <TextBlock Name="lblCurrentModel" Text="GPT-4o"
+                                               FontSize="13" FontWeight="SemiBold"
+                                               Foreground="#ECECEC"/>
+                                    <TextBlock Text="Latest model" FontSize="11"
+                                               Foreground="#666666"/>
+                                </StackPanel>
+                                <TextBlock Grid.Column="2" Text="▾" FontSize="12"
+                                           Foreground="#666666" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </Border>
+
+                    <!-- User Profile -->
+                    <Border Grid.Row="4" Padding="16,8,16,20"
+                            BorderBrush="#2D2D2D" BorderThickness="0,1,0,0">
+                        <Border Name="btnUserProfile" Background="Transparent"
+                                CornerRadius="8" Padding="8"
+                                Cursor="Hand" onClick="ShowUserMenu">
+                            <Grid>
+                                <Grid.ColumnDefinitions>Auto,*,Auto</Grid.ColumnDefinitions>
+                                <Border Width="36" Height="36" CornerRadius="18"
+                                        Background="#10A37F">
+                                    <TextBlock Text="U" FontSize="14" FontWeight="Bold"
+                                               Foreground="White"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel Grid.Column="1" Margin="12,0,0,0"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="User" FontSize="13"
+                                               FontWeight="Medium" Foreground="#ECECEC"/>
+                                    <TextBlock Text="Free Plan" FontSize="11"
+                                               Foreground="#666666"/>
+                                </StackPanel>
+                                <TextBlock Grid.Column="2" Text="⋯" FontSize="18"
+                                           Foreground="#666666" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- ═══════════════════════════════════════════════════ -->
+            <!--                   MAIN CHAT AREA                    -->
+            <!-- ═══════════════════════════════════════════════════ -->
+            <Grid Grid.Column="1" Background="#0D0D0D">
+                <Grid.RowDefinitions>Auto,*,Auto</Grid.RowDefinitions>
+
+                <!-- Top Bar -->
+                <Border Grid.Row="0" Background="#0D0D0D" Padding="20,16,20,16"
+                        BorderBrush="#2D2D2D" BorderThickness="0,0,0,1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>Auto,*,Auto,Auto,Auto</Grid.ColumnDefinitions>
+
+                        <!-- Toggle Sidebar (Mobile) -->
+                        <Border Name="btnToggleSidebar" Width="36" Height="36"
+                                CornerRadius="8" Cursor="Hand"
+                                onClick="ToggleSidebar" Visibility="Collapsed">
+                            <TextBlock Text="☰" FontSize="18" Foreground="#ECECEC"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+
+                        <!-- Chat Title -->
+                        <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <TextBlock Name="lblChatTitle" Text="New chat"
+                                       FontSize="16" FontWeight="SemiBold"
+                                       Foreground="#ECECEC"/>
+                            <Border Name="btnEditTitle" Width="28" Height="28"
+                                    CornerRadius="6" Margin="8,0,0,0"
+                                    Cursor="Hand" onClick="EditChatTitle">
+                                <TextBlock Text="✏️" FontSize="12"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center" Opacity="0.6"/>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Action Buttons -->
+                        <Border Name="btnShare" Grid.Column="2" Width="36" Height="36"
+                                CornerRadius="8" Cursor="Hand" onClick="ShareChat"
+                                Margin="0,0,8,0">
+                            <TextBlock Text="↗" FontSize="18" Foreground="#B0B0B0"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+
+                        <Border Name="btnExport" Grid.Column="3" Width="36" Height="36"
+                                CornerRadius="8" Cursor="Hand" onClick="ExportChat"
+                                Margin="0,0,8,0">
+                            <TextBlock Text="📥" FontSize="16" Foreground="#B0B0B0"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+
+                        <Border Name="btnChatSettings" Grid.Column="4" Width="36" Height="36"
+                                CornerRadius="8" Cursor="Hand" onClick="ShowChatSettings">
+                            <TextBlock Text="⚙️" FontSize="16" Foreground="#B0B0B0"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Chat Messages Area -->
+                <ScrollViewer Grid.Row="1" Name="chatScrollViewer"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              Padding="0,0,0,20">
+                    <StackPanel Name="chatMessagesContainer" Margin="0,0,0,0">
+                        <!-- Messages will be added here dynamically -->
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Welcome Screen (shown when no messages) -->
+                <Border Name="welcomeScreen" Grid.Row="1" Visibility="Visible">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Margin="40">
+                        <!-- Logo -->
+                        <Border Width="64" Height="64" CornerRadius="16"
+                                Background="#10A37F" Margin="0,0,0,24"
+                                HorizontalAlignment="Center">
+                            <TextBlock Text="⚡" FontSize="32"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+
+                        <TextBlock Text="How can I help you today?"
+                                   FontSize="28" FontWeight="SemiBold"
+                                   Foreground="#ECECEC" TextAlignment="Center"
+                                   Margin="0,0,0,40"/>
+
+                        <!-- Suggestion Cards -->
+                        <Grid Width="700" HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>*,16,*</Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>Auto,12,Auto</Grid.RowDefinitions>
+
+                            <Border Name="suggest1" Grid.Row="0" Grid.Column="0"
+                                    Background="#1A1A1A" CornerRadius="12"
+                                    Padding="16" Cursor="Hand"
+                                    BorderBrush="#2D2D2D" BorderThickness="1"
+                                    onClick="UseSuggestion1">
+                                <StackPanel>
+                                    <TextBlock Text="💡 Explain a concept"
+                                               FontSize="14" FontWeight="Medium"
+                                               Foreground="#ECECEC"/>
+                                    <TextBlock Text="Help me understand quantum computing"
+                                               FontSize="12" Foreground="#888888"
+                                               Margin="0,6,0,0" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Name="suggest2" Grid.Row="0" Grid.Column="2"
+                                    Background="#1A1A1A" CornerRadius="12"
+                                    Padding="16" Cursor="Hand"
+                                    BorderBrush="#2D2D2D" BorderThickness="1"
+                                    onClick="UseSuggestion2">
+                                <StackPanel>
+                                    <TextBlock Text="✍️ Help me write"
+                                               FontSize="14" FontWeight="Medium"
+                                               Foreground="#ECECEC"/>
+                                    <TextBlock Text="Draft an email to my team"
+                                               FontSize="12" Foreground="#888888"
+                                               Margin="0,6,0,0" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Name="suggest3" Grid.Row="2" Grid.Column="0"
+                                    Background="#1A1A1A" CornerRadius="12"
+                                    Padding="16" Cursor="Hand"
+                                    BorderBrush="#2D2D2D" BorderThickness="1"
+                                    onClick="UseSuggestion3">
+                                <StackPanel>
+                                    <TextBlock Text="🔧 Debug my code"
+                                               FontSize="14" FontWeight="Medium"
+                                               Foreground="#ECECEC"/>
+                                    <TextBlock Text="Find the bug in my Python script"
+                                               FontSize="12" Foreground="#888888"
+                                               Margin="0,6,0,0" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Name="suggest4" Grid.Row="2" Grid.Column="2"
+                                    Background="#1A1A1A" CornerRadius="12"
+                                    Padding="16" Cursor="Hand"
+                                    BorderBrush="#2D2D2D" BorderThickness="1"
+                                    onClick="UseSuggestion4">
+                                <StackPanel>
+                                    <TextBlock Text="🎯 Plan a project"
+                                               FontSize="14" FontWeight="Medium"
+                                               Foreground="#ECECEC"/>
+                                    <TextBlock Text="Create a roadmap for my app"
+                                               FontSize="12" Foreground="#888888"
+                                               Margin="0,6,0,0" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Input Area -->
+                <Border Grid.Row="2" Background="#0D0D0D" Padding="20,16,20,24">
+                    <StackPanel>
+                        <!-- Main Input Container -->
+                        <Border Name="inputContainer" Background="#1A1A1A"
+                                CornerRadius="16" Padding="4"
+                                BorderBrush="#2D2D2D" BorderThickness="1">
+                            <Grid>
+                                <Grid.RowDefinitions>*,Auto</Grid.RowDefinitions>
+
+                                <!-- Text Input -->
+                                <Border Grid.Row="0" Padding="16,12,16,8">
+                                    <TextBox Name="txtUserInput"
+                                             Background="Transparent"
+                                             BorderThickness="0"
+                                             Foreground="#ECECEC"
+                                             FontSize="15"
+                                             AcceptsReturn="True"
+                                             TextWrapping="Wrap"
+                                             MaxHeight="200"
+                                             Placeholder="Message NimbusGPT..."
+                                             CaretBrush="#10A37F"
+                                             onEnter="SendMessage"/>
+                                </Border>
+
+                                <!-- Bottom Toolbar -->
+                                <Border Grid.Row="1" Padding="8,4,8,8">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>Auto,Auto,Auto,*,Auto</Grid.ColumnDefinitions>
+
+                                        <!-- Attach File -->
+                                        <Border Name="btnAttach" Width="36" Height="36"
+                                                CornerRadius="8" Cursor="Hand"
+                                                onClick="AttachFile" Margin="0,0,4,0">
+                                            <TextBlock Text="📎" FontSize="16"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <!-- Image -->
+                                        <Border Name="btnImage" Width="36" Height="36"
+                                                CornerRadius="8" Cursor="Hand"
+                                                onClick="AttachImage" Margin="0,0,4,0">
+                                            <TextBlock Text="🖼️" FontSize="16"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <!-- Voice -->
+                                        <Border Name="btnVoice" Width="36" Height="36"
+                                                CornerRadius="8" Cursor="Hand"
+                                                onClick="VoiceInput">
+                                            <TextBlock Text="🎤" FontSize="16"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <!-- Send Button -->
+                                        <Border Name="btnSend" Grid.Column="4"
+                                                Width="36" Height="36" CornerRadius="8"
+                                                Background="#10A37F" Cursor="Hand"
+                                                onClick="SendMessage">
+                                            <TextBlock Text="↑" FontSize="18"
+                                                       FontWeight="Bold" Foreground="White"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!-- Disclaimer -->
+                        <TextBlock Text="NimbusGPT can make mistakes. Check important info."
+                                   FontSize="11" Foreground="#666666"
+                                   TextAlignment="Center" Margin="0,12,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Typing Indicator -->
+                <Border Name="typingIndicator" Grid.Row="1"
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Left"
+                        Margin="60,0,0,20" Visibility="Collapsed">
+                    <Border Background="#1A1A1A" CornerRadius="12" Padding="16,12">
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="8" Height="8" CornerRadius="4"
+                                    Background="#10A37F" Margin="0,0,4,0"/>
+                            <Border Width="8" Height="8" CornerRadius="4"
+                                    Background="#10A37F" Margin="0,0,4,0" Opacity="0.7"/>
+                            <Border Width="8" Height="8" CornerRadius="4"
+                                    Background="#10A37F" Opacity="0.4"/>
+                            <TextBlock Text=" NimbusGPT is thinking..."
+                                       FontSize="13" Foreground="#888888"
+                                       Margin="8,0,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </Border>
+            </Grid>
+
+            <!-- ═══════════════════════════════════════════════════ -->
+            <!--                MODEL SELECTOR POPUP                 -->
+            <!-- ═══════════════════════════════════════════════════ -->
+            <Border Name="modelSelectorPopup" Visibility="Collapsed"
+                    Background="#000000AA">
+                <Border Background="#1A1A1A" CornerRadius="16"
+                        Width="400" VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        BorderBrush="#2D2D2D" BorderThickness="1">
+                    <Border.Effect>
+                        <DropShadowEffect Color="Black" BlurRadius="40"
+                                          ShadowDepth="10" Opacity="0.5"/>
+                    </Border.Effect>
+                    <StackPanel>
+                        <!-- Header -->
+                        <Border Padding="20,16" BorderBrush="#2D2D2D"
+                                BorderThickness="0,0,0,1">
+                            <Grid>
+                                <TextBlock Text="Select Model" FontSize="16"
+                                           FontWeight="SemiBold" Foreground="#ECECEC"/>
+                                <Border Name="btnCloseModelPopup"
+                                        HorizontalAlignment="Right"
+                                        Width="28" Height="28" CornerRadius="6"
+                                        Cursor="Hand" onClick="CloseModelSelector">
+                                    <TextBlock Text="✕" FontSize="14" Foreground="#888888"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!-- Model Options -->
+                        <StackPanel >
+                            <Border Name="modelGPT4o" Background="#2D2D2D"
+                                    CornerRadius="10" Padding="14" Margin="0,0,0,8"
+                                    Cursor="Hand" onClick="SelectGPT4o">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto,*,Auto</Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" CornerRadius="10"
+                                            Background="#10A37F">
+                                        <TextBlock Text="⚡" FontSize="18"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="14,0,0,0">
+                                        <TextBlock Text="GPT-4o" FontSize="14"
+                                                   FontWeight="SemiBold" Foreground="#ECECEC"/>
+                                        <TextBlock Text="Most capable model, best for complex tasks"
+                                                   FontSize="12" Foreground="#888888"/>
+                                    </StackPanel>
+                                    <TextBlock Name="checkGPT4o" Grid.Column="2"
+                                               Text="✓" FontSize="16" Foreground="#10A37F"
+                                               VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Name="modelGPT4" Background="Transparent"
+                                    CornerRadius="10" Padding="14" Margin="0,0,0,8"
+                                    Cursor="Hand" onClick="SelectGPT4"
+                                    BorderBrush="#2D2D2D" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto,*,Auto</Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" CornerRadius="10"
+                                            Background="#7C3AED">
+                                        <TextBlock Text="4" FontSize="16" FontWeight="Bold"
+                                                   Foreground="White"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="14,0,0,0">
+                                        <TextBlock Text="GPT-4" FontSize="14"
+                                                   FontWeight="SemiBold" Foreground="#ECECEC"/>
+                                        <TextBlock Text="Advanced reasoning and analysis"
+                                                   FontSize="12" Foreground="#888888"/>
+                                    </StackPanel>
+                                    <TextBlock Name="checkGPT4" Grid.Column="2"
+                                               Text="✓" FontSize="16" Foreground="#10A37F"
+                                               VerticalAlignment="Center" Visibility="Collapsed"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Name="modelGPT35" Background="Transparent"
+                                    CornerRadius="10" Padding="14"
+                                    Cursor="Hand" onClick="SelectGPT35"
+                                    BorderBrush="#2D2D2D" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto,*,Auto</Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" CornerRadius="10"
+                                            Background="#2563EB">
+                                        <TextBlock Text="3.5" FontSize="14" FontWeight="Bold"
+                                                   Foreground="White"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="14,0,0,0">
+                                        <TextBlock Text="GPT-3.5 Turbo" FontSize="14"
+                                                   FontWeight="SemiBold" Foreground="#ECECEC"/>
+                                        <TextBlock Text="Fast responses, good for simple tasks"
+                                                   FontSize="12" Foreground="#888888"/>
+                                    </StackPanel>
+                                    <TextBlock Name="checkGPT35" Grid.Column="2"
+                                               Text="✓" FontSize="16" Foreground="#10A37F"
+                                               VerticalAlignment="Center" Visibility="Collapsed"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Border>
+
+        </Grid>
+    </UI>
+
+    <Logic>
+        <Var Name="currentChatId" Value="0" Type="int"/>
+        <Var Name="messageCount" Value="0" Type="int"/>
+        <Var Name="userMessage" Value="" Type="string"/>
+        <Var Name="aiResponse" Value="" Type="string"/>
+        <Var Name="currentModel" Value="GPT-4o" Type="string"/>
+        <Var Name="isTyping" Value="false" Type="bool"/>
+        <Var Name="searchQuery" Value="" Type="string"/>
+
+        <ManualC id="ChatEngine">
+using System;
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Effects;
+using System.Windows.Shapes;
+
+namespace Nimbus.Chat
+{
+    public class Message
+    {
+        public int Id = 0;
+        public bool IsUser = true;
+        public string Content = "";
+        public DateTime Time = DateTime.Now;
+    }
+
+    public static class App
+    {
+        public static List&lt;Message&gt; messages = new List&lt;Message&gt;();
+        public static int nextMsgId = 1;
+        public static string model = "GPT-4o";
+
+        public static string Init()
+        {
+            messages.Clear();
+            return "ok";
+        }
+
+        public static int AddUserMessage(string content)
+        {
+            Message m = new Message();
+            m.Id = nextMsgId++;
+            m.IsUser = true;
+            m.Content = content;
+            m.Time = DateTime.Now;
+            messages.Add(m);
+            return m.Id;
+        }
+
+        public static int AddAIMessage(string content)
+        {
+            Message m = new Message();
+            m.Id = nextMsgId++;
+            m.IsUser = false;
+            m.Content = content;
+            m.Time = DateTime.Now;
+            messages.Add(m);
+            return m.Id;
+        }
+
+        public static string GetResponse(string userMsg)
+        {
+            string msg = userMsg.ToLower();
+
+            if (msg.Contains("hello") || msg.Contains("hi") || msg.Contains("salom"))
+                return "Hello! I'm NimbusGPT, your AI assistant. How can I help you today? 😊";
+
+            if (msg.Contains("python"))
+                return "Python is a versatile programming language! Here are some tips:\n\n**Getting Started:**\n• Install Python from python.org\n• Use pip for package management\n• Try VS Code or PyCharm as IDE\n\n**Key Concepts:**\n```python\n# Variables\nname = \"NimbusGPT\"\ncount = 42\n\n# Functions\ndef greet(name):\n    return f\"Hello, {name}!\"\n\n# Lists\nitems = [1, 2, 3, 4, 5]\n```\n\nWould you like me to explain any specific topic?";
+
+            if (msg.Contains("code") || msg.Contains("debug"))
+                return "I'd be happy to help with your code! 🔧\n\n**Common debugging tips:**\n1. Check for syntax errors\n2. Use print statements to trace flow\n3. Verify variable types\n4. Check edge cases\n\nPlease share your code and I'll help identify the issue!";
+
+            if (msg.Contains("email") || msg.Contains("write"))
+                return "I'll help you draft that! ✍️\n\n**Professional Email Template:**\n\n---\nSubject: [Clear and Specific Subject]\n\nDear [Name],\n\nI hope this message finds you well.\n\n[Your main message here]\n\nPlease let me know if you have any questions.\n\nBest regards,\n[Your Name]\n\n---\n\nWould you like me to customize this for your specific needs?";
+
+            if (msg.Contains("quantum"))
+                return "Quantum computing is fascinating! 🔬\n\n**Key Concepts:**\n\n• **Qubits**: Unlike classical bits (0 or 1), qubits can be in superposition (both states simultaneously)\n\n• **Entanglement**: Qubits can be correlated regardless of distance\n\n• **Quantum Gates**: Operations that manipulate qubits\n\n**Applications:**\n- Cryptography\n- Drug discovery\n- Optimization problems\n- Machine learning\n\nWant me to dive deeper into any of these topics?";
+
+            if (msg.Contains("project") || msg.Contains("plan") || msg.Contains("roadmap"))
+                return "Let me help you create a project roadmap! 🎯\n\n**Project Planning Framework:**\n\n**Phase 1: Discovery (Week 1-2)**\n- Define goals and requirements\n- Research and analysis\n- Stakeholder interviews\n\n**Phase 2: Design (Week 3-4)**\n- Create wireframes\n- Design system setup\n- Technical architecture\n\n**Phase 3: Development (Week 5-8)**\n- Sprint planning\n- Core feature development\n- Testing and QA\n\n**Phase 4: Launch (Week 9-10)**\n- Beta testing\n- Final polish\n- Deployment\n\nWould you like a more detailed breakdown?";
+
+            return "I understand you're asking about: \"" + userMsg + "\"\n\nI'm a demo version of NimbusGPT. In a full implementation, I would:\n\n• Connect to OpenAI's API\n• Process your query with GPT-4\n• Provide intelligent responses\n\nFor now, try asking about:\n- Python programming\n- Code debugging\n- Email writing\n- Quantum computing\n- Project planning\n\nWhat would you like to explore? 🚀";
+        }
+
+        public static int GetMessageCount()
+        {
+            return messages.Count;
+        }
+
+        public static void ClearChat()
+        {
+            messages.Clear();
+            nextMsgId = 1;
+        }
+
+        public static void SetModel(string m)
+        {
+            model = m;
+        }
+
+        public static string GetModel()
+        {
+            return model;
+        }
+
+        public static UIElement BuildMessages()
+        {
+            StackPanel container = new StackPanel();
+            container.Margin = new Thickness(0, 20, 0, 20);
+
+            foreach (Message m in messages)
+            {
+                container.Children.Add(CreateMessageBubble(m));
+            }
+
+            return container;
+        }
+
+        public static UIElement CreateMessageBubble(Message m)
+        {
+            Border wrapper = new Border();
+            wrapper.Margin = new Thickness(40, 8, 40, 8);
+
+            Grid grid = new Grid();
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+            if (m.IsUser)
+            {
+                // User message - right aligned
+                wrapper.HorizontalAlignment = HorizontalAlignment.Right;
+                wrapper.MaxWidth = 600;
+
+                Border bubble = new Border();
+                bubble.Background = new SolidColorBrush(Color.FromRgb(16, 163, 127));
+                bubble.CornerRadius = new CornerRadius(16, 16, 4, 16);
+                bubble.Padding = new Thickness(16, 12, 16, 12);
+
+                TextBlock text = new TextBlock();
+                text.Text = m.Content;
+                text.FontSize = 14;
+                text.Foreground = new SolidColorBrush(Colors.White);
+                text.TextWrapping = TextWrapping.Wrap;
+
+                bubble.Child = text;
+                wrapper.Child = bubble;
+            }
+            else
+            {
+                // AI message - left aligned with avatar
+                wrapper.HorizontalAlignment = HorizontalAlignment.Left;
+                wrapper.MaxWidth = 700;
+
+                StackPanel msgStack = new StackPanel();
+                msgStack.Orientation = Orientation.Horizontal;
+
+                // Avatar
+                Border avatar = new Border();
+                avatar.Width = 32;
+                avatar.Height = 32;
+                avatar.CornerRadius = new CornerRadius(8);
+                avatar.Background = new SolidColorBrush(Color.FromRgb(16, 163, 127));
+                avatar.VerticalAlignment = VerticalAlignment.Top;
+                avatar.Margin = new Thickness(0, 0, 12, 0);
+                TextBlock avatarText = new TextBlock();
+                avatarText.Text = "⚡";
+                avatarText.FontSize = 14;
+                avatarText.HorizontalAlignment = HorizontalAlignment.Center;
+                avatarText.VerticalAlignment = VerticalAlignment.Center;
+                avatar.Child = avatarText;
+
+                // Message content
+                Border bubble = new Border();
+                bubble.Background = new SolidColorBrush(Color.FromRgb(26, 26, 26));
+                bubble.CornerRadius = new CornerRadius(4, 16, 16, 16);
+                bubble.Padding = new Thickness(16, 12, 16, 12);
+
+                TextBlock text = new TextBlock();
+                text.Text = m.Content;
+                text.FontSize = 14;
+                text.Foreground = new SolidColorBrush(Color.FromRgb(236, 236, 236));
+                text.TextWrapping = TextWrapping.Wrap;
+                text.LineHeight = 22;
+
+                bubble.Child = text;
+
+                msgStack.Children.Add(avatar);
+                msgStack.Children.Add(bubble);
+
+                // Action buttons
+                StackPanel actions = new StackPanel();
+                actions.Orientation = Orientation.Horizontal;
+                actions.Margin = new Thickness(44, 8, 0, 0);
+
+                Border copyBtn = new Border();
+                copyBtn.Background = new SolidColorBrush(Colors.Transparent);
+                copyBtn.Padding = new Thickness(8, 4, 8, 4);
+                copyBtn.CornerRadius = new CornerRadius(4);
+                copyBtn.Cursor = System.Windows.Input.Cursors.Hand;
+                TextBlock copyIcon = new TextBlock();
+                copyIcon.Text = "📋 Copy";
+                copyIcon.FontSize = 11;
+                copyIcon.Foreground = new SolidColorBrush(Color.FromRgb(136, 136, 136));
+                copyBtn.Child = copyIcon;
+
+                Border likeBtn = new Border();
+                likeBtn.Background = new SolidColorBrush(Colors.Transparent);
+                likeBtn.Padding = new Thickness(8, 4, 8, 4);
+                likeBtn.CornerRadius = new CornerRadius(4);
+                likeBtn.Margin = new Thickness(8, 0, 0, 0);
+                likeBtn.Cursor = System.Windows.Input.Cursors.Hand;
+                TextBlock likeIcon = new TextBlock();
+                likeIcon.Text = "👍";
+                likeIcon.FontSize = 11;
+                likeBtn.Child = likeIcon;
+
+                Border dislikeBtn = new Border();
+                dislikeBtn.Background = new SolidColorBrush(Colors.Transparent);
+                dislikeBtn.Padding = new Thickness(8, 4, 8, 4);
+                dislikeBtn.CornerRadius = new CornerRadius(4);
+                dislikeBtn.Margin = new Thickness(4, 0, 0, 0);
+                dislikeBtn.Cursor = System.Windows.Input.Cursors.Hand;
+                TextBlock dislikeIcon = new TextBlock();
+                dislikeIcon.Text = "👎";
+                dislikeIcon.FontSize = 11;
+                dislikeBtn.Child = dislikeIcon;
+
+                actions.Children.Add(copyBtn);
+                actions.Children.Add(likeBtn);
+                actions.Children.Add(dislikeBtn);
+
+                StackPanel fullMsg = new StackPanel();
+                fullMsg.Children.Add(msgStack);
+                fullMsg.Children.Add(actions);
+
+                wrapper.Child = fullMsg;
+            }
+
+            return wrapper;
+        }
+    }
+}
+        </ManualC>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!--                 HANDLERS                    -->
+        <!-- ═══════════════════════════════════════════ -->
+
+        <Handler Name="OnAppLoad">
+            <CallManualC id="ChatEngine" Method="Init"/>
+            <Toast Message="⚡ NimbusGPT Ready" Type="Success" Position="BottomRight" Duration="2000"/>
+        </Handler>
+
+        <Handler Name="NewChat">
+            <CallManualC id="ChatEngine" Method="ClearChat"/>
+            <ClearItems Container="chatMessagesContainer"/>
+            <Show Control="welcomeScreen" Animate="true" Duration="200" Effect="Fade"/>
+            <Set Target="lblChatTitle" Property="Text" Value="New chat"/>
+            <Set Target="txtUserInput" Property="Text" Value=""/>
+            <Focus Control="txtUserInput"/>
+            <Toast Message="✨ New chat started" Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="SendMessage">
+            <Get Control="txtUserInput" Property="Text" ToState="userMessage"/>
+
+            <If Condition="{userMessage} != ">
+                <!-- Hide welcome, show chat -->
+                <Hide Control="welcomeScreen"/>
+
+                <!-- Add user message -->
+                <CallManualC id="ChatEngine" Method="AddUserMessage" Params="{userMessage}"/>
+
+                <!-- Refresh messages -->
+                <ClearItems Container="chatMessagesContainer"/>
+                <CallManualC id="ChatEngine" Method="BuildMessages" ToControl="chatMessagesContainer"/>
+
+                <!-- Clear input -->
+                <Set Target="txtUserInput" Property="Text" Value=""/>
+
+                <!-- Show typing indicator -->
+                <Show Control="typingIndicator" Animate="true" Duration="200"/>
+                <ScrollToBottom Control="chatScrollViewer"/>
+
+                <!-- Simulate AI response after delay -->
+                <Timer Name="aiResponseTimer" Interval="1500" Handler="GenerateResponse" Repeat="false"/>
+            </If>
+        </Handler>
+
+        <Handler Name="GenerateResponse">
+            <!-- Hide typing indicator -->
+            <Hide Control="typingIndicator"/>
+
+            <!-- Get AI response -->
+            <CallManualC id="ChatEngine" Method="GetResponse" Params="{userMessage}" ToState="aiResponse"/>
+            <CallManualC id="ChatEngine" Method="AddAIMessage" Params="{aiResponse}"/>
+
+            <!-- Refresh messages -->
+            <ClearItems Container="chatMessagesContainer"/>
+            <CallManualC id="ChatEngine" Method="BuildMessages" ToControl="chatMessagesContainer"/>
+
+            <ScrollToBottom Control="chatScrollViewer"/>
+
+            <!-- Update title if first message -->
+            <CallManualC id="ChatEngine" Method="GetMessageCount" ToState="messageCount"/>
+            <If Condition="{messageCount} == 2">
+                <Set Target="lblChatTitle" Property="Text" Value="{userMessage}"/>
+            </If>
+        </Handler>
+
+        <!-- Suggestions -->
+        <Handler Name="UseSuggestion1">
+            <Set Target="txtUserInput" Property="Text" Value="Help me understand quantum computing"/>
+            <Focus Control="txtUserInput"/>
+        </Handler>
+
+        <Handler Name="UseSuggestion2">
+            <Set Target="txtUserInput" Property="Text" Value="Draft an email to my team about the project update"/>
+            <Focus Control="txtUserInput"/>
+        </Handler>
+
+        <Handler Name="UseSuggestion3">
+            <Set Target="txtUserInput" Property="Text" Value="Help me debug my Python code"/>
+            <Focus Control="txtUserInput"/>
+        </Handler>
+
+        <Handler Name="UseSuggestion4">
+            <Set Target="txtUserInput" Property="Text" Value="Create a roadmap for my mobile app project"/>
+            <Focus Control="txtUserInput"/>
+        </Handler>
+
+        <!-- Chat History -->
+        <Handler Name="LoadChat1">
+            <Set Target="chat1" Property="Background" Value="#2D2D2D"/>
+            <Set Target="chat2" Property="Background" Value="Transparent"/>
+            <Set Target="chat3" Property="Background" Value="Transparent"/>
+            <Set Target="lblChatTitle" Property="Text" Value="How to learn Python"/>
+            <Toast Message="Chat loaded" Type="Info" Position="BottomRight" Duration="1000"/>
+        </Handler>
+
+        <Handler Name="LoadChat2">
+            <Set Target="chat1" Property="Background" Value="Transparent"/>
+            <Set Target="chat2" Property="Background" Value="#2D2D2D"/>
+            <Set Target="chat3" Property="Background" Value="Transparent"/>
+            <Set Target="lblChatTitle" Property="Text" Value="Design system colors"/>
+        </Handler>
+
+        <Handler Name="LoadChat3">
+            <Set Target="chat1" Property="Background" Value="Transparent"/>
+            <Set Target="chat2" Property="Background" Value="Transparent"/>
+            <Set Target="chat3" Property="Background" Value="#2D2D2D"/>
+            <Set Target="lblChatTitle" Property="Text" Value="SQL query help"/>
+        </Handler>
+
+        <Handler Name="LoadChat4">
+            <Set Target="lblChatTitle" Property="Text" Value="Deploy to server"/>
+        </Handler>
+
+        <Handler Name="LoadChat5">
+            <Set Target="lblChatTitle" Property="Text" Value="Write blog post"/>
+        </Handler>
+
+        <Handler Name="LoadChat6">
+            <Set Target="lblChatTitle" Property="Text" Value="Fix API errors"/>
+        </Handler>
+
+        <Handler Name="LoadChat7">
+            <Set Target="lblChatTitle" Property="Text" Value="App ideas brainstorm"/>
+        </Handler>
+
+        <Handler Name="DeleteChat1">
+            <Confirm Message="Delete this chat?" Title="Delete Chat" YesText="Delete" YesBackground="#EF4444">
+                <Yes>
+                    <Hide Control="chat1"/>
+                    <Toast Message="🗑️ Chat deleted" Type="Info" Position="BottomRight" Duration="1500"/>
+                </Yes>
+            </Confirm>
+        </Handler>
+
+        <!-- Model Selector -->
+        <Handler Name="ShowModelSelector">
+            <Show Control="modelSelectorPopup" Animate="true" Duration="200" Effect="Fade"/>
+        </Handler>
+
+        <Handler Name="CloseModelSelector">
+            <Hide Control="modelSelectorPopup" Animate="true" Duration="150" Effect="Fade"/>
+        </Handler>
+
+        <Handler Name="SelectGPT4o">
+            <Set Var="currentModel" Value="GPT-4o"/>
+            <CallManualC id="ChatEngine" Method="SetModel" Params="GPT-4o"/>
+            <Set Target="lblCurrentModel" Property="Text" Value="GPT-4o"/>
+            <Set Target="modelGPT4o" Property="Background" Value="#2D2D2D"/>
+            <Set Target="modelGPT4" Property="Background" Value="Transparent"/>
+            <Set Target="modelGPT35" Property="Background" Value="Transparent"/>
+            <Show Control="checkGPT4o"/>
+            <Hide Control="checkGPT4"/>
+            <Hide Control="checkGPT35"/>
+            <Call Handler="CloseModelSelector"/>
+            <Toast Message="⚡ GPT-4o selected" Type="Success" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="SelectGPT4">
+            <Set Var="currentModel" Value="GPT-4"/>
+            <CallManualC id="ChatEngine" Method="SetModel" Params="GPT-4"/>
+            <Set Target="lblCurrentModel" Property="Text" Value="GPT-4"/>
+            <Set Target="modelGPT4o" Property="Background" Value="Transparent"/>
+            <Set Target="modelGPT4" Property="Background" Value="#2D2D2D"/>
+            <Set Target="modelGPT35" Property="Background" Value="Transparent"/>
+            <Hide Control="checkGPT4o"/>
+            <Show Control="checkGPT4"/>
+            <Hide Control="checkGPT35"/>
+            <Call Handler="CloseModelSelector"/>
+            <Toast Message="🟣 GPT-4 selected" Type="Success" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="SelectGPT35">
+            <Set Var="currentModel" Value="GPT-3.5"/>
+            <CallManualC id="ChatEngine" Method="SetModel" Params="GPT-3.5"/>
+            <Set Target="lblCurrentModel" Property="Text" Value="GPT-3.5 Turbo"/>
+            <Set Target="modelGPT4o" Property="Background" Value="Transparent"/>
+            <Set Target="modelGPT4" Property="Background" Value="Transparent"/>
+            <Set Target="modelGPT35" Property="Background" Value="#2D2D2D"/>
+            <Hide Control="checkGPT4o"/>
+            <Hide Control="checkGPT4"/>
+            <Show Control="checkGPT35"/>
+            <Call Handler="CloseModelSelector"/>
+            <Toast Message="🔵 GPT-3.5 Turbo selected" Type="Success" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <!-- Sidebar Search -->
+        <Handler Name="OnSidebarSearch">
+            <Get Control="txtSidebarSearch" Property="Text" ToState="searchQuery"/>
+            <If Condition="{searchQuery} != ">
+                <Toast Message="Searching: {searchQuery}" Type="Info" Position="BottomRight" Duration="1000"/>
+            </If>
+        </Handler>
+
+        <!-- Actions -->
+        <Handler Name="AttachFile">
+            <Toast Message="📎 File attachment coming soon" Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="AttachImage">
+            <Toast Message="🖼️ Image upload coming soon" Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="VoiceInput">
+            <Toast Message="🎤 Voice input coming soon" Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="ShareChat">
+            <Toast Message="↗ Share link copied!" Type="Success" Position="BottomRight" Duration="2000"/>
+        </Handler>
+
+        <Handler Name="ExportChat">
+            <Toast Message="📥 Exporting chat..." Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="ShowChatSettings">
+            <Toast Message="⚙️ Chat settings coming soon" Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="EditChatTitle">
+            <Toast Message="✏️ Title editing coming soon" Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="ToggleSidebar">
+            <Toast Message="☰ Sidebar toggle" Type="Info" Position="BottomRight" Duration="1000"/>
+        </Handler>
+
+        <Handler Name="ShowUserMenu">
+            <ContextMenu Position="TopRight" Style="Windows">
+                <Item Text="My Account" Icon="👤"/>
+                <Item Text="Settings" Icon="⚙️"/>
+                <Item Text="Help" Icon="❓"/>
+                <Separator/>
+                <Item Text="Upgrade to Pro" Icon="⚡"/>
+                <Separator/>
+                <Item Text="Log out" Icon="🚪"/>
+            </ContextMenu>
+        </Handler>
+
+    </Logic>
+</App>

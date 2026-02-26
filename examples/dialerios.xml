@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="iOS Dialer"
+     Width="380"
+     Height="700"
+     Theme="Light"
+     DarkMode="false"
+     DevMode="true"
+     OnLoad="OnAppLoad">
+
+    <UI>
+        <Grid Background="#FFFFFF">
+            <Grid.RowDefinitions>*, Auto, Auto, Auto, Auto, Auto, Auto</Grid.RowDefinitions>
+
+            <!-- ═══════════════════════════════════ -->
+            <!--          PHONE NUMBER DISPLAY       -->
+            <!-- ═══════════════════════════════════ -->
+            <StackPanel Grid.Row="0" VerticalAlignment="Bottom" 
+                        Margin="20,0,20,30">
+                
+                <!-- Number Display -->
+                <TextBlock Name="lblNumber"
+                           Text=""
+                           FontSize="42"
+                           FontWeight="Light"
+                           Foreground="#000000"
+                           TextAlignment="Center"
+                           Margin="0,0,0,10"/>
+
+                <!-- Add Contact Link -->
+                <TextBlock Name="lblAction"
+                           Text="Add Number"
+                           FontSize="16"
+                           Foreground="#007AFF"
+                           TextAlignment="Center"
+                           Visibility="Collapsed"/>
+            </StackPanel>
+
+            <!-- ═══════════════════════════════════ -->
+            <!--            KEYPAD ROW 1 (1,2,3)     -->
+            <!-- ═══════════════════════════════════ -->
+            <Grid Grid.Row="1" Margin="30,0,30,8">
+                <Grid.ColumnDefinitions>*, *, *</Grid.ColumnDefinitions>
+
+                <!-- 1 -->
+                <Border Grid.Column="0" Width="75" Height="75" 
+                        CornerRadius="38" Background="#F2F2F7"
+                        HorizontalAlignment="Center" Cursor="Hand"
+                        Name="btn1" onClick="OnPress1">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="1" FontSize="32" FontWeight="Light"
+                                   Foreground="#000000" TextAlignment="Center"/>
+                        <TextBlock Text=" " FontSize="9" Foreground="#888888"
+                                   TextAlignment="Center" Margin="0,-4,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 2 ABC -->
+                <Border Grid.Column="1" Width="75" Height="75" 
+                        CornerRadius="38" Background="#F2F2F7"
+                        HorizontalAlignment="Center" Cursor="Hand"
+                        Name="btn2" onClick="OnPress2">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="2" FontSize="32" FontWeight="Light"
+                                   Foreground="#000000" TextAlignment="Center"/>
+                        <TextBlock Text="A B C" FontSize="9" Foreground="#888888"
+                                   TextAlignment="Center" Margin="0,-4,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 3 DEF -->
+                <Border Grid.Column="2" Width="75" Height="75" 
+                        CornerRadius="38" Background="#F2F2F7"
+                        HorizontalAlignment="Center" Cursor="Hand"
+                        Name="btn3" onClick="OnPress3">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="3" FontSize="32" FontWeight="Light"
+                                   Foreground="#000000" TextAlignment="Center"/>
+                        <TextBlock Text="D E F" FontSize="9" Foreground="#888888"
+                                   TextAlignment="Center" Margin="0,-4,0,0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- ═══════════════════════════════════ -->
+            <!--            KEYPAD ROW 2 (4,5,6)     -->
+            <!-- ═══════════════════════════════════ -->
+            <Grid Grid.Row="2" Margin="30,0,30,8">
+                <Grid.ColumnDefinitions>*, *, *</Grid.ColumnDefinitions>
+
+                <!-- 4 GHI -->
+                <Border Grid.Column="0" Width="75" Height="75" 
+                        CornerRadius="38" Background="#F2F2F7"
+                        HorizontalAlignment="Center" Cursor="Hand"
+                        Name="btn4" onClick="OnPress4">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="4" FontSize="32" FontWeight="Light"
+                                   Foreground="#000000" TextAlignment="Center"/>
+                        <TextBlock Text="G H I" FontSize="9" Foreground="#888888"
+                                   TextAlignment="Center" Margin="0,-4,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 5 JKL -->
+                <Border Grid.Column="1" Width="75" Height="75" 
+                        CornerRadius="38" Background="#F2F2F7"
+                        HorizontalAlignment="Center" Cursor="Hand"
+                        Name="btn5" onClick="OnPress5">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="5" FontSize="32" FontWeight="Light"
+                                   Foreground="#000000" TextAlignment="Center"/>
+                        <TextBlock Text="J K L" FontSize="9" Foreground="#888888"
+                                   TextAlignment="Center" Margin="0,-4,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 6 MNO -->
+                <Border Grid.Column="2" Width="75" Height="75" 
+                        CornerRadius="38" Background="#F2F2F7"
+                        HorizontalAlignment="Center" Cursor="Hand"
+                        Name="btn6" onClick="OnPress6">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="6" FontSize="32" FontWeight="Light"
+                                   Foreground="#000000" TextAlignment="Center"/>
+                        <TextBlock Text="M N O" FontSize="9" Foreground="#888888"
+                                   TextAlignment="Center" Margin="0,-4,0,0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- ═══════════════════════════════════ -->
+            <!--            KEYPAD ROW 3 (7,8,9)     -->
+            <!-- ═══════════════════════════════════ -->
+            <Grid Grid.Row="3" Margin="30,0,30,8">
+                <Grid.ColumnDefinitions>*, *, *</Grid.ColumnDefinitions>
+
+                <!-- 7 PQRS -->
+                <Border Grid.Column="0" Width="75" Height="75" 
+                        CornerRadius="38" Background="#F2F2F7"
+                        HorizontalAlignment="Center" Cursor="Hand"
+                        Name="btn7" onClick="OnPress7">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="7" FontSize="32" FontWeight="Light"
+                                   Foreground="#000000" TextAlignment="Center"/>
+                        <TextBlock Text="P Q R S" FontSize="9" Foreground="#888888"
+                                   TextAlignment="Center" Margin="0,-4,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 8 TUV -->
+                <Border Grid.Column="1" Width="75" Height="75" 
+                        CornerRadius="38" Background="#F2F2F7"
+                        HorizontalAlignment="Center" Cursor="Hand"
+                        Name="btn8" onClick="OnPress8">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="8" FontSize="32" FontWeight="Light"
+                                   Foreground="#000000" TextAlignment="Center"/>
+                        <TextBlock Text="T U V" FontSize="9" Foreground="#888888"
+                                   TextAlignment="Center" Margin="0,-4,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 9 WXYZ -->
+                <Border Grid.Column="2" Width="75" Height="75" 
+                        CornerRadius="38" Background="#F2F2F7"
+                        HorizontalAlignment="Center" Cursor="Hand"
+                        Name="btn9" onClick="OnPress9">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="9" FontSize="32" FontWeight="Light"
+                                   Foreground="#000000" TextAlignment="Center"/>
+                        <TextBlock Text="W X Y Z" FontSize="9" Foreground="#888888"
+                                   TextAlignment="Center" Margin="0,-4,0,0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- ═══════════════════════════════════ -->
+            <!--            KEYPAD ROW 4 (*,0,#)     -->
+            <!-- ═══════════════════════════════════ -->
+            <Grid Grid.Row="4" Margin="30,0,30,8">
+                <Grid.ColumnDefinitions>*, *, *</Grid.ColumnDefinitions>
+
+                <!-- * -->
+                <Border Grid.Column="0" Width="75" Height="75" 
+                        CornerRadius="38" Background="#F2F2F7"
+                        HorizontalAlignment="Center" Cursor="Hand"
+                        Name="btnStar" onClick="OnPressStar">
+                    <TextBlock Text="✱" FontSize="28" FontWeight="Light"
+                               Foreground="#000000" TextAlignment="Center"
+                               VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Border>
+
+                <!-- 0 -->
+                <Border Grid.Column="1" Width="75" Height="75" 
+                        CornerRadius="38" Background="#F2F2F7"
+                        HorizontalAlignment="Center" Cursor="Hand"
+                        Name="btn0" onClick="OnPress0">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="0" FontSize="32" FontWeight="Light"
+                                   Foreground="#000000" TextAlignment="Center"/>
+                        <TextBlock Text="+" FontSize="12" Foreground="#888888"
+                                   TextAlignment="Center" Margin="0,-6,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- # -->
+                <Border Grid.Column="2" Width="75" Height="75" 
+                        CornerRadius="38" Background="#F2F2F7"
+                        HorizontalAlignment="Center" Cursor="Hand"
+                        Name="btnHash" onClick="OnPressHash">
+                    <TextBlock Text="#" FontSize="28" FontWeight="Light"
+                               Foreground="#000000" TextAlignment="Center"
+                               VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Border>
+            </Grid>
+
+            <!-- ═══════════════════════════════════ -->
+            <!--          CALL & DELETE BUTTONS      -->
+            <!-- ═══════════════════════════════════ -->
+            <Grid Grid.Row="5" Margin="30,20,30,8">
+                <Grid.ColumnDefinitions>*, *, *</Grid.ColumnDefinitions>
+
+                <!-- Empty Space -->
+                <TextBlock Grid.Column="0"/>
+
+                <!-- Call Button (Green) -->
+                <Border Grid.Column="1" Width="75" Height="75" 
+                        CornerRadius="38" Background="#34C759"
+                        HorizontalAlignment="Center" Cursor="Hand"
+                        Name="btnCall" onClick="OnCall">
+                    <TextBlock Text="📞" FontSize="32"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Border>
+
+                <!-- Delete Button -->
+                <Border Grid.Column="2" Width="75" Height="75" 
+                        CornerRadius="38" Background="Transparent"
+                        HorizontalAlignment="Center" Cursor="Hand"
+                        Name="btnDelete" onClick="OnDelete"
+                        Visibility="Collapsed">
+                    <TextBlock Text="⌫" FontSize="24" Foreground="#000000"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Border>
+            </Grid>
+
+            <!-- ═══════════════════════════════════ -->
+            <!--           BOTTOM TAB BAR            -->
+            <!-- ═══════════════════════════════════ -->
+            <Border Grid.Row="6" Background="#F9F9F9"
+                    BorderBrush="#E5E5E5" BorderThickness="0,1,0,0"
+                    Padding="0,8,0,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>*, *, *, *, *</Grid.ColumnDefinitions>
+
+                    <!-- Favorites -->
+                    <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                        <TextBlock Text="⭐" FontSize="22" Foreground="#8E8E93"
+                                   TextAlignment="Center"/>
+                        <TextBlock Text="Favorites" FontSize="10" Foreground="#8E8E93"
+                                   TextAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Recents -->
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                        <TextBlock Text="🕐" FontSize="22" Foreground="#8E8E93"
+                                   TextAlignment="Center"/>
+                        <TextBlock Text="Recents" FontSize="10" Foreground="#8E8E93"
+                                   TextAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Contacts -->
+                    <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                        <TextBlock Text="👤" FontSize="22" Foreground="#8E8E93"
+                                   TextAlignment="Center"/>
+                        <TextBlock Text="Contacts" FontSize="10" Foreground="#8E8E93"
+                                   TextAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Keypad (Active) -->
+                    <StackPanel Grid.Column="3" HorizontalAlignment="Center">
+                        <TextBlock Text="⌨️" FontSize="22" Foreground="#007AFF"
+                                   TextAlignment="Center"/>
+                        <TextBlock Text="Keypad" FontSize="10" Foreground="#007AFF"
+                                   TextAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Voicemail -->
+                    <StackPanel Grid.Column="4" HorizontalAlignment="Center">
+                        <TextBlock Text="📧" FontSize="22" Foreground="#8E8E93"
+                                   TextAlignment="Center"/>
+                        <TextBlock Text="Voicemail" FontSize="10" Foreground="#8E8E93"
+                                   TextAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </UI>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--                    LOGIC                    -->
+    <!-- ═══════════════════════════════════════════ -->
+    <Logic>
+        <Var Name="phoneNumber" Value="" Type="string"/>
+
+        <!-- Initialize -->
+        <Handler Name="OnAppLoad">
+            <Set Target="lblNumber" Property="Text" Value=""/>
+            <Hide Control="btnDelete"/>
+            <Hide Control="lblAction"/>
+        </Handler>
+
+        <!-- Number Buttons -->
+        <Handler Name="OnPress1">
+            <Set Var="phoneNumber" Value="{phoneNumber}1"/>
+            <Set Target="lblNumber" Property="Text" Value="{phoneNumber}"/>
+            <Call Handler="UpdateUI"/>
+        </Handler>
+
+        <Handler Name="OnPress2">
+            <Set Var="phoneNumber" Value="{phoneNumber}2"/>
+            <Set Target="lblNumber" Property="Text" Value="{phoneNumber}"/>
+            <Call Handler="UpdateUI"/>
+        </Handler>
+
+        <Handler Name="OnPress3">
+            <Set Var="phoneNumber" Value="{phoneNumber}3"/>
+            <Set Target="lblNumber" Property="Text" Value="{phoneNumber}"/>
+            <Call Handler="UpdateUI"/>
+        </Handler>
+
+        <Handler Name="OnPress4">
+            <Set Var="phoneNumber" Value="{phoneNumber}4"/>
+            <Set Target="lblNumber" Property="Text" Value="{phoneNumber}"/>
+            <Call Handler="UpdateUI"/>
+        </Handler>
+
+        <Handler Name="OnPress5">
+            <Set Var="phoneNumber" Value="{phoneNumber}5"/>
+            <Set Target="lblNumber" Property="Text" Value="{phoneNumber}"/>
+            <Call Handler="UpdateUI"/>
+        </Handler>
+
+        <Handler Name="OnPress6">
+            <Set Var="phoneNumber" Value="{phoneNumber}6"/>
+            <Set Target="lblNumber" Property="Text" Value="{phoneNumber}"/>
+            <Call Handler="UpdateUI"/>
+        </Handler>
+
+        <Handler Name="OnPress7">
+            <Set Var="phoneNumber" Value="{phoneNumber}7"/>
+            <Set Target="lblNumber" Property="Text" Value="{phoneNumber}"/>
+            <Call Handler="UpdateUI"/>
+        </Handler>
+
+        <Handler Name="OnPress8">
+            <Set Var="phoneNumber" Value="{phoneNumber}8"/>
+            <Set Target="lblNumber" Property="Text" Value="{phoneNumber}"/>
+            <Call Handler="UpdateUI"/>
+        </Handler>
+
+        <Handler Name="OnPress9">
+            <Set Var="phoneNumber" Value="{phoneNumber}9"/>
+            <Set Target="lblNumber" Property="Text" Value="{phoneNumber}"/>
+            <Call Handler="UpdateUI"/>
+        </Handler>
+
+        <Handler Name="OnPress0">
+            <Set Var="phoneNumber" Value="{phoneNumber}0"/>
+            <Set Target="lblNumber" Property="Text" Value="{phoneNumber}"/>
+            <Call Handler="UpdateUI"/>
+        </Handler>
+
+        <Handler Name="OnPressStar">
+            <Set Var="phoneNumber" Value="{phoneNumber}*"/>
+            <Set Target="lblNumber" Property="Text" Value="{phoneNumber}"/>
+            <Call Handler="UpdateUI"/>
+        </Handler>
+
+        <Handler Name="OnPressHash">
+            <Set Var="phoneNumber" Value="{phoneNumber}#"/>
+            <Set Target="lblNumber" Property="Text" Value="{phoneNumber}"/>
+            <Call Handler="UpdateUI"/>
+        </Handler>
+
+        <!-- Delete Last Digit -->
+        <Handler Name="OnDelete">
+            <Plugin Name="StringPlugin" Method="slice">
+                <Params>{phoneNumber}, 0, -1</Params>
+                <ToState>phoneNumber</ToState>
+            </Plugin>
+            <Set Target="lblNumber" Property="Text" Value="{phoneNumber}"/>
+            <Call Handler="UpdateUI"/>
+        </Handler>
+
+        <!-- Update UI (Show/Hide Delete Button) -->
+        <Handler Name="UpdateUI">
+            <If Condition="{phoneNumber} != ">
+                <Show Control="btnDelete"/>
+                <Show Control="lblAction"/>
+            </If>
+            <If Condition="{phoneNumber} == ">
+                <Hide Control="btnDelete"/>
+                <Hide Control="lblAction"/>
+            </If>
+        </Handler>
+
+        <!-- Call Button -->
+        <Handler Name="OnCall">
+            <If Condition="{phoneNumber} != ">
+                <Alert Message="📞 Calling {phoneNumber}..." 
+                       Title="Dialing" Custom="true" 
+                       Icon="📱" Background="#FFFFFF"
+                       ButtonBackground="#34C759"/>
+            </If>
+            <If Condition="{phoneNumber} == ">
+                <Alert Message="Please enter a phone number" 
+                       Title="No Number" Custom="true"
+                       Icon="⚠️" Background="#FFFFFF"/>
+            </If>
+        </Handler>
+    </Logic>
+</App>

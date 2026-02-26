@@ -1,0 +1,916 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="Telegram Desktop"
+     Width="1100" Height="700"
+     Theme="Dark"
+     DarkMode="true"
+     DevMode="true"
+     Version="1.0.0"
+     OnLoad="OnAppLoad">
+
+    <UI>
+        <Grid Background="#0E1621">
+            <Grid.ColumnDefinitions>320,*</Grid.ColumnDefinitions>
+
+            <!-- ══════════════════════════════════════════════════════ -->
+            <!--                    LEFT PANEL (Chats)                  -->
+            <!-- ══════════════════════════════════════════════════════ -->
+            <Border Grid.Column="0" Background="#17212B"
+                    BorderBrush="#0E1621" BorderThickness="0,0,1,0">
+                <Grid>
+                    <Grid.RowDefinitions>Auto,Auto,*</Grid.RowDefinitions>
+
+                    <!-- ─── TOP BAR ─── -->
+                    <Border Grid.Row="0" Background="#17212B" Padding="10,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>Auto,*</Grid.ColumnDefinitions>
+
+                            <!-- Menu Button -->
+                            <Border Grid.Column="0" Width="40" Height="40" 
+                                    CornerRadius="20" Background="#2B5278" 
+                                    Cursor="Hand" Name="btnMenu" onClick="OnMenuClick">
+                                <TextBlock Text="☰" FontSize="18" Foreground="#FFFFFF"
+                                           HorizontalAlignment="Center" 
+                                           VerticalAlignment="Center"/>
+                            </Border>
+
+                            <!-- Search Box - TUZATILDI -->
+                            <Border Grid.Column="1" Margin="10,0,0,0" Height="40" 
+                                    CornerRadius="20" Background="#242F3D"
+                                    Name="searchContainer" onClick="OnSearchFocus">
+                                <Grid Margin="14,0">
+                                    <Grid.ColumnDefinitions>Auto,*</Grid.ColumnDefinitions>
+                                    
+                                    <TextBlock Grid.Column="0" Text="🔍" FontSize="14" 
+                                               Foreground="#6C7883"
+                                               VerticalAlignment="Center"/>
+                                    
+                                    <TextBox Name="txtSearch" Grid.Column="1" 
+                                             Background="Transparent" 
+                                             BorderThickness="0"
+                                             Foreground="#FFFFFF" 
+                                             FontSize="14"
+                                             VerticalAlignment="Center"
+                                             VerticalContentAlignment="Center"
+                                             Margin="10,0,0,0"
+                                             Height="38"/>
+                                    
+                                    <TextBlock Name="searchPlaceholder" 
+                                               Grid.Column="1" 
+                                               Text="Search" 
+                                               Foreground="#6C7883" 
+                                               FontSize="14"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0"
+                                               IsHitTestVisible="False"/>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- ─── TABS - TUZATILDI ─── -->
+                    <Border Grid.Row="1" Background="#17212B" Padding="8,4,8,8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>*,*,*</Grid.ColumnDefinitions>
+
+                            <!-- Tab: All -->
+                            <Border Grid.Column="0" Name="tabAll" 
+                                    Background="Transparent"
+                                    CornerRadius="8" Margin="2,0"
+                                    Cursor="Hand" onClick="OnTabAll">
+                                <StackPanel Margin="0,8">
+                                    <TextBlock Name="tabAllText" Text="All" 
+                                               FontSize="14" FontWeight="SemiBold"
+                                               Foreground="#8774E1" 
+                                               HorizontalAlignment="Center"/>
+                                    <Border Name="tabAllIndicator" Height="3" 
+                                            Background="#8774E1" 
+                                            CornerRadius="2" Margin="16,6,16,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Tab: Unread -->
+                            <Border Grid.Column="1" Name="tabUnread" 
+                                    Background="Transparent"
+                                    CornerRadius="8" Margin="2,0"
+                                    Cursor="Hand" onClick="OnTabUnread">
+                                <StackPanel Margin="0,8">
+                                    <TextBlock Name="tabUnreadText" Text="Unread" 
+                                               FontSize="14"
+                                               Foreground="#6C7883" 
+                                               HorizontalAlignment="Center"/>
+                                    <Border Name="tabUnreadIndicator" Height="3" 
+                                            Background="Transparent" 
+                                            CornerRadius="2" Margin="16,6,16,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Tab: Groups -->
+                            <Border Grid.Column="2" Name="tabGroups" 
+                                    Background="Transparent"
+                                    CornerRadius="8" Margin="2,0"
+                                    Cursor="Hand" onClick="OnTabGroups">
+                                <StackPanel Margin="0,8">
+                                    <TextBlock Name="tabGroupsText" Text="Groups" 
+                                               FontSize="14"
+                                               Foreground="#6C7883" 
+                                               HorizontalAlignment="Center"/>
+                                    <Border Name="tabGroupsIndicator" Height="3" 
+                                            Background="Transparent" 
+                                            CornerRadius="2" Margin="16,6,16,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- ─── CHAT LIST - TUZATILDI ─── -->
+                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Name="chatList">
+
+                            <!-- Chat Item 1 — Active -->
+                            <Border Name="chat1" Background="#2B5278" 
+                                    Padding="12,10" Cursor="Hand"
+                                    onClick="OnChatSelect1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto,*</Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Width="54" Height="54" 
+                                            CornerRadius="27" Background="#8774E1">
+                                        <TextBlock Text="N" FontSize="22" FontWeight="SemiBold"
+                                                   Foreground="#FFFFFF"
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0" 
+                                                VerticalAlignment="Center">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>*,Auto</Grid.ColumnDefinitions>
+                                            <TextBlock Text="Nimbus Framework" FontSize="15" 
+                                                       FontWeight="SemiBold" Foreground="#FFFFFF"/>
+                                            <TextBlock Grid.Column="1" Text="12:45" FontSize="12"
+                                                       Foreground="#6C7883"/>
+                                        </Grid>
+                                        <Grid Margin="0,4,0,0">
+                                            <Grid.ColumnDefinitions>*,Auto</Grid.ColumnDefinitions>
+                                            <TextBlock Text="🔥 New update released!" FontSize="14"
+                                                       Foreground="#AAAAAA" 
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <Border Grid.Column="1" Width="22" Height="22" 
+                                                    CornerRadius="11" Background="#8774E1"
+                                                    Margin="8,0,0,0">
+                                                <TextBlock Text="3" FontSize="12" FontWeight="Bold"
+                                                           Foreground="#FFFFFF"
+                                                           HorizontalAlignment="Center" 
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <!-- Chat Item 2 -->
+                            <Border Name="chat2" Background="Transparent" 
+                                    Padding="12,10" Cursor="Hand"
+                                    onClick="OnChatSelect2">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto,*</Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Width="54" Height="54" 
+                                            CornerRadius="27" Background="#E17076">
+                                        <TextBlock Text="D" FontSize="22" FontWeight="SemiBold"
+                                                   Foreground="#FFFFFF"
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0" 
+                                                VerticalAlignment="Center">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>*,Auto</Grid.ColumnDefinitions>
+                                            <TextBlock Text="Design Team" FontSize="15" 
+                                                       FontWeight="SemiBold" Foreground="#FFFFFF"/>
+                                            <TextBlock Grid.Column="1" Text="11:30" FontSize="12"
+                                                       Foreground="#6C7883"/>
+                                        </Grid>
+                                        <TextBlock Text="Alex: Check the new mockups" FontSize="14"
+                                                   Foreground="#6C7883" Margin="0,4,0,0"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <!-- Chat Item 3 -->
+                            <Border Name="chat3" Background="Transparent" 
+                                    Padding="12,10" Cursor="Hand"
+                                    onClick="OnChatSelect3">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto,*</Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Width="54" Height="54" 
+                                            CornerRadius="27" Background="#6FB1E4">
+                                        <TextBlock Text="P" FontSize="22" FontWeight="SemiBold"
+                                                   Foreground="#FFFFFF"
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0" 
+                                                VerticalAlignment="Center">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>*,Auto</Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Pavel Durov" FontSize="15" 
+                                                           FontWeight="SemiBold" Foreground="#FFFFFF"/>
+                                                <TextBlock Text=" ✓" FontSize="14" Foreground="#6FB1E4"/>
+                                            </StackPanel>
+                                            <TextBlock Grid.Column="1" Text="Yesterday" FontSize="12"
+                                                       Foreground="#6C7883"/>
+                                        </Grid>
+                                        <TextBlock Text="Thanks for using Telegram!" FontSize="14"
+                                                   Foreground="#6C7883" Margin="0,4,0,0"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <!-- Chat Item 4 — Muted -->
+                            <Border Name="chat4" Background="Transparent" 
+                                    Padding="12,10" Cursor="Hand"
+                                    onClick="OnChatSelect4">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto,*</Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Width="54" Height="54" 
+                                            CornerRadius="27" Background="#68B36B">
+                                        <TextBlock Text="W" FontSize="22" FontWeight="SemiBold"
+                                                   Foreground="#FFFFFF"
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0" 
+                                                VerticalAlignment="Center">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>*,Auto</Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Work Chat" FontSize="15" 
+                                                           FontWeight="SemiBold" Foreground="#FFFFFF"/>
+                                                <TextBlock Text=" 🔇" FontSize="12"/>
+                                            </StackPanel>
+                                            <TextBlock Grid.Column="1" Text="Mon" FontSize="12"
+                                                       Foreground="#6C7883"/>
+                                        </Grid>
+                                        <Grid Margin="0,4,0,0">
+                                            <Grid.ColumnDefinitions>*,Auto</Grid.ColumnDefinitions>
+                                            <TextBlock Text="Meeting at 3pm" FontSize="14"
+                                                       Foreground="#6C7883"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <Border Grid.Column="1" Width="22" Height="22" 
+                                                    CornerRadius="11" Background="#4D5F6F"
+                                                    Margin="8,0,0,0">
+                                                <TextBlock Text="12" FontSize="11"
+                                                           Foreground="#FFFFFF"
+                                                           HorizontalAlignment="Center" 
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <!-- Chat Item 5 -->
+                            <Border Name="chat5" Background="Transparent" 
+                                    Padding="12,10" Cursor="Hand"
+                                    onClick="OnChatSelect5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto,*</Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Width="54" Height="54" 
+                                            CornerRadius="27" Background="#E6A761">
+                                        <TextBlock Text="S" FontSize="22" FontWeight="SemiBold"
+                                                   Foreground="#FFFFFF"
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0" 
+                                                VerticalAlignment="Center">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>*,Auto</Grid.ColumnDefinitions>
+                                            <TextBlock Text="Saved Messages" FontSize="15" 
+                                                       FontWeight="SemiBold" Foreground="#FFFFFF"/>
+                                            <TextBlock Grid.Column="1" Text="Sun" FontSize="12"
+                                                       Foreground="#6C7883"/>
+                                        </Grid>
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                            <TextBlock Text="📎" FontSize="14"/>
+                                            <TextBlock Text=" document.pdf" FontSize="14"
+                                                       Foreground="#6C7883"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <!-- Chat Item 6 -->
+                            <Border Name="chat6" Background="Transparent" 
+                                    Padding="12,10" Cursor="Hand"
+                                    onClick="OnChatSelect6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto,*</Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Width="54" Height="54" 
+                                            CornerRadius="27" Background="#CB86DB">
+                                        <TextBlock Text="T" FontSize="22" FontWeight="SemiBold"
+                                                   Foreground="#FFFFFF"
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0" 
+                                                VerticalAlignment="Center">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>*,Auto</Grid.ColumnDefinitions>
+                                            <TextBlock Text="Tech News" FontSize="15" 
+                                                       FontWeight="SemiBold" Foreground="#FFFFFF"/>
+                                            <TextBlock Grid.Column="1" Text="Sat" FontSize="12"
+                                                       Foreground="#6C7883"/>
+                                        </Grid>
+                                        <TextBlock Text="Breaking: New AI model released..." FontSize="14"
+                                                   Foreground="#6C7883" Margin="0,4,0,0"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+
+            <!-- ══════════════════════════════════════════════════════ -->
+            <!--                  RIGHT PANEL (Messages)                -->
+            <!-- ══════════════════════════════════════════════════════ -->
+            <Grid Grid.Column="1" Background="#0E1621">
+                <Grid.RowDefinitions>Auto,*,Auto</Grid.RowDefinitions>
+
+                <!-- ─── CHAT HEADER ─── -->
+                <Border Grid.Row="0" Background="#17212B" Padding="16,10"
+                        BorderBrush="#0E1621" BorderThickness="0,0,0,1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>Auto,*,Auto,Auto,Auto</Grid.ColumnDefinitions>
+
+                        <!-- Avatar -->
+                        <Border Grid.Column="0" Width="42" Height="42" 
+                                CornerRadius="21" Background="#8774E1"
+                                Cursor="Hand" Name="headerAvatar" onClick="OnProfileClick">
+                            <TextBlock Name="headerAvatarText" Text="N" 
+                                       FontSize="18" FontWeight="SemiBold"
+                                       Foreground="#FFFFFF"
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Border>
+
+                        <!-- Name & Status -->
+                        <StackPanel Grid.Column="1" Margin="12,0,0,0" 
+                                    VerticalAlignment="Center"
+                                    Cursor="Hand" Name="headerInfo" onClick="OnProfileClick">
+                            <TextBlock Name="headerName" Text="Nimbus Framework" 
+                                       FontSize="15" FontWeight="SemiBold" Foreground="#FFFFFF"/>
+                            <TextBlock Name="headerStatus" Text="online" FontSize="13" 
+                                       Foreground="#6FB1E4"/>
+                        </StackPanel>
+
+                        <!-- Call Button -->
+                        <Border Grid.Column="2" Width="42" Height="42" 
+                                CornerRadius="21" Cursor="Hand" 
+                                Background="#17212B"
+                                Name="btnCall" onClick="OnCallClick">
+                            <TextBlock Text="📞" FontSize="18"
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <!-- Search in Chat Button -->
+                        <Border Grid.Column="3" Width="42" Height="42" 
+                                CornerRadius="21" Cursor="Hand" Margin="4,0"
+                                Background="#17212B"
+                                Name="btnSearchChat" onClick="OnSearchChatClick">
+                            <TextBlock Text="🔍" FontSize="18"
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Border>
+
+                        <!-- More Button with Context Menu -->
+                        <!-- More Button -->
+<Border Grid.Column="4" Width="42" Height="42" 
+        CornerRadius="21" Cursor="Hand"
+        Background="#17212B"
+        Name="btnMore">
+    <TextBlock Text="⋮" FontSize="22" Foreground="#6C7883"
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Center"
+               Name="btnMoreText">
+        <TextBlock.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="🔇  Mute"/>
+                <MenuItem Header="📌  Pin"/>
+                <Separator/>
+                <MenuItem Header="🗑️  Clear History"/>
+                <MenuItem Header="🚫  Block User"/>
+            </ContextMenu>
+        </TextBlock.ContextMenu>
+    </TextBlock>
+</Border>
+                    </Grid>
+                </Border>
+
+                <!-- ─── MESSAGES AREA ─── -->
+                <ScrollViewer Name="messagesScroll" Grid.Row="1" 
+                              VerticalScrollBarVisibility="Auto">
+                    <StackPanel Name="messagesPanel" Margin="50,16,50,16">
+
+                        <!-- Date Separator -->
+                        <Border HorizontalAlignment="Center" Margin="0,0,0,12">
+                            <Border Background="#182533" CornerRadius="12" Padding="12,4">
+                                <TextBlock Text="Today" FontSize="13" Foreground="#6C7883"/>
+                            </Border>
+                        </Border>
+
+                        <!-- Incoming Message 1 -->
+                        <Border HorizontalAlignment="Left" MaxWidth="420" Margin="0,0,0,3">
+                            <Border Background="#182533" CornerRadius="12,12,12,4" Padding="10,8">
+                                <StackPanel>
+                                    <TextBlock Text="Hey! Welcome to Nimbus Framework 🎉" 
+                                               FontSize="15" Foreground="#FFFFFF"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Text="12:30" FontSize="11" Foreground="#6C7883"
+                                               HorizontalAlignment="Right" Margin="0,3,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Border>
+
+                        <!-- Incoming Message 2 -->
+                        <Border HorizontalAlignment="Left" MaxWidth="420" Margin="0,0,0,3">
+                            <Border Background="#182533" CornerRadius="12,12,12,4" Padding="10,8">
+                                <StackPanel>
+                                    <TextBlock Text="This is a demo of Telegram-like UI built with pure XML. Try sending a message!" 
+                                               FontSize="15" Foreground="#FFFFFF"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Text="12:31" FontSize="11" Foreground="#6C7883"
+                                               HorizontalAlignment="Right" Margin="0,3,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Border>
+
+                        <!-- Outgoing Message 1 -->
+                        <Border HorizontalAlignment="Right" MaxWidth="420" Margin="0,0,0,3">
+                            <Border Background="#2B5278" CornerRadius="12,12,4,12" Padding="10,8">
+                                <StackPanel>
+                                    <TextBlock Text="Wow, this looks amazing! 😍" 
+                                               FontSize="15" Foreground="#FFFFFF"
+                                               TextWrapping="Wrap"/>
+                                    <StackPanel Orientation="Horizontal" 
+                                                HorizontalAlignment="Right" Margin="0,3,0,0">
+                                        <TextBlock Text="12:32" FontSize="11" Foreground="#7DA8CC"/>
+                                        <TextBlock Text="  ✓✓" FontSize="11" Foreground="#6FB1E4"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </Border>
+
+                        <!-- Incoming Message 3 -->
+                        <Border HorizontalAlignment="Left" MaxWidth="420" Margin="0,0,0,3">
+                            <Border Background="#182533" CornerRadius="12,12,12,4" Padding="10,8">
+                                <StackPanel>
+                                    <TextBlock Text="Press Enter to send, or click the send button ➤" 
+                                               FontSize="15" Foreground="#FFFFFF"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Text="12:33" FontSize="11" Foreground="#6C7883"
+                                               HorizontalAlignment="Right" Margin="0,3,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Border>
+
+                        <!-- Outgoing Message 2 -->
+                        <Border HorizontalAlignment="Right" MaxWidth="420" Margin="0,0,0,3">
+                            <Border Background="#2B5278" CornerRadius="12,12,4,12" Padding="10,8">
+                                <StackPanel>
+                                    <TextBlock Text="The counter demo works perfectly! I tested it and the state management is really smooth. Great job on this framework!" 
+                                               FontSize="15" Foreground="#FFFFFF"
+                                               TextWrapping="Wrap"/>
+                                    <StackPanel Orientation="Horizontal" 
+                                                HorizontalAlignment="Right" Margin="0,3,0,0">
+                                        <TextBlock Text="12:35" FontSize="11" Foreground="#7DA8CC"/>
+                                        <TextBlock Text="  ✓✓" FontSize="11" Foreground="#6FB1E4"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </Border>
+
+                        <!-- Photo Message -->
+                        <Border HorizontalAlignment="Left" MaxWidth="300" Margin="0,0,0,3">
+                            <Border Background="#182533" CornerRadius="12,12,12,4" Padding="4">
+                                <StackPanel>
+                                    <Border Background="#243447" CornerRadius="10" 
+                                            Width="280" Height="160" Cursor="Hand">
+                                        <StackPanel VerticalAlignment="Center" 
+                                                    HorizontalAlignment="Center">
+                                            <TextBlock Text="🖼️" FontSize="40" 
+                                                       HorizontalAlignment="Center"/>
+                                            <TextBlock Text="Photo" FontSize="12" 
+                                                       Foreground="#6C7883"
+                                                       HorizontalAlignment="Center"
+                                                       Margin="0,6,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <StackPanel Margin="6,4">
+                                        <TextBlock Text="Check out this screenshot!" 
+                                                   FontSize="15" Foreground="#FFFFFF"/>
+                                        <TextBlock Text="12:40" FontSize="11" Foreground="#6C7883"
+                                                   HorizontalAlignment="Right"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </Border>
+
+                        <!-- Voice Message -->
+                        <Border HorizontalAlignment="Right" MaxWidth="260" Margin="0,0,0,3">
+                            <Border Background="#2B5278" CornerRadius="12,12,4,12" Padding="10,8">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto,*,Auto</Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Width="36" Height="36" 
+                                            CornerRadius="18" Background="#FFFFFF"
+                                            Cursor="Hand">
+                                        <TextBlock Text="▶" FontSize="14" Foreground="#2B5278"
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"
+                                                   Margin="2,0,0,0"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" Margin="10,0" 
+                                                VerticalAlignment="Center">
+                                        <Border Background="#4A7A9E" Height="18" 
+                                                CornerRadius="2"/>
+                                        <TextBlock Text="0:42" FontSize="12" 
+                                                   Foreground="#7DA8CC" Margin="0,2,0,0"/>
+                                    </StackPanel>
+
+                                    <TextBlock Grid.Column="2" Text="✓✓" FontSize="11" 
+                                               Foreground="#6FB1E4"
+                                               VerticalAlignment="Bottom"/>
+                                </Grid>
+                            </Border>
+                        </Border>
+
+                        <!-- Typing Indicator -->
+                        <Border Name="typingIndicator" HorizontalAlignment="Left" 
+                                Margin="0,8,0,0" Visibility="Collapsed">
+                            <Border Background="#182533" CornerRadius="12" Padding="12,8">
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Width="6" Height="6" CornerRadius="3" 
+                                            Background="#6C7883" Margin="0,0,4,0"/>
+                                    <Border Width="6" Height="6" CornerRadius="3" 
+                                            Background="#8C98A4" Margin="0,0,4,0"/>
+                                    <Border Width="6" Height="6" CornerRadius="3" 
+                                            Background="#6C7883"/>
+                                </StackPanel>
+                            </Border>
+                        </Border>
+
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- ─── MESSAGE INPUT ─── -->
+                <Border Grid.Row="2" Background="#17212B" Padding="10,8"
+                        BorderBrush="#0E1621" BorderThickness="0,1,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>Auto,Auto,*,Auto</Grid.ColumnDefinitions>
+
+                        <!-- Emoji Button -->
+                        <Border Grid.Column="0" Width="42" Height="42" 
+                                CornerRadius="21" Cursor="Hand"
+                                Background="#17212B"
+                                Name="btnEmoji" onClick="OnEmojiClick">
+                            <TextBlock Text="😊" FontSize="22"
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Border>
+
+                        <!-- Attach Button -->
+                        <Border Grid.Column="1" Width="42" Height="42" 
+                                CornerRadius="21" Cursor="Hand" Margin="2,0"
+                                Background="#17212B"
+                                Name="btnAttach" onClick="OnAttachClick">
+                            <TextBlock Text="📎" FontSize="20"
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Border>
+
+                        <!-- Text Input - TUZATILDI -->
+                        <Border Grid.Column="2" Background="#242F3D" 
+                                CornerRadius="20" Margin="6,0">
+                            <Grid Margin="16,0">
+                                <TextBox Name="txtMessage" 
+                                         Background="Transparent" 
+                                         BorderThickness="0"
+                                         Foreground="#FFFFFF" 
+                                         FontSize="15"
+                                         VerticalAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Height="42"
+                                         onEnter="OnSendMessage"/>
+                                
+                                <TextBlock Name="msgPlaceholder" 
+                                           Text="Write a message..." 
+                                           Foreground="#6C7883" 
+                                           FontSize="15"
+                                           VerticalAlignment="Center"
+                                           IsHitTestVisible="False"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Send Button -->
+                        <Border Grid.Column="3" Width="42" Height="42" 
+                                CornerRadius="21" Background="#8774E1" 
+                                Cursor="Hand" Margin="4,0,0,0"
+                                Name="btnSend" onClick="OnSendMessage">
+                            <TextBlock Text="➤" FontSize="18" Foreground="#FFFFFF"
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"
+                                       Margin="2,0,0,0"/>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </UI>
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!--                        LOGIC SECTION                       -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <Logic>
+        <!-- State Variables -->
+        <Var Name="currentChat" Value="1" Type="int"/>
+        <Var Name="currentTab" Value="all" Type="string"/>
+        <Var Name="messageText" Value="" Type="string"/>
+        <Var Name="chatName" Value="Nimbus Framework" Type="string"/>
+        <Var Name="chatAvatar" Value="N" Type="string"/>
+        <Var Name="chatColor" Value="#8774E1" Type="string"/>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--                    APP LOAD                             -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="OnAppLoad">
+            <ScrollToBottom Control="messagesScroll"/>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--                    TAB HANDLERS                         -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="OnTabAll">
+            <Set Var="currentTab" Value="all"/>
+            <!-- Active tab -->
+            <Set Target="tabAllText" Property="Foreground" Value="#8774E1"/>
+            <Set Target="tabAllIndicator" Property="Background" Value="#8774E1"/>
+            <!-- Inactive tabs -->
+            <Set Target="tabUnreadText" Property="Foreground" Value="#6C7883"/>
+            <Set Target="tabUnreadIndicator" Property="Background" Value="Transparent"/>
+            <Set Target="tabGroupsText" Property="Foreground" Value="#6C7883"/>
+            <Set Target="tabGroupsIndicator" Property="Background" Value="Transparent"/>
+        </Handler>
+
+        <Handler Name="OnTabUnread">
+            <Set Var="currentTab" Value="unread"/>
+            <!-- Active tab -->
+            <Set Target="tabUnreadText" Property="Foreground" Value="#8774E1"/>
+            <Set Target="tabUnreadIndicator" Property="Background" Value="#8774E1"/>
+            <!-- Inactive tabs -->
+            <Set Target="tabAllText" Property="Foreground" Value="#6C7883"/>
+            <Set Target="tabAllIndicator" Property="Background" Value="Transparent"/>
+            <Set Target="tabGroupsText" Property="Foreground" Value="#6C7883"/>
+            <Set Target="tabGroupsIndicator" Property="Background" Value="Transparent"/>
+        </Handler>
+
+        <Handler Name="OnTabGroups">
+            <Set Var="currentTab" Value="groups"/>
+            <!-- Active tab -->
+            <Set Target="tabGroupsText" Property="Foreground" Value="#8774E1"/>
+            <Set Target="tabGroupsIndicator" Property="Background" Value="#8774E1"/>
+            <!-- Inactive tabs -->
+            <Set Target="tabAllText" Property="Foreground" Value="#6C7883"/>
+            <Set Target="tabAllIndicator" Property="Background" Value="Transparent"/>
+            <Set Target="tabUnreadText" Property="Foreground" Value="#6C7883"/>
+            <Set Target="tabUnreadIndicator" Property="Background" Value="Transparent"/>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--                    CHAT SELECTION                       -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="OnChatSelect1">
+            <Call Handler="ResetChatBg"/>
+            <Set Target="chat1" Property="Background" Value="#2B5278"/>
+            <Set Var="currentChat" Value="1"/>
+            <Set Target="headerName" Property="Text" Value="Nimbus Framework"/>
+            <Set Target="headerAvatarText" Property="Text" Value="N"/>
+            <Set Target="headerAvatar" Property="Background" Value="#8774E1"/>
+            <Set Target="headerStatus" Property="Text" Value="online"/>
+            <Set Target="headerStatus" Property="Foreground" Value="#6FB1E4"/>
+        </Handler>
+
+        <Handler Name="OnChatSelect2">
+            <Call Handler="ResetChatBg"/>
+            <Set Target="chat2" Property="Background" Value="#2B5278"/>
+            <Set Var="currentChat" Value="2"/>
+            <Set Target="headerName" Property="Text" Value="Design Team"/>
+            <Set Target="headerAvatarText" Property="Text" Value="D"/>
+            <Set Target="headerAvatar" Property="Background" Value="#E17076"/>
+            <Set Target="headerStatus" Property="Text" Value="5 members, 2 online"/>
+            <Set Target="headerStatus" Property="Foreground" Value="#6C7883"/>
+        </Handler>
+
+        <Handler Name="OnChatSelect3">
+            <Call Handler="ResetChatBg"/>
+            <Set Target="chat3" Property="Background" Value="#2B5278"/>
+            <Set Var="currentChat" Value="3"/>
+            <Set Target="headerName" Property="Text" Value="Pavel Durov"/>
+            <Set Target="headerAvatarText" Property="Text" Value="P"/>
+            <Set Target="headerAvatar" Property="Background" Value="#6FB1E4"/>
+            <Set Target="headerStatus" Property="Text" Value="last seen recently"/>
+            <Set Target="headerStatus" Property="Foreground" Value="#6C7883"/>
+        </Handler>
+
+        <Handler Name="OnChatSelect4">
+            <Call Handler="ResetChatBg"/>
+            <Set Target="chat4" Property="Background" Value="#2B5278"/>
+            <Set Var="currentChat" Value="4"/>
+            <Set Target="headerName" Property="Text" Value="Work Chat"/>
+            <Set Target="headerAvatarText" Property="Text" Value="W"/>
+            <Set Target="headerAvatar" Property="Background" Value="#68B36B"/>
+            <Set Target="headerStatus" Property="Text" Value="12 members"/>
+            <Set Target="headerStatus" Property="Foreground" Value="#6C7883"/>
+        </Handler>
+
+        <Handler Name="OnChatSelect5">
+            <Call Handler="ResetChatBg"/>
+            <Set Target="chat5" Property="Background" Value="#2B5278"/>
+            <Set Var="currentChat" Value="5"/>
+            <Set Target="headerName" Property="Text" Value="Saved Messages"/>
+            <Set Target="headerAvatarText" Property="Text" Value="S"/>
+            <Set Target="headerAvatar" Property="Background" Value="#E6A761"/>
+            <Set Target="headerStatus" Property="Text" Value="cloud storage"/>
+            <Set Target="headerStatus" Property="Foreground" Value="#6C7883"/>
+        </Handler>
+
+        <Handler Name="OnChatSelect6">
+            <Call Handler="ResetChatBg"/>
+            <Set Target="chat6" Property="Background" Value="#2B5278"/>
+            <Set Var="currentChat" Value="6"/>
+            <Set Target="headerName" Property="Text" Value="Tech News"/>
+            <Set Target="headerAvatarText" Property="Text" Value="T"/>
+            <Set Target="headerAvatar" Property="Background" Value="#CB86DB"/>
+            <Set Target="headerStatus" Property="Text" Value="channel, 15.2K subscribers"/>
+            <Set Target="headerStatus" Property="Foreground" Value="#6C7883"/>
+        </Handler>
+
+        <Handler Name="ResetChatBg">
+            <Set Target="chat1" Property="Background" Value="Transparent"/>
+            <Set Target="chat2" Property="Background" Value="Transparent"/>
+            <Set Target="chat3" Property="Background" Value="Transparent"/>
+            <Set Target="chat4" Property="Background" Value="Transparent"/>
+            <Set Target="chat5" Property="Background" Value="Transparent"/>
+            <Set Target="chat6" Property="Background" Value="Transparent"/>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--                    SEND MESSAGE                         -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="OnSendMessage">
+            <Get Control="txtMessage" Property="Text" ToState="messageText"/>
+
+            <If Condition="{messageText} != ">
+                <!-- Add message -->
+                <AddMessage Container="messagesScroll" 
+                            Text="{messageText}" 
+                            Sender="me" 
+                            Time="{_currentTime}"/>
+
+                <!-- Clear input -->
+                <Set Target="txtMessage" Property="Text" Value=""/>
+                <Set Target="msgPlaceholder" Property="Visibility" Value="Visible"/>
+
+                <!-- Scroll down -->
+                <ScrollToBottom Control="messagesScroll"/>
+
+                <!-- Auto reply -->
+                <Timer Name="replyDelay" Interval="1000" 
+                       Handler="OnShowTyping" Repeat="false"/>
+            </If>
+        </Handler>
+
+        <Handler Name="OnShowTyping">
+            <Show Control="typingIndicator"/>
+            <Set Target="headerStatus" Property="Text" Value="typing..."/>
+            <Set Target="headerStatus" Property="Foreground" Value="#6FB1E4"/>
+            <ScrollToBottom Control="messagesScroll"/>
+            
+            <Timer Name="replyTimer" Interval="1500" 
+                   Handler="OnAutoReply" Repeat="false"/>
+        </Handler>
+
+        <Handler Name="OnAutoReply">
+            <Hide Control="typingIndicator"/>
+            <Set Target="headerStatus" Property="Text" Value="online"/>
+
+            <AddMessage Container="messagesScroll" 
+                        Text="Thanks for your message! 👋 This is an auto-reply." 
+                        Sender="other" 
+                        Time="{_currentTime}"/>
+
+            <ScrollToBottom Control="messagesScroll"/>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--                    BUTTON HANDLERS                      -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="OnMenuClick">
+            <Alert Message="Menu opened!\n\n• New Group\n• New Channel\n• Contacts\n• Calls\n• Saved Messages\n• Settings" 
+                   Title="Menu" Icon="Information"/>
+        </Handler>
+
+        <Handler Name="OnSearchFocus">
+            <Focus Control="txtSearch"/>
+        </Handler>
+
+        <Handler Name="OnCallClick">
+            <Confirm Message="Start a call with {headerName.Text}?" Title="Voice Call">
+                <Yes>
+                    <Alert Message="📞 Calling..." Title="Call"/>
+                </Yes>
+            </Confirm>
+        </Handler>
+
+        <Handler Name="OnSearchChatClick">
+            <Alert Message="🔍 Search in chat\n\nType to search messages in this conversation." 
+                   Title="Search"/>
+        </Handler>
+
+        <Handler Name="OnMoreClick">
+            <!-- Context menu avtomatik ochiladi -->
+        </Handler>
+
+        <Handler Name="OnProfileClick">
+            <Alert Message="👤 Profile Info\n\nName: {headerName.Text}\nStatus: {headerStatus.Text}\n\n📱 +1 234 567 8900\n@nimbus_user" 
+                   Title="Profile"/>
+        </Handler>
+
+        <Handler Name="OnEmojiClick">
+            <Get Control="txtMessage" Property="Text" ToState="messageText"/>
+            <Set Target="txtMessage" Property="Text" Value="{messageText}😊"/>
+            <Set Target="msgPlaceholder" Property="Visibility" Value="Collapsed"/>
+            <Focus Control="txtMessage"/>
+        </Handler>
+
+        <Handler Name="OnAttachClick">
+            <Alert Message="📎 Attach file\n\n• 📷 Photo or Video\n• 📄 Document\n• 🎵 Audio\n• 📍 Location\n• 👤 Contact" 
+                   Title="Attach"/>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--                    CONTEXT MENU                         -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="OnMuteChat">
+            <Alert Message="🔇 Chat muted for 8 hours" Title="Muted"/>
+        </Handler>
+
+        <Handler Name="OnPinChat">
+            <Alert Message="📌 Chat pinned to top" Title="Pinned"/>
+        </Handler>
+
+        <Handler Name="OnClearHistory">
+            <Confirm Message="Are you sure you want to clear all messages?" Title="Clear History">
+                <Yes>
+                    <ClearItems Container="messagesPanel"/>
+                    <Alert Message="🗑️ History cleared" Title="Done"/>
+                </Yes>
+            </Confirm>
+        </Handler>
+
+        <Handler Name="OnBlockUser">
+            <Confirm Message="Block this user? They will not be able to contact you." Title="Block User">
+                <Yes>
+                    <Alert Message="🚫 User blocked" Title="Blocked"/>
+                </Yes>
+            </Confirm>
+        </Handler>
+
+    </Logic>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!--                    KEYBOARD SHORTCUTS                   -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <Shortcuts>
+        <KeyBinding Key="Escape" Handler="OnEscapePress"/>
+    </Shortcuts>
+
+</App>

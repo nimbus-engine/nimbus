@@ -1,0 +1,926 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="Nimbus Notes"
+     Width="420"
+     Height="780"
+     Theme="Light"
+     DarkMode="false"
+     DevMode="true"
+     OnLoad="OnAppLoad"
+     Icon="notes.ico">
+
+    <UI>
+        <Grid Name="rootContainer" Background="#F3F3F3">
+            
+            <!-- ═══════════════════════════════════════════ -->
+            <!--              MAIN LIST VIEW                 -->
+            <!-- ═══════════════════════════════════════════ -->
+            <Grid Name="mainView" Visibility="Visible">
+                <Grid.RowDefinitions>Auto,Auto,Auto,*,Auto</Grid.RowDefinitions>
+
+                <!-- Title Bar -->
+                <Border Grid.Row="0" Background="#F3F3F3" Padding="20,44,20,12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>*,Auto,Auto</Grid.ColumnDefinitions>
+                        
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Name="lblTitle" Text="🤖 Notes" 
+                                       FontSize="28" FontWeight="SemiBold" 
+                                       Foreground="#1A1A1A"/>
+                            <TextBlock Name="lblSubtitle" Text="0 notes" 
+                                       FontSize="12" Foreground="#666666" 
+                                       Margin="0,2,0,0"/>
+                        </StackPanel>
+
+                        <Border Name="btnTheme" Grid.Column="1" 
+                                Width="40" Height="40" CornerRadius="20"
+                                Background="#E5E5E5" Margin="0,0,8,0"
+                                Cursor="Hand" onClick="ToggleTheme">
+                            <TextBlock Name="iconTheme" Text="🌙" FontSize="16"
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Border>
+
+                        <Border Name="btnMenu" Grid.Column="2" 
+                                Width="40" Height="40" CornerRadius="20"
+                                Background="#E5E5E5" Cursor="Hand" 
+                                onClick="ShowMenu">
+                            <TextBlock Text="⋯" FontSize="18" Foreground="#666666"
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Search Bar -->
+                <Border Grid.Row="1" Name="searchBar" 
+                        Margin="16,4,16,12" Background="#FFFFFF" 
+                        CornerRadius="12" Height="48"
+                        BorderBrush="#E0E0E0" BorderThickness="1">
+                    <Grid Margin="16,0">
+                        <Grid.ColumnDefinitions>Auto,*,Auto</Grid.ColumnDefinitions>
+                        
+                        <TextBlock Text="🔍" FontSize="16" Foreground="#999999"
+                                   VerticalAlignment="Center" Margin="0,0,12,0"/>
+                        
+                        <TextBox Name="txtSearch" Grid.Column="1" 
+                                 Background="Transparent" BorderThickness="0"
+                                 FontSize="14" Foreground="#1A1A1A"
+                                 VerticalAlignment="Center"
+                                 Placeholder="Search notes..."
+                                 CaretBrush="#0078D4"
+                                 onTextChanged="OnSearchChanged"/>
+                        
+                        <Border Name="btnClearSearch" Grid.Column="2" 
+                                Width="28" Height="28" CornerRadius="14"
+                                Background="#E5E5E5" Cursor="Hand"
+                                Visibility="Collapsed" onClick="ClearSearch">
+                            <TextBlock Text="✕" FontSize="12" Foreground="#666666"
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Category Chips -->
+                <ScrollViewer Grid.Row="2" 
+                              HorizontalScrollBarVisibility="Hidden"
+                              VerticalScrollBarVisibility="Disabled"
+                              Margin="0,0,0,8">
+                    <StackPanel Name="chipsContainer" Orientation="Horizontal" 
+                                Margin="16,0,16,0">
+                        
+                        <Border Name="chipAll" Background="#0078D4" 
+                                CornerRadius="16" Padding="16,8" 
+                                Margin="0,0,8,0" Cursor="Hand"
+                                onClick="FilterAll">
+                            <TextBlock Text="All" FontSize="13" 
+                                       FontWeight="Medium" Foreground="White"/>
+                        </Border>
+                        
+                        <Border Name="chipPersonal" Background="#FFFFFF" 
+                                CornerRadius="16" Padding="16,8" 
+                                Margin="0,0,8,0" Cursor="Hand"
+                                BorderBrush="#E0E0E0" BorderThickness="1"
+                                onClick="FilterPersonal">
+                            <TextBlock Text="Personal" FontSize="13" 
+                                       Foreground="#666666"/>
+                        </Border>
+                        
+                        <Border Name="chipWork" Background="#FFFFFF" 
+                                CornerRadius="16" Padding="16,8" 
+                                Margin="0,0,8,0" Cursor="Hand"
+                                BorderBrush="#E0E0E0" BorderThickness="1"
+                                onClick="FilterWork">
+                            <TextBlock Text="Work" FontSize="13" 
+                                       Foreground="#666666"/>
+                        </Border>
+                        
+                        <Border Name="chipIdeas" Background="#FFFFFF" 
+                                CornerRadius="16" Padding="16,8" 
+                                Margin="0,0,8,0" Cursor="Hand"
+                                BorderBrush="#E0E0E0" BorderThickness="1"
+                                onClick="FilterIdeas">
+                            <TextBlock Text="Ideas" FontSize="13" 
+                                       Foreground="#666666"/>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Notes List -->
+                <ScrollViewer Grid.Row="3" 
+                              VerticalScrollBarVisibility="Hidden"
+                              Padding="16,8,16,80">
+                    <StackPanel Name="notesListContainer"/>
+                </ScrollViewer>
+
+                <!-- Empty State -->
+                <Border Name="emptyState" Grid.Row="3" Visibility="Collapsed">
+                    <StackPanel HorizontalAlignment="Center" 
+                                VerticalAlignment="Center" Margin="0,0,0,60">
+                        <Border Width="80" Height="80" CornerRadius="40"
+                                Background="#E5E5E5" Margin="0,0,0,20"
+                                HorizontalAlignment="Center">
+                            <TextBlock Text="📝" FontSize="32"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="No notes yet" FontSize="18" 
+                                   FontWeight="SemiBold" Foreground="#1A1A1A"
+                                   TextAlignment="Center"/>
+                        <TextBlock Text="Tap + to create your first note" 
+                                   FontSize="14" Foreground="#666666"
+                                   TextAlignment="Center" Margin="0,8,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- FAB -->
+                <Border Name="btnFab" Grid.Row="3" 
+                        Width="56" Height="56" CornerRadius="16"
+                        Background="#0078D4"
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Bottom"
+                        Margin="0,0,20,24" Cursor="Hand"
+                        onClick="CreateNewNote">
+                    <Border.Effect>
+                        <DropShadowEffect Color="#0078D4" BlurRadius="20" 
+                                          ShadowDepth="4" Opacity="0.4"/>
+                    </Border.Effect>
+                    <TextBlock Text="+" FontSize="28" FontWeight="Light"
+                               Foreground="White"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Margin="0,-2,0,0"/>
+                </Border>
+
+                <!-- Bottom Nav -->
+                <Border Grid.Row="4" Background="#FFFFFF"
+                        BorderBrush="#E5E5E5" BorderThickness="0,1,0,0"
+                        Padding="0,8,0,20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>*,*,*,*</Grid.ColumnDefinitions>
+
+                        <Border Name="navNotes" Grid.Column="0" Cursor="Hand"
+                                onClick="ShowNotes">
+                            <StackPanel HorizontalAlignment="Center">
+                                <Border Width="56" Height="28" CornerRadius="14"
+                                        Background="#E5F3FF" Margin="0,0,0,4">
+                                    <TextBlock Text="📝" FontSize="14"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Notes" FontSize="11" 
+                                           FontWeight="SemiBold" Foreground="#0078D4"
+                                           HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Name="navArchive" Grid.Column="1" Cursor="Hand"
+                                onClick="ShowArchive">
+                            <StackPanel HorizontalAlignment="Center">
+                                <Border Width="56" Height="28" CornerRadius="14"
+                                        Background="Transparent" Margin="0,0,0,4">
+                                    <TextBlock Text="📦" FontSize="14"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Archive" FontSize="11" 
+                                           Foreground="#666666"
+                                           HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Name="navLabels" Grid.Column="2" Cursor="Hand"
+                                onClick="ShowLabels">
+                            <StackPanel HorizontalAlignment="Center">
+                                <Border Width="56" Height="28" CornerRadius="14"
+                                        Background="Transparent" Margin="0,0,0,4">
+                                    <TextBlock Text="🏷️" FontSize="14"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Labels" FontSize="11" 
+                                           Foreground="#666666"
+                                           HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Name="navSettings" Grid.Column="3" Cursor="Hand"
+                                onClick="ShowSettings">
+                            <StackPanel HorizontalAlignment="Center">
+                                <Border Width="56" Height="28" CornerRadius="14"
+                                        Background="Transparent" Margin="0,0,0,4">
+                                    <TextBlock Text="⚙️" FontSize="14"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Settings" FontSize="11" 
+                                           Foreground="#666666"
+                                           HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!--              EDITOR VIEW                    -->
+            <!-- ═══════════════════════════════════════════ -->
+            <Grid Name="editorView" Visibility="Collapsed" Background="#FFFFFF">
+                <Grid.RowDefinitions>Auto,*,Auto</Grid.RowDefinitions>
+
+                <!-- Editor Toolbar -->
+                <Border Grid.Row="0" Background="#FFFFFF" Padding="8,44,8,8"
+                        BorderBrush="#F0F0F0" BorderThickness="0,0,0,1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>Auto,*,Auto,Auto,Auto</Grid.ColumnDefinitions>
+
+                        <Border Name="btnBack" Grid.Column="0" 
+                                Width="44" Height="44" CornerRadius="22"
+                                Cursor="Hand" onClick="CloseEditor">
+                            <TextBlock Text="←" FontSize="22" Foreground="#1A1A1A"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+
+                        <Border Name="btnPin" Grid.Column="2" 
+                                Width="44" Height="44" CornerRadius="22"
+                                Cursor="Hand" onClick="TogglePin">
+                            <TextBlock Name="iconPin" Text="📌" FontSize="18"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Opacity="0.5"/>
+                        </Border>
+
+                        <Border Name="btnArchiveNote" Grid.Column="3" 
+                                Width="44" Height="44" CornerRadius="22"
+                                Cursor="Hand" onClick="ArchiveNote">
+                            <TextBlock Text="📦" FontSize="18"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Opacity="0.5"/>
+                        </Border>
+
+                        <Border Name="btnDeleteNote" Grid.Column="4" 
+                                Width="44" Height="44" CornerRadius="22"
+                                Cursor="Hand" onClick="DeleteNote">
+                            <TextBlock Text="🗑️" FontSize="18"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Opacity="0.5"/>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Editor Content -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden"
+                              Padding="20,16,20,20">
+                    <StackPanel>
+                        <TextBox Name="txtNoteTitle" 
+                                 Background="Transparent" BorderThickness="0"
+                                 FontSize="24" FontWeight="SemiBold"
+                                 Foreground="#1A1A1A"
+                                 Placeholder="Title"
+                                 CaretBrush="#0078D4"
+                                 Margin="0,0,0,16"/>
+                        
+                        <TextBox Name="txtNoteContent" 
+                                 Background="Transparent" BorderThickness="0"
+                                 FontSize="16" Foreground="#333333"
+                                 Placeholder="Start typing..."
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 MinHeight="400"
+                                 CaretBrush="#0078D4"/>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Editor Bottom Bar -->
+                <Border Grid.Row="2" Background="#F8F8F8" 
+                        Padding="16,12,16,28"
+                        BorderBrush="#E5E5E5" BorderThickness="0,1,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>*,Auto</Grid.ColumnDefinitions>
+
+                        <TextBlock Name="lblEditTime" Grid.Column="0" 
+                                   Text="Edited just now" FontSize="12"
+                                   Foreground="#999999" 
+                                   VerticalAlignment="Center"/>
+
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Border Name="colorYellow" Width="28" Height="28" 
+                                    CornerRadius="14" Background="#FFF9C4"
+                                    BorderBrush="#E0E0E0" BorderThickness="1"
+                                    Margin="0,0,6,0" Cursor="Hand"
+                                    onClick="SetColorYellow"/>
+                            <Border Name="colorGreen" Width="28" Height="28" 
+                                    CornerRadius="14" Background="#C8E6C9"
+                                    BorderBrush="#E0E0E0" BorderThickness="1"
+                                    Margin="0,0,6,0" Cursor="Hand"
+                                    onClick="SetColorGreen"/>
+                            <Border Name="colorBlue" Width="28" Height="28" 
+                                    CornerRadius="14" Background="#BBDEFB"
+                                    BorderBrush="#E0E0E0" BorderThickness="1"
+                                    Margin="0,0,6,0" Cursor="Hand"
+                                    onClick="SetColorBlue"/>
+                            <Border Name="colorPink" Width="28" Height="28" 
+                                    CornerRadius="14" Background="#F8BBD9"
+                                    BorderBrush="#E0E0E0" BorderThickness="1"
+                                    Margin="0,0,6,0" Cursor="Hand"
+                                    onClick="SetColorPink"/>
+                            <Border Name="colorWhite" Width="28" Height="28" 
+                                    CornerRadius="14" Background="#FFFFFF"
+                                    BorderBrush="#0078D4" BorderThickness="2"
+                                    Cursor="Hand" onClick="SetColorWhite"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+
+        </Grid>
+    </UI>
+
+    <Logic>
+        <Var Name="noteCount" Value="0" Type="int"/>
+        <Var Name="currentNoteId" Value="-1" Type="int"/>
+        <Var Name="currentFilter" Value="All" Type="string"/>
+        <Var Name="searchQuery" Value="" Type="string"/>
+        <Var Name="isDarkMode" Value="false" Type="bool"/>
+        <Var Name="uiResult" Value="" Type="string"/>
+
+        <ManualC id="NotesEngine">
+using System;
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Effects;
+using System.Windows.Input;
+
+namespace Nimbus.Notes
+{
+    public class NoteItem
+    {
+        public int Id = 0;
+        public string Title = "";
+        public string Content = "";
+        public string Category = "Personal";
+        public string Color = "#FFFFFF";
+        public bool IsPinned = false;
+        public DateTime Modified = DateTime.Now;
+    }
+
+    public static class App
+    {
+        public static List&lt;NoteItem&gt; notes = new List&lt;NoteItem&gt;();
+        public static int nextId = 1;
+        public static string filter = "All";
+        public static string search = "";
+
+        public static string Init()
+        {
+            notes.Clear();
+            Add("Welcome to Nimbus Notes", "Your personal note-taking app.\n\n• Clean Windows 11 design\n• Categories and colors\n• Pin important notes\n• Quick search", "Personal", "#C8E6C9", true);
+            Add("Shopping List", "Groceries:\n- Milk\n- Eggs\n- Bread\n- Fruits\n- Vegetables", "Personal", "#FFF9C4", false);
+            Add("Meeting Notes", "Monday 10 AM\n\nAgenda:\n1. Q4 Review\n2. Budget\n3. Team updates", "Work", "#BBDEFB", false);
+            Add("App Ideas", "1. Habit tracker\n2. Recipe manager\n3. Workout log\n4. Budget app", "Ideas", "#F8BBD9", false);
+            return "ok";
+        }
+
+        public static int Add(string title, string content, string cat, string color, bool pin)
+        {
+            NoteItem n = new NoteItem();
+            n.Id = nextId++;
+            n.Title = string.IsNullOrEmpty(title) ? "Untitled" : title;
+            n.Content = content;
+            n.Category = cat;
+            n.Color = color;
+            n.IsPinned = pin;
+            n.Modified = DateTime.Now;
+            notes.Add(n);
+            return n.Id;
+        }
+
+        public static int CreateNew()
+        {
+            return Add("", "", "Personal", "#FFFFFF", false);
+        }
+
+        public static string Update(int id, string title, string content)
+        {
+            foreach (NoteItem n in notes)
+            {
+                if (n.Id == id)
+                {
+                    n.Title = title;
+                    n.Content = content;
+                    n.Modified = DateTime.Now;
+                    return "ok";
+                }
+            }
+            return "error";
+        }
+
+        public static string Delete(int id)
+        {
+            for (int i = 0; i &lt; notes.Count; i++)
+            {
+                if (notes[i].Id == id)
+                {
+                    notes.RemoveAt(i);
+                    return "ok";
+                }
+            }
+            return "error";
+        }
+
+        public static string TogglePin(int id)
+        {
+            foreach (NoteItem n in notes)
+            {
+                if (n.Id == id)
+                {
+                    n.IsPinned = !n.IsPinned;
+                    return n.IsPinned ? "pinned" : "unpinned";
+                }
+            }
+            return "error";
+        }
+
+        public static string SetColor(int id, string color)
+        {
+            foreach (NoteItem n in notes)
+            {
+                if (n.Id == id)
+                {
+                    n.Color = color;
+                    return "ok";
+                }
+            }
+            return "error";
+        }
+
+        public static int GetCount()
+        {
+            return notes.Count;
+        }
+
+        public static string GetTitle(int id)
+        {
+            foreach (NoteItem n in notes)
+            {
+                if (n.Id == id) return n.Title;
+            }
+            return "";
+        }
+
+        public static string GetContent(int id)
+        {
+            foreach (NoteItem n in notes)
+            {
+                if (n.Id == id) return n.Content;
+            }
+            return "";
+        }
+
+        public static bool IsPinned(int id)
+        {
+            foreach (NoteItem n in notes)
+            {
+                if (n.Id == id) return n.IsPinned;
+            }
+            return false;
+        }
+
+        public static void SetFilter(string f)
+        {
+            filter = f;
+        }
+
+        public static void SetSearch(string s)
+        {
+            search = s;
+        }
+
+        public static Color HexColor(string hex)
+        {
+            try
+            {
+                hex = hex.Replace("#", "");
+                byte r = Convert.ToByte(hex.Substring(0, 2), 16);
+                byte g = Convert.ToByte(hex.Substring(2, 2), 16);
+                byte b = Convert.ToByte(hex.Substring(4, 2), 16);
+                return Color.FromRgb(r, g, b);
+            }
+            catch { return Colors.White; }
+        }
+
+        public static UIElement BuildNotesList()
+        {
+            StackPanel list = new StackPanel();
+
+            List&lt;NoteItem&gt; pinned = new List&lt;NoteItem&gt;();
+            List&lt;NoteItem&gt; others = new List&lt;NoteItem&gt;();
+
+            foreach (NoteItem n in notes)
+            {
+                bool match = true;
+                if (filter != "All" &amp;&amp; n.Category != filter) match = false;
+                if (!string.IsNullOrEmpty(search))
+                {
+                    string q = search.ToLower();
+                    if (!n.Title.ToLower().Contains(q) &amp;&amp; !n.Content.ToLower().Contains(q))
+                        match = false;
+                }
+                if (match)
+                {
+                    if (n.IsPinned) pinned.Add(n);
+                    else others.Add(n);
+                }
+            }
+
+            if (pinned.Count &gt; 0)
+            {
+                TextBlock header = new TextBlock();
+                header.Text = "📌 Pinned";
+                header.FontSize = 12;
+                header.FontWeight = FontWeights.SemiBold;
+                header.Foreground = new SolidColorBrush(Color.FromRgb(102, 102, 102));
+                header.Margin = new Thickness(4, 8, 0, 12);
+                list.Children.Add(header);
+
+                foreach (NoteItem n in pinned)
+                    list.Children.Add(BuildCard(n));
+            }
+
+            if (others.Count &gt; 0)
+            {
+                if (pinned.Count &gt; 0)
+                {
+                    TextBlock header = new TextBlock();
+                    header.Text = "Others";
+                    header.FontSize = 12;
+                    header.FontWeight = FontWeights.SemiBold;
+                    header.Foreground = new SolidColorBrush(Color.FromRgb(102, 102, 102));
+                    header.Margin = new Thickness(4, 16, 0, 12);
+                    list.Children.Add(header);
+                }
+
+                foreach (NoteItem n in others)
+                    list.Children.Add(BuildCard(n));
+            }
+
+            return list;
+        }
+
+        public static UIElement BuildCard(NoteItem note)
+        {
+            Border card = new Border();
+            card.Background = new SolidColorBrush(HexColor(note.Color));
+            card.CornerRadius = new CornerRadius(12);
+            card.Padding = new Thickness(16);
+            card.Margin = new Thickness(0, 0, 0, 10);
+            card.Cursor = Cursors.Hand;
+            card.Tag = note.Id;
+            card.BorderBrush = new SolidColorBrush(Color.FromRgb(230, 230, 230));
+            card.BorderThickness = new Thickness(1);
+
+            DropShadowEffect shadow = new DropShadowEffect();
+            shadow.Color = Colors.Black;
+            shadow.BlurRadius = 8;
+            shadow.ShadowDepth = 2;
+            shadow.Opacity = 0.08;
+            card.Effect = shadow;
+
+            StackPanel content = new StackPanel();
+
+            Grid titleRow = new Grid();
+            titleRow.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            titleRow.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+            TextBlock title = new TextBlock();
+            title.Text = string.IsNullOrEmpty(note.Title) ? "Untitled" : note.Title;
+            title.FontSize = 15;
+            title.FontWeight = FontWeights.SemiBold;
+            title.Foreground = new SolidColorBrush(Color.FromRgb(26, 26, 26));
+            title.TextTrimming = TextTrimming.CharacterEllipsis;
+            Grid.SetColumn(title, 0);
+            titleRow.Children.Add(title);
+
+            if (note.IsPinned)
+            {
+                TextBlock pin = new TextBlock();
+                pin.Text = "📌";
+                pin.FontSize = 12;
+                pin.VerticalAlignment = VerticalAlignment.Center;
+                Grid.SetColumn(pin, 1);
+                titleRow.Children.Add(pin);
+            }
+
+            content.Children.Add(titleRow);
+
+            if (!string.IsNullOrEmpty(note.Content))
+            {
+                TextBlock body = new TextBlock();
+                string preview = note.Content;
+                if (preview.Length &gt; 80) preview = preview.Substring(0, 80) + "...";
+                preview = preview.Replace("\n", " ");
+                body.Text = preview;
+                body.FontSize = 13;
+                body.Foreground = new SolidColorBrush(Color.FromRgb(80, 80, 80));
+                body.TextWrapping = TextWrapping.Wrap;
+                body.MaxHeight = 40;
+                body.Margin = new Thickness(0, 8, 0, 0);
+                content.Children.Add(body);
+            }
+
+            Grid footer = new Grid();
+            footer.Margin = new Thickness(0, 12, 0, 0);
+            footer.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            footer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            footer.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+            Border catBadge = new Border();
+            catBadge.Background = new SolidColorBrush(Color.FromArgb(30, 0, 0, 0));
+            catBadge.CornerRadius = new CornerRadius(4);
+            catBadge.Padding = new Thickness(8, 4, 8, 4);
+            TextBlock catText = new TextBlock();
+            catText.Text = note.Category;
+            catText.FontSize = 10;
+            catText.Foreground = new SolidColorBrush(Color.FromRgb(80, 80, 80));
+            catBadge.Child = catText;
+            Grid.SetColumn(catBadge, 0);
+            footer.Children.Add(catBadge);
+
+            TextBlock time = new TextBlock();
+            string timeStr = note.Modified.ToString("HH:mm");
+            if (note.Modified.Date != DateTime.Today)
+                timeStr = note.Modified.ToString("MMM d");
+            time.Text = timeStr;
+            time.FontSize = 10;
+            time.Foreground = new SolidColorBrush(Color.FromRgb(150, 150, 150));
+            time.VerticalAlignment = VerticalAlignment.Center;
+            Grid.SetColumn(time, 2);
+            footer.Children.Add(time);
+
+            content.Children.Add(footer);
+            card.Child = content;
+
+            return card;
+        }
+    }
+}
+        </ManualC>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!--                 HANDLERS                    -->
+        <!-- ═══════════════════════════════════════════ -->
+        
+        <Handler Name="OnAppLoad">
+            <CallManualC id="NotesEngine" Method="Init" ToState="uiResult"/>
+            <CallManualC id="NotesEngine" Method="GetCount" ToState="noteCount"/>
+            <Set Target="lblSubtitle" Property="Text" Value="{noteCount} notes"/>
+            <CallManualC id="NotesEngine" Method="BuildNotesList" ToControl="notesListContainer"/>
+            <If Condition="{noteCount} == 0">
+                <Show Control="emptyState"/>
+            </If>
+            <Toast Message="📝 Notes loaded" Type="Success" Position="BottomRight" Duration="2000"/>
+        </Handler>
+
+        <Handler Name="RefreshList">
+            <ClearItems Container="notesListContainer"/>
+            <CallManualC id="NotesEngine" Method="GetCount" ToState="noteCount"/>
+            <Set Target="lblSubtitle" Property="Text" Value="{noteCount} notes"/>
+            <CallManualC id="NotesEngine" Method="BuildNotesList" ToControl="notesListContainer"/>
+            <If Condition="{noteCount} == 0">
+                <Show Control="emptyState"/>
+            </If>
+            <If Condition="{noteCount} > 0">
+                <Hide Control="emptyState"/>
+            </If>
+        </Handler>
+
+        <Handler Name="CreateNewNote">
+            <CallManualC id="NotesEngine" Method="CreateNew" ToState="currentNoteId"/>
+            <Set Target="txtNoteTitle" Property="Text" Value=""/>
+            <Set Target="txtNoteContent" Property="Text" Value=""/>
+            <Set Target="iconPin" Property="Opacity" Value="0.5"/>
+            <Set Target="lblEditTime" Property="Text" Value="New note"/>
+            <Hide Control="mainView" Animate="true" Duration="200"/>
+            <Show Control="editorView" Animate="true" Duration="300" Effect="SlideUp"/>
+            <Focus Control="txtNoteTitle"/>
+        </Handler>
+
+        <Handler Name="CloseEditor">
+            <Get Control="txtNoteTitle" Property="Text" ToState="currentTitle"/>
+            <Get Control="txtNoteContent" Property="Text" ToState="currentContent"/>
+            <CallManualC id="NotesEngine" Method="Update" Params="{currentNoteId},{currentTitle},{currentContent}" ToState="uiResult"/>
+            <Hide Control="editorView" Animate="true" Duration="200"/>
+            <Show Control="mainView" Animate="true" Duration="300"/>
+            <Call Handler="RefreshList"/>
+        </Handler>
+
+        <Handler Name="TogglePin">
+            <CallManualC id="NotesEngine" Method="TogglePin" Params="{currentNoteId}" ToState="uiResult"/>
+            <If Condition="{uiResult} == pinned">
+                <Set Target="iconPin" Property="Opacity" Value="1"/>
+                <Toast Message="📌 Note pinned" Type="Success" Position="BottomRight" Duration="1500"/>
+            </If>
+            <If Condition="{uiResult} == unpinned">
+                <Set Target="iconPin" Property="Opacity" Value="0.5"/>
+                <Toast Message="Unpinned" Type="Info" Position="BottomRight" Duration="1500"/>
+            </If>
+        </Handler>
+
+        <Handler Name="DeleteNote">
+            <Confirm Message="Delete this note?" Title="Delete" YesText="Delete" YesBackground="#DC3545">
+                <Yes>
+                    <CallManualC id="NotesEngine" Method="Delete" Params="{currentNoteId}" ToState="uiResult"/>
+                    <Hide Control="editorView"/>
+                    <Show Control="mainView"/>
+                    <Call Handler="RefreshList"/>
+                    <Toast Message="🗑️ Note deleted" Type="Info" Position="BottomRight" Duration="2000"/>
+                </Yes>
+            </Confirm>
+        </Handler>
+
+        <Handler Name="ArchiveNote">
+            <Toast Message="📦 Archive coming soon" Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="SetColorYellow">
+            <CallManualC id="NotesEngine" Method="SetColor" Params="{currentNoteId},#FFF9C4" ToState="uiResult"/>
+            <Set Target="colorYellow" Property="BorderBrush" Value="#0078D4"/>
+            <Set Target="colorYellow" Property="BorderThickness" Value="2"/>
+            <Set Target="colorGreen" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorGreen" Property="BorderThickness" Value="1"/>
+            <Set Target="colorBlue" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorBlue" Property="BorderThickness" Value="1"/>
+            <Set Target="colorPink" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorPink" Property="BorderThickness" Value="1"/>
+            <Set Target="colorWhite" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorWhite" Property="BorderThickness" Value="1"/>
+        </Handler>
+
+        <Handler Name="SetColorGreen">
+            <CallManualC id="NotesEngine" Method="SetColor" Params="{currentNoteId},#C8E6C9" ToState="uiResult"/>
+            <Set Target="colorGreen" Property="BorderBrush" Value="#0078D4"/>
+            <Set Target="colorGreen" Property="BorderThickness" Value="2"/>
+            <Set Target="colorYellow" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorYellow" Property="BorderThickness" Value="1"/>
+            <Set Target="colorBlue" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorBlue" Property="BorderThickness" Value="1"/>
+            <Set Target="colorPink" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorPink" Property="BorderThickness" Value="1"/>
+            <Set Target="colorWhite" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorWhite" Property="BorderThickness" Value="1"/>
+        </Handler>
+
+        <Handler Name="SetColorBlue">
+            <CallManualC id="NotesEngine" Method="SetColor" Params="{currentNoteId},#BBDEFB" ToState="uiResult"/>
+            <Set Target="colorBlue" Property="BorderBrush" Value="#0078D4"/>
+            <Set Target="colorBlue" Property="BorderThickness" Value="2"/>
+            <Set Target="colorYellow" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorYellow" Property="BorderThickness" Value="1"/>
+            <Set Target="colorGreen" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorGreen" Property="BorderThickness" Value="1"/>
+            <Set Target="colorPink" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorPink" Property="BorderThickness" Value="1"/>
+            <Set Target="colorWhite" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorWhite" Property="BorderThickness" Value="1"/>
+        </Handler>
+
+        <Handler Name="SetColorPink">
+            <CallManualC id="NotesEngine" Method="SetColor" Params="{currentNoteId},#F8BBD9" ToState="uiResult"/>
+            <Set Target="colorPink" Property="BorderBrush" Value="#0078D4"/>
+            <Set Target="colorPink" Property="BorderThickness" Value="2"/>
+            <Set Target="colorYellow" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorYellow" Property="BorderThickness" Value="1"/>
+            <Set Target="colorGreen" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorGreen" Property="BorderThickness" Value="1"/>
+            <Set Target="colorBlue" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorBlue" Property="BorderThickness" Value="1"/>
+            <Set Target="colorWhite" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorWhite" Property="BorderThickness" Value="1"/>
+        </Handler>
+
+        <Handler Name="SetColorWhite">
+            <CallManualC id="NotesEngine" Method="SetColor" Params="{currentNoteId},#FFFFFF" ToState="uiResult"/>
+            <Set Target="colorWhite" Property="BorderBrush" Value="#0078D4"/>
+            <Set Target="colorWhite" Property="BorderThickness" Value="2"/>
+            <Set Target="colorYellow" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorYellow" Property="BorderThickness" Value="1"/>
+            <Set Target="colorGreen" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorGreen" Property="BorderThickness" Value="1"/>
+            <Set Target="colorBlue" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorBlue" Property="BorderThickness" Value="1"/>
+            <Set Target="colorPink" Property="BorderBrush" Value="#E0E0E0"/>
+            <Set Target="colorPink" Property="BorderThickness" Value="1"/>
+        </Handler>
+
+        <Handler Name="FilterAll">
+            <CallManualC id="NotesEngine" Method="SetFilter" Params="All"/>
+            <Set Target="chipAll" Property="Background" Value="#0078D4"/>
+            <Set Target="chipPersonal" Property="Background" Value="#FFFFFF"/>
+            <Set Target="chipWork" Property="Background" Value="#FFFFFF"/>
+            <Set Target="chipIdeas" Property="Background" Value="#FFFFFF"/>
+            <Call Handler="RefreshList"/>
+        </Handler>
+
+        <Handler Name="FilterPersonal">
+            <CallManualC id="NotesEngine" Method="SetFilter" Params="Personal"/>
+            <Set Target="chipAll" Property="Background" Value="#FFFFFF"/>
+            <Set Target="chipPersonal" Property="Background" Value="#0078D4"/>
+            <Set Target="chipWork" Property="Background" Value="#FFFFFF"/>
+            <Set Target="chipIdeas" Property="Background" Value="#FFFFFF"/>
+            <Call Handler="RefreshList"/>
+        </Handler>
+
+        <Handler Name="FilterWork">
+            <CallManualC id="NotesEngine" Method="SetFilter" Params="Work"/>
+            <Set Target="chipAll" Property="Background" Value="#FFFFFF"/>
+            <Set Target="chipPersonal" Property="Background" Value="#FFFFFF"/>
+            <Set Target="chipWork" Property="Background" Value="#0078D4"/>
+            <Set Target="chipIdeas" Property="Background" Value="#FFFFFF"/>
+            <Call Handler="RefreshList"/>
+        </Handler>
+
+        <Handler Name="FilterIdeas">
+            <CallManualC id="NotesEngine" Method="SetFilter" Params="Ideas"/>
+            <Set Target="chipAll" Property="Background" Value="#FFFFFF"/>
+            <Set Target="chipPersonal" Property="Background" Value="#FFFFFF"/>
+            <Set Target="chipWork" Property="Background" Value="#FFFFFF"/>
+            <Set Target="chipIdeas" Property="Background" Value="#0078D4"/>
+            <Call Handler="RefreshList"/>
+        </Handler>
+
+        <Handler Name="OnSearchChanged">
+            <Get Control="txtSearch" Property="Text" ToState="searchQuery"/>
+            <CallManualC id="NotesEngine" Method="SetSearch" Params="{searchQuery}"/>
+            <If Condition="{searchQuery} != ">
+                <Show Control="btnClearSearch"/>
+            </If>
+            <If Condition="{searchQuery} == ">
+                <Hide Control="btnClearSearch"/>
+            </If>
+            <Call Handler="RefreshList"/>
+        </Handler>
+
+        <Handler Name="ClearSearch">
+            <Set Target="txtSearch" Property="Text" Value=""/>
+            <CallManualC id="NotesEngine" Method="SetSearch" Params=""/>
+            <Hide Control="btnClearSearch"/>
+            <Call Handler="RefreshList"/>
+        </Handler>
+
+        <Handler Name="ToggleTheme">
+            <Toast Message="🌙 Theme switching coming soon" Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="ShowMenu">
+            <ContextMenu Position="TopRight" Style="Windows">
+                <Item Text="Sort by date" Icon="📅"/>
+                <Item Text="Sort by title" Icon="🔤"/>
+                <Separator/>
+                <Item Text="Import notes" Icon="📥"/>
+                <Item Text="Export notes" Icon="📤"/>
+            </ContextMenu>
+        </Handler>
+
+        <Handler Name="ShowNotes">
+            <Toast Message="📝 Notes" Type="Info" Position="BottomRight" Duration="1000"/>
+        </Handler>
+
+        <Handler Name="ShowArchive">
+            <Toast Message="📦 Archive coming soon" Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="ShowLabels">
+            <Toast Message="🏷️ Labels coming soon" Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="ShowSettings">
+            <Toast Message="⚙️ Settings coming soon" Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+    </Logic>
+</App>

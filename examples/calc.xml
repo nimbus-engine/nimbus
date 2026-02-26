@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="CustomCSharpDemo" Width="500" Height="400" Theme="Dark">
+    
+    <UI>
+        <Grid Background="#1E1E1E" Margin="20">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300">
+                
+                <TextBlock Text="Custom C# Demo" FontSize="24" FontWeight="Bold" 
+                           Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                
+                <!-- Input 1: Name -->
+                <TextBlock Text="Enter your name:" Foreground="#CCCCCC" Margin="0,5,0,2"/>
+                <TextBox Name="txtName" Padding="5" FontSize="14" Margin="0,0,0,10"/>
+                
+                <!-- Input 2: Age -->
+                <TextBlock Text="Enter your age:" Foreground="#CCCCCC" Margin="0,5,0,2"/>
+                <TextBox Name="txtAge" Padding="5" FontSize="14" Margin="0,0,0,20"/>
+                
+                <!-- Action Button -->
+                <Button Name="btnProcess" Content="Process with C#" 
+                        Background="#0078D4" Foreground="White" Padding="10" 
+                        FontSize="16" Cursor="Hand" onClick="OnProcessClick"/>
+                
+                <!-- Result Display -->
+                <Border Name="resultBox" Background="#2D2D30" CornerRadius="5" 
+                        Padding="15" Margin="0,20,0,0" BorderBrush="#3E3E42" BorderThickness="1">
+                    <TextBlock Name="lblResult" Text="Result will appear here..." 
+                               Foreground="#AAAAAA" TextWrapping="Wrap"/>
+                </Border>
+                
+            </StackPanel>
+        </Grid>
+    </UI>
+
+    <Logic>
+        <!-- 
+            MANUAL C# SECTION 
+            Bu yerda yozilgan kod kompilyatsiya qilinadi va ishga tushadi.
+            _engine orqali UI ga murojaat qilish mumkin.
+        -->
+        <Handler Name="OnProcessClick">
+            <!-- Bu komanda yuqoridagi ManualC id="profileLogic" ni ishga tushiradi -->
+            <Exec Id="profileLogic" />
+        </Handler>
+        <ManualC id="profileLogic">
+            <![CDATA[
+                // Kerakli namespace'lar
+                using System;
+                using System.Windows;
+                using System.Windows.Controls;
+                using System.Windows.Media;
+
+                // Framework tomonidan taqdim etilgan global o'zgaruvchi
+                // _engine orqali UI elementlarga kirish mumkin
+                var nameBox = _engine.GetControl("txtName") as TextBox;
+                var ageBox = _engine.GetControl("txtAge") as TextBox;
+                var resultLabel = _engine.GetControl("lblResult") as TextBlock;
+                var resultBorder = _engine.GetControl("resultBox") as Border;
+
+                // 1. Ma'lumotlarni olish
+                string name = nameBox.Text;
+                string ageStr = ageBox.Text;
+
+                // 2. Validatsiya
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    resultLabel.Text = "❌ Error: Name is required!";
+                    resultLabel.Foreground = new SolidColorBrush(Colors.Red);
+                    resultBorder.BorderBrush = new SolidColorBrush(Colors.Red);
+                    return "Error";
+                }
+
+                if (!int.TryParse(ageStr, out int age))
+                {
+                    resultLabel.Text = "❌ Error: Age must be a number!";
+                    resultLabel.Foreground = new SolidColorBrush(Colors.Orange);
+                    resultBorder.BorderBrush = new SolidColorBrush(Colors.Orange);
+                    return "Error";
+                }
+
+                // 3. Mantiqiy hisoblash (C# kuchi!)
+                string status = "";
+                Brush bgBrush = new SolidColorBrush(Colors.Transparent);
+
+                if (age < 18)
+                {
+                    status = "👶 You are a minor.";
+                    bgBrush = new SolidColorBrush(Color.FromRgb(255, 200, 200)); // Light Red
+                }
+                else if (age >= 18 && age < 60)
+                {
+                    status = "💼 You are an adult.";
+                    bgBrush = new SolidColorBrush(Color.FromRgb(200, 255, 200)); // Light Green
+                }
+                else
+                {
+                    status = "👴 You are a senior citizen.";
+                    bgBrush = new SolidColorBrush(Color.FromRgb(200, 200, 255)); // Light Blue
+                }
+
+                // 4. UI ni yangilash
+                resultLabel.Text = $"✅ Hello, {name}! ({age} years old)\n{status}";
+                resultLabel.Foreground = new SolidColorBrush(Colors.White);
+                resultBorder.Background = bgBrush;
+                resultBorder.BorderBrush = new SolidColorBrush(Colors.Gray);
+
+                // Logga yozish (Console ga)
+                _engine.Log("ManualC", "Processed user: " + name);
+
+                return "Success";
+            ]]>
+        </ManualC>
+
+        <!-- Handler: Button click event -->
+        
+    </Logic>
+</App>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<NimbusApp Name="GPU Benchmark" Theme="Dark" Width="900" Height="700">
+    
+    <UI>
+        <Grid Background="#0A0A0F">
+            <Grid.RowDefinitions>Auto, Auto, *, Auto, Auto</Grid.RowDefinitions>
+            
+            <!-- Header -->
+            <Border Grid.Row="0" Background="#12121A" Padding="20">
+                <Grid>
+                    <Grid.ColumnDefinitions>*, Auto</Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="⚡ NIMBUS GPU BENCHMARK" FontSize="28" FontWeight="Bold" Foreground="#00D4FF"/>
+                        <TextBlock Text="Graphics Performance Analyzer v1.0" FontSize="12" Foreground="#666666" Margin="0,5,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                        <TextBlock Text="SCORE" FontSize="12" Foreground="#666666" HorizontalAlignment="Right"/>
+                        <TextBlock Name="totalScore" Text="0" FontSize="42" FontWeight="Bold" Foreground="#00FF88" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            
+            <!-- GPU Info Bar -->
+            <Border Grid.Row="1" Background="#1A1A25" Padding="15,10">
+                <Grid>
+                    <Grid.ColumnDefinitions>*, *, *, *</Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                        <TextBlock Text="🖥️ GPU" FontSize="11" Foreground="#666666" HorizontalAlignment="Center"/>
+                        <TextBlock Name="gpuName" Text="NVIDIA RTX 4090" FontSize="13" Foreground="#FFFFFF" HorizontalAlignment="Center" FontWeight="Bold"/>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                        <TextBlock Text="🔧 DRIVER" FontSize="11" Foreground="#666666" HorizontalAlignment="Center"/>
+                        <TextBlock Name="driverVersion" Text="546.33" FontSize="13" Foreground="#FFFFFF" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                        <TextBlock Text="💾 VRAM" FontSize="11" Foreground="#666666" HorizontalAlignment="Center"/>
+                        <TextBlock Name="vramSize" Text="24 GB GDDR6X" FontSize="13" Foreground="#FFFFFF" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="3" HorizontalAlignment="Center">
+                        <TextBlock Text="🌡️ TEMP" FontSize="11" Foreground="#666666" HorizontalAlignment="Center"/>
+                        <TextBlock Name="gpuTemp" Text="42°C" FontSize="13" Foreground="#00FF88" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            
+            <!-- Benchmark Tests -->
+            <Border Grid.Row="2" Margin="20,15" Background="#12121A" CornerRadius="10" Padding="20">
+                <Grid>
+                    <Grid.RowDefinitions>Auto, *, *, *, *, *</Grid.RowDefinitions>
+                    
+                    <TextBlock Grid.Row="0" Text="BENCHMARK TESTS" FontSize="14" FontWeight="Bold" Foreground="#888888" Margin="0,0,0,15"/>
+                    
+                    <!-- Test 1: 3D Rendering -->
+                    <Border Grid.Row="1" Background="#1A1A25" CornerRadius="8" Margin="0,5" Padding="15">
+                        <Grid>
+                            <Grid.ColumnDefinitions>Auto, *, Auto, Auto</Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="🔺" FontSize="24" VerticalAlignment="Center"/>
+                            <StackPanel Grid.Column="1" Margin="15,0">
+                                <TextBlock Text="3D Rendering" FontSize="14" Foreground="#FFFFFF" FontWeight="Bold"/>
+                                <TextBlock Text="Triangle Throughput Test" FontSize="11" Foreground="#666666"/>
+                                <ProgressBar Name="test1Progress" Value="0" Maximum="100" Height="4" Margin="0,8,0,0" Background="#333340" Foreground="#00D4FF"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Name="test1Score" Text="---" FontSize="18" Foreground="#00D4FF" VerticalAlignment="Center" Margin="10,0"/>
+                            <TextBlock Grid.Column="3" Name="test1Fps" Text="0 FPS" FontSize="12" Foreground="#666666" VerticalAlignment="Center" Width="70" TextAlignment="Right"/>
+                        </Grid>
+                    </Border>
+                    
+                    <!-- Test 2: Shader Compute -->
+                    <Border Grid.Row="2" Background="#1A1A25" CornerRadius="8" Margin="0,5" Padding="15">
+                        <Grid>
+                            <Grid.ColumnDefinitions>Auto, *, Auto, Auto</Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="💠" FontSize="24" VerticalAlignment="Center"/>
+                            <StackPanel Grid.Column="1" Margin="15,0">
+                                <TextBlock Text="Shader Compute" FontSize="14" Foreground="#FFFFFF" FontWeight="Bold"/>
+                                <TextBlock Text="Pixel Shader Performance" FontSize="11" Foreground="#666666"/>
+                                <ProgressBar Name="test2Progress" Value="0" Maximum="100" Height="4" Margin="0,8,0,0" Background="#333340" Foreground="#FF6B35"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Name="test2Score" Text="---" FontSize="18" Foreground="#FF6B35" VerticalAlignment="Center" Margin="10,0"/>
+                            <TextBlock Grid.Column="3" Name="test2Fps" Text="0 FPS" FontSize="12" Foreground="#666666" VerticalAlignment="Center" Width="70" TextAlignment="Right"/>
+                        </Grid>
+                    </Border>
+                    
+                    <!-- Test 3: Texture Fill -->
+                    <Border Grid.Row="3" Background="#1A1A25" CornerRadius="8" Margin="0,5" Padding="15">
+                        <Grid>
+                            <Grid.ColumnDefinitions>Auto, *, Auto, Auto</Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="🎨" FontSize="24" VerticalAlignment="Center"/>
+                            <StackPanel Grid.Column="1" Margin="15,0">
+                                <TextBlock Text="Texture Fill Rate" FontSize="14" Foreground="#FFFFFF" FontWeight="Bold"/>
+                                <TextBlock Text="Memory Bandwidth Test" FontSize="11" Foreground="#666666"/>
+                                <ProgressBar Name="test3Progress" Value="0" Maximum="100" Height="4" Margin="0,8,0,0" Background="#333340" Foreground="#A855F7"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Name="test3Score" Text="---" FontSize="18" Foreground="#A855F7" VerticalAlignment="Center" Margin="10,0"/>
+                            <TextBlock Grid.Column="3" Name="test3Fps" Text="0 GB/s" FontSize="12" Foreground="#666666" VerticalAlignment="Center" Width="70" TextAlignment="Right"/>
+                        </Grid>
+                    </Border>
+                    
+                    <!-- Test 4: Ray Tracing -->
+                    <Border Grid.Row="4" Background="#1A1A25" CornerRadius="8" Margin="0,5" Padding="15">
+                        <Grid>
+                            <Grid.ColumnDefinitions>Auto, *, Auto, Auto</Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="✨" FontSize="24" VerticalAlignment="Center"/>
+                            <StackPanel Grid.Column="1" Margin="15,0">
+                                <TextBlock Text="Ray Tracing" FontSize="14" Foreground="#FFFFFF" FontWeight="Bold"/>
+                                <TextBlock Text="RT Core Performance" FontSize="11" Foreground="#666666"/>
+                                <ProgressBar Name="test4Progress" Value="0" Maximum="100" Height="4" Margin="0,8,0,0" Background="#333340" Foreground="#F59E0B"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Name="test4Score" Text="---" FontSize="18" Foreground="#F59E0B" VerticalAlignment="Center" Margin="10,0"/>
+                            <TextBlock Grid.Column="3" Name="test4Fps" Text="0 FPS" FontSize="12" Foreground="#666666" VerticalAlignment="Center" Width="70" TextAlignment="Right"/>
+                        </Grid>
+                    </Border>
+                    
+                    <!-- Test 5: AI/DLSS -->
+                    <Border Grid.Row="5" Background="#1A1A25" CornerRadius="8" Margin="0,5" Padding="15">
+                        <Grid>
+                            <Grid.ColumnDefinitions>Auto, *, Auto, Auto</Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="🧠" FontSize="24" VerticalAlignment="Center"/>
+                            <StackPanel Grid.Column="1" Margin="15,0">
+                                <TextBlock Text="AI / Tensor Cores" FontSize="14" Foreground="#FFFFFF" FontWeight="Bold"/>
+                                <TextBlock Text="DLSS / ML Performance" FontSize="11" Foreground="#666666"/>
+                                <ProgressBar Name="test5Progress" Value="0" Maximum="100" Height="4" Margin="0,8,0,0" Background="#333340" Foreground="#10B981"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Name="test5Score" Text="---" FontSize="18" Foreground="#10B981" VerticalAlignment="Center" Margin="10,0"/>
+                            <TextBlock Grid.Column="3" Name="test5Fps" Text="0 TOPS" FontSize="12" Foreground="#666666" VerticalAlignment="Center" Width="70" TextAlignment="Right"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+            
+            <!-- Control Buttons -->
+            <Border Grid.Row="3" Margin="20,0,20,10">
+                <Grid>
+                    <Grid.ColumnDefinitions>*, *, *, *</Grid.ColumnDefinitions>
+                    
+                    <Button Grid.Column="0" Name="btnRunAll" Content="▶ RUN BENCHMARK" Margin="5" Height="50" FontSize="14" FontWeight="Bold" Background="#00D4FF" Foreground="#000000" onClick="RunAllTests"/>
+                    <Button Grid.Column="1" Name="btnQuick" Content="⚡ QUICK TEST" Margin="5" Height="50" FontSize="14" Background="#2D2D3A" Foreground="#FFFFFF" onClick="QuickTest"/>
+                    <Button Grid.Column="2" Name="btnStress" Content="🔥 STRESS TEST" Margin="5" Height="50" FontSize="14" Background="#2D2D3A" Foreground="#FFFFFF" onClick="StressTest"/>
+                    <Button Grid.Column="3" Name="btnExport" Content="📊 EXPORT" Margin="5" Height="50" FontSize="14" Background="#2D2D3A" Foreground="#FFFFFF" onClick="ExportResults"/>
+                </Grid>
+            </Border>
+            
+            <!-- Status Bar -->
+            <Border Grid.Row="4" Background="#12121A" Padding="15,10">
+                <Grid>
+                    <Grid.ColumnDefinitions>Auto, *, Auto</Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Name="statusText" Text="Ready to benchmark" Foreground="#666666" FontSize="12"/>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <TextBlock Text="GPU Load: " Foreground="#666666" FontSize="12"/>
+                        <TextBlock Name="gpuLoad" Text="0%" Foreground="#00FF88" FontSize="12"/>
+                        <TextBlock Text="  |  " Foreground="#333333" FontSize="12"/>
+                        <TextBlock Text="Power: " Foreground="#666666" FontSize="12"/>
+                        <TextBlock Name="gpuPower" Text="45W" Foreground="#F59E0B" FontSize="12"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </UI>
+    
+    <Logic>
+        <Handler Name="RunAllTests">
+            <Set Control="statusText" Property="Text" Value="🔄 Running all benchmark tests..."/>
+            <Set Control="totalScore" Property="Text" Value="Testing..."/>
+            
+            <Set Control="test1Progress" Property="Value" Value="100"/>
+            <Set Control="test1Score" Property="Text" Value="18,542"/>
+            <Set Control="test1Fps" Property="Text" Value="245 FPS"/>
+            
+            <Set Control="test2Progress" Property="Value" Value="85"/>
+            <Set Control="test2Score" Property="Text" Value="15,891"/>
+            <Set Control="test2Fps" Property="Text" Value="198 FPS"/>
+            
+            <Set Control="test3Progress" Property="Value" Value="92"/>
+            <Set Control="test3Score" Property="Text" Value="17,234"/>
+            <Set Control="test3Fps" Property="Text" Value="1.2 TB/s"/>
+            
+            <Set Control="test4Progress" Property="Value" Value="78"/>
+            <Set Control="test4Score" Property="Text" Value="12,456"/>
+            <Set Control="test4Fps" Property="Text" Value="89 FPS"/>
+            
+            <Set Control="test5Progress" Property="Value" Value="95"/>
+            <Set Control="test5Score" Property="Text" Value="19,102"/>
+            <Set Control="test5Fps" Property="Text" Value="512 TOPS"/>
+            
+            <Set Control="totalScore" Property="Text" Value="83,225"/>
+            <Set Control="gpuLoad" Property="Text" Value="99%"/>
+            <Set Control="gpuPower" Property="Text" Value="350W"/>
+            <Set Control="gpuTemp" Property="Text" Value="72°C"/>
+            <Set Control="statusText" Property="Text" Value="✅ Benchmark complete! Score: 83,225"/>
+        </Handler>
+        
+        <Handler Name="QuickTest">
+            <Set Control="statusText" Property="Text" Value="⚡ Running quick test..."/>
+            <Set Control="test1Progress" Property="Value" Value="100"/>
+            <Set Control="test1Score" Property="Text" Value="18,542"/>
+            <Set Control="test1Fps" Property="Text" Value="245 FPS"/>
+            <Set Control="totalScore" Property="Text" Value="18,542"/>
+            <Set Control="gpuLoad" Property="Text" Value="85%"/>
+            <Set Control="statusText" Property="Text" Value="✅ Quick test complete!"/>
+        </Handler>
+        
+        <Handler Name="StressTest">
+            <Set Control="statusText" Property="Text" Value="🔥 Running stress test... GPU at maximum load!"/>
+            <Set Control="gpuLoad" Property="Text" Value="100%"/>
+            <Set Control="gpuPower" Property="Text" Value="450W"/>
+            <Set Control="gpuTemp" Property="Text" Value="85°C"/>
+        </Handler>
+        
+        <Handler Name="ExportResults">
+            <Alert Title="Export Results" Message="Benchmark results saved to: benchmark_results.html"/>
+            <Set Control="statusText" Property="Text" Value="📊 Results exported successfully!"/>
+        </Handler>
+    </Logic>
+    
+</NimbusApp>

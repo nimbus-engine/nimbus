@@ -1,0 +1,1441 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="Nimbus Notes"
+     Width="420"
+     Height="800"
+     Theme="Light"
+     DarkMode="false"
+     DevMode="false"
+     OnLoad="OnAppLoad"
+     Icon="notes.ico">
+
+    <Plugins>
+        <Plugin Name="FilePlugin"/>
+    </Plugins>
+
+    <UI>
+        <!-- Root Container — ManualC UI shu yerga qo'shiladi -->
+        <Grid Name="rootContainer" Background="#FFFBFE"/>
+    </UI>
+
+    <Logic>
+        <!-- State Variables -->
+        <Var Name="noteCount" Value="0" Type="int"/>
+        <Var Name="currentNoteId" Value="-1" Type="int"/>
+        <Var Name="currentTitle" Value="" Type="string"/>
+        <Var Name="currentContent" Value="" Type="string"/>
+        <Var Name="searchQuery" Value="" Type="string"/>
+        <Var Name="currentView" Value="list" Type="string"/>
+        <Var Name="selectedCategory" Value="all" Type="string"/>
+        <Var Name="isDarkMode" Value="false" Type="bool"/>
+        <Var Name="uiResult" Value="" Type="string"/>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!--                    NOTES ENGINE + UI BUILDER                -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+                                <ManualC id="NotesEngine">
+using System;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Effects;
+using System.Windows.Input;
+using System.Windows.Shapes;
+
+namespace Nimbus.Notes
+{
+    public class NoteData
+    {
+        public int Id = 0;
+        public string Title = "";
+        public string Content = "";
+        public string Category = "";
+        public string Color = "";
+        public bool IsPinned = false;
+        public bool IsArchived = false;
+        public DateTime Created = DateTime.Now;
+        public DateTime Modified = DateTime.Now;
+    }
+
+    public static class NotesApp
+    {
+        public static List&lt;NoteData&gt; notes = new List&lt;NoteData&gt;();
+        public static int nextId = 1;
+        public static string currentView = "list";
+        public static int editingNoteId = -1;
+        public static string currentCategory = "All";
+        public static string searchQuery = "";
+        public static bool isDarkMode = false;
+
+        public static Color primary = Color.FromRgb(103, 80, 164);
+        public static Color primaryLight = Color.FromRgb(124, 103, 182);
+        public static Color primaryDark = Color.FromRgb(79, 55, 139);
+        public static Color primaryContainer = Color.FromRgb(234, 221, 255);
+        public static Color onPrimaryContainer = Color.FromRgb(33, 0, 94);
+        public static Color secondary = Color.FromRgb(98, 91, 113);
+        public static Color secondaryContainer = Color.FromRgb(232, 222, 248);
+        public static Color onSecondaryContainer = Color.FromRgb(30, 25, 43);
+        public static Color tertiary = Color.FromRgb(125, 82, 96);
+        public static Color tertiaryContainer = Color.FromRgb(255, 216, 228);
+        public static Color surface = Color.FromRgb(255, 251, 254);
+        public static Color surfaceDim = Color.FromRgb(222, 216, 225);
+        public static Color surfaceBright = Color.FromRgb(255, 251, 254);
+        public static Color surfaceContainerLowest = Color.FromRgb(255, 255, 255);
+        public static Color surfaceContainerLow = Color.FromRgb(247, 242, 250);
+        public static Color surfaceContainer = Color.FromRgb(243, 237, 247);
+        public static Color surfaceContainerHigh = Color.FromRgb(236, 230, 240);
+        public static Color surfaceContainerHighest = Color.FromRgb(230, 224, 233);
+        public static Color surfaceVariant = Color.FromRgb(231, 224, 236);
+        public static Color onSurface = Color.FromRgb(28, 27, 31);
+        public static Color onSurfaceVariant = Color.FromRgb(73, 69, 79);
+        public static Color outline = Color.FromRgb(121, 116, 126);
+        public static Color outlineVariant = Color.FromRgb(196, 199, 197);
+        public static Color error = Color.FromRgb(179, 38, 30);
+        public static Color errorContainer = Color.FromRgb(249, 222, 220);
+        public static Color success = Color.FromRgb(56, 142, 60);
+        public static Color successContainer = Color.FromRgb(200, 230, 201);
+
+        public static Color darkSurface = Color.FromRgb(28, 27, 31);
+        public static Color darkSurfaceVariant = Color.FromRgb(44, 43, 48);
+        public static Color darkOnSurface = Color.FromRgb(230, 225, 229);
+        public static Color darkOnSurfaceVariant = Color.FromRgb(202, 196, 208);
+        public static Color darkPrimaryContainer = Color.FromRgb(79, 55, 139);
+        public static Color darkSecondaryContainer = Color.FromRgb(74, 68, 88);
+
+        public static string[] noteColors = new string[] {
+            "#FFFBFE", "#FFF8E1", "#E8F5E9", "#E3F2FD",
+            "#FCE4EC", "#F3E5F5", "#E0F7FA", "#FBE9E7",
+            "#F1F8E9", "#FFF3E0", "#E8EAF6", "#EFEBE9"
+        };
+
+        public static string[] categoryIcons = new string[] {
+            "A", "P", "W", "I", "S", "H", "B", "M"
+        };
+
+        public static string[] categories = new string[] {
+            "All", "Personal", "Work", "Ideas", "Shopping", "Health", "Books", "Movies"
+        };
+
+        public static string Init()
+        {
+            notes = new List&lt;NoteData&gt;();
+
+            AddNote("Welcome to Nimbus Notes",
+                "This is your personal notes app with Material You design.\n\n" +
+                "Features:\n" +
+                "- Beautiful Material Design 3\n" +
+                "- Categories and labels\n" +
+                "- Pin important notes\n" +
+                "- Search your notes\n" +
+                "- Multiple color themes\n" +
+                "- Archive old notes\n\n" +
+                "Tap any note to edit it. Use + button to create new notes.",
+                "Personal", "#E8F5E9", true);
+
+            AddNote("Shopping List",
+                "Groceries:\n" +
+                "- Milk (2 liters)\n" +
+                "- Eggs (12 pack)\n" +
+                "- Bread (whole wheat)\n" +
+                "- Fresh fruits\n" +
+                "- Vegetables\n" +
+                "- Cheese\n" +
+                "- Yogurt\n\n" +
+                "Home supplies:\n" +
+                "- Dish soap\n" +
+                "- Paper towels\n" +
+                "- Batteries",
+                "Shopping", "#FFF8E1", false);
+
+            AddNote("Project Ideas",
+                "App Development:\n" +
+                "1. Habit tracker with streaks\n" +
+                "2. Recipe manager with photos\n" +
+                "3. Workout log with progress\n" +
+                "4. Budget planner\n" +
+                "5. Travel journal\n\n" +
+                "Side Projects:\n" +
+                "- Personal portfolio website\n" +
+                "- Open source contribution\n" +
+                "- Blog about programming",
+                "Ideas", "#FCE4EC", true);
+
+            AddNote("Meeting Notes - Q4 Planning",
+                "Date: Monday 10:00 AM\n\n" +
+                "Attendees:\n" +
+                "- John (Project Lead)\n" +
+                "- Sarah (Design)\n" +
+                "- Mike (Development)\n\n" +
+                "Agenda:\n" +
+                "1. Review Q3 results\n" +
+                "2. Set Q4 targets\n" +
+                "3. Budget allocation\n" +
+                "4. Team assignments\n\n" +
+                "Action Items:\n" +
+                "- Prepare presentation by Friday\n" +
+                "- Send reports to stakeholders",
+                "Work", "#E3F2FD", false);
+
+            AddNote("Book Recommendations",
+                "Currently Reading:\n" +
+                "- Atomic Habits by James Clear\n\n" +
+                "To Read:\n" +
+                "- Deep Work by Cal Newport\n" +
+                "- The Psychology of Money\n" +
+                "- Thinking Fast and Slow\n" +
+                "- The Pragmatic Programmer\n" +
+                "- Clean Code\n\n" +
+                "Finished:\n" +
+                "- The Alchemist\n" +
+                "- 1984 by George Orwell",
+                "Books", "#F3E5F5", false);
+
+            AddNote("Health Goals 2024",
+                "Fitness:\n" +
+                "- Exercise 4 times per week\n" +
+                "- Walk 10,000 steps daily\n" +
+                "- Drink 8 glasses of water\n\n" +
+                "Diet:\n" +
+                "- Reduce sugar intake\n" +
+                "- Eat more vegetables\n" +
+                "- No fast food on weekdays\n\n" +
+                "Mental Health:\n" +
+                "- Meditate 10 min daily\n" +
+                "- Sleep 7-8 hours\n" +
+                "- Digital detox on Sundays",
+                "Health", "#E0F7FA", false);
+
+            AddNote("Movie Watchlist",
+                "Must Watch:\n" +
+                "- Oppenheimer (2023)\n" +
+                "- Dune Part Two\n" +
+                "- The Batman\n" +
+                "- Everything Everywhere\n\n" +
+                "Classics to Revisit:\n" +
+                "- The Godfather\n" +
+                "- Pulp Fiction\n" +
+                "- The Shawshank Redemption\n\n" +
+                "TV Series:\n" +
+                "- Breaking Bad (rewatch)\n" +
+                "- The Bear\n" +
+                "- Severance",
+                "Movies", "#FBE9E7", false);
+
+            AddNote("Quick Tips",
+                "Keyboard Shortcuts:\n" +
+                "- Ctrl+N: New note\n" +
+                "- Ctrl+S: Save note\n" +
+                "- Ctrl+F: Search\n" +
+                "- Ctrl+D: Delete note\n\n" +
+                "Pro Tips:\n" +
+                "- Pin important notes to top\n" +
+                "- Use categories to organize\n" +
+                "- Archive instead of delete\n" +
+                "- Use colors for visual cues",
+                "Personal", "#E8EAF6", false);
+
+            return "ok";
+        }
+
+        public static int AddNote(string title, string content, string category, string color, bool pinned)
+        {
+            NoteData n = new NoteData();
+            n.Id = nextId++;
+            n.Title = string.IsNullOrEmpty(title) ? "Untitled Note" : title;
+            n.Content = string.IsNullOrEmpty(content) ? "" : content;
+            n.Category = string.IsNullOrEmpty(category) ? "Personal" : category;
+            n.Color = string.IsNullOrEmpty(color) ? "#FFFBFE" : color;
+            n.IsPinned = pinned;
+            n.IsArchived = false;
+            n.Created = DateTime.Now;
+            n.Modified = DateTime.Now;
+            notes.Add(n);
+            return n.Id;
+        }
+
+        public static string UpdateNote(int id, string title, string content)
+        {
+            foreach (NoteData n in notes)
+            {
+                if (n.Id == id)
+                {
+                    n.Title = title;
+                    n.Content = content;
+                    n.Modified = DateTime.Now;
+                    return "ok";
+                }
+            }
+            return "not_found";
+        }
+
+        public static string DeleteNote(int id)
+        {
+            for (int i = 0; i &lt; notes.Count; i++)
+            {
+                if (notes[i].Id == id)
+                {
+                    notes.RemoveAt(i);
+                    return "ok";
+                }
+            }
+            return "not_found";
+        }
+
+        public static string TogglePin(int id)
+        {
+            foreach (NoteData n in notes)
+            {
+                if (n.Id == id)
+                {
+                    n.IsPinned = !n.IsPinned;
+                    n.Modified = DateTime.Now;
+                    return n.IsPinned ? "pinned" : "unpinned";
+                }
+            }
+            return "not_found";
+        }
+
+        public static string ArchiveNote(int id)
+        {
+            foreach (NoteData n in notes)
+            {
+                if (n.Id == id)
+                {
+                    n.IsArchived = true;
+                    n.Modified = DateTime.Now;
+                    return "archived";
+                }
+            }
+            return "not_found";
+        }
+
+        public static string UnarchiveNote(int id)
+        {
+            foreach (NoteData n in notes)
+            {
+                if (n.Id == id)
+                {
+                    n.IsArchived = false;
+                    n.Modified = DateTime.Now;
+                    return "unarchived";
+                }
+            }
+            return "not_found";
+        }
+
+        public static string SetNoteColor(int id, string color)
+        {
+            foreach (NoteData n in notes)
+            {
+                if (n.Id == id)
+                {
+                    n.Color = color;
+                    n.Modified = DateTime.Now;
+                    return "ok";
+                }
+            }
+            return "not_found";
+        }
+
+        public static string SetNoteCategory(int id, string category)
+        {
+            foreach (NoteData n in notes)
+            {
+                if (n.Id == id)
+                {
+                    n.Category = category;
+                    n.Modified = DateTime.Now;
+                    return "ok";
+                }
+            }
+            return "not_found";
+        }
+
+        public static int GetNoteCount()
+        {
+            int count = 0;
+            foreach (NoteData n in notes)
+            {
+                if (!n.IsArchived) count++;
+            }
+            return count;
+        }
+
+        public static int GetArchivedCount()
+        {
+            int count = 0;
+            foreach (NoteData n in notes)
+            {
+                if (n.IsArchived) count++;
+            }
+            return count;
+        }
+
+        public static int GetPinnedCount()
+        {
+            int count = 0;
+            foreach (NoteData n in notes)
+            {
+                if (n.IsPinned &amp;&amp; !n.IsArchived) count++;
+            }
+            return count;
+        }
+
+        public static int GetCategoryCount(string category)
+        {
+            if (category == "All") return GetNoteCount();
+            int count = 0;
+            foreach (NoteData n in notes)
+            {
+                if (!n.IsArchived &amp;&amp; n.Category == category) count++;
+            }
+            return count;
+        }
+
+        public static string GetNoteTitle(int id)
+        {
+            foreach (NoteData n in notes)
+            {
+                if (n.Id == id) return n.Title;
+            }
+            return "";
+        }
+
+        public static string GetNoteContent(int id)
+        {
+            foreach (NoteData n in notes)
+            {
+                if (n.Id == id) return n.Content;
+            }
+            return "";
+        }
+
+        public static string GetNoteCategory(int id)
+        {
+            foreach (NoteData n in notes)
+            {
+                if (n.Id == id) return n.Category;
+            }
+            return "Personal";
+        }
+
+        public static string GetNoteColor(int id)
+        {
+            foreach (NoteData n in notes)
+            {
+                if (n.Id == id) return n.Color;
+            }
+            return "#FFFBFE";
+        }
+
+        public static bool IsNotePinned(int id)
+        {
+            foreach (NoteData n in notes)
+            {
+                if (n.Id == id) return n.IsPinned;
+            }
+            return false;
+        }
+
+        public static Color HexToColor(string hex)
+        {
+            try
+            {
+                hex = hex.Replace("#", "");
+                if (hex.Length == 6)
+                {
+                    byte r = Convert.ToByte(hex.Substring(0, 2), 16);
+                    byte g = Convert.ToByte(hex.Substring(2, 2), 16);
+                    byte b = Convert.ToByte(hex.Substring(4, 2), 16);
+                    return Color.FromRgb(r, g, b);
+                }
+                else if (hex.Length == 8)
+                {
+                    byte a = Convert.ToByte(hex.Substring(0, 2), 16);
+                    byte r = Convert.ToByte(hex.Substring(2, 2), 16);
+                    byte g = Convert.ToByte(hex.Substring(4, 2), 16);
+                    byte b = Convert.ToByte(hex.Substring(6, 2), 16);
+                    return Color.FromArgb(a, r, g, b);
+                }
+            }
+            catch { }
+            return surface;
+        }
+
+        public static Color GetSurfaceColor()
+        {
+            return isDarkMode ? darkSurface : surface;
+        }
+
+        public static Color GetOnSurfaceColor()
+        {
+            return isDarkMode ? darkOnSurface : onSurface;
+        }
+
+        public static Color GetSurfaceVariantColor()
+        {
+            return isDarkMode ? darkSurfaceVariant : surfaceVariant;
+        }
+
+        public static Color GetOnSurfaceVariantColor()
+        {
+            return isDarkMode ? darkOnSurfaceVariant : onSurfaceVariant;
+        }
+
+        public static Color GetPrimaryContainerColor()
+        {
+            return isDarkMode ? darkPrimaryContainer : primaryContainer;
+        }
+
+        public static Color GetSecondaryContainerColor()
+        {
+            return isDarkMode ? darkSecondaryContainer : secondaryContainer;
+        }
+
+        public static string ToggleDarkMode()
+        {
+            isDarkMode = !isDarkMode;
+            return isDarkMode ? "dark" : "light";
+        }
+
+        public static List&lt;NoteData&gt; GetFilteredNotes()
+        {
+            List&lt;NoteData&gt; result = new List&lt;NoteData&gt;();
+            foreach (NoteData n in notes)
+            {
+                if (n.IsArchived) continue;
+
+                bool matchCategory = (currentCategory == "All" || n.Category == currentCategory);
+                bool matchSearch = true;
+
+                if (!string.IsNullOrEmpty(searchQuery))
+                {
+                    string query = searchQuery.ToLower();
+                    matchSearch = n.Title.ToLower().Contains(query) ||
+                                  n.Content.ToLower().Contains(query) ||
+                                  n.Category.ToLower().Contains(query);
+                }
+
+                if (matchCategory &amp;&amp; matchSearch)
+                {
+                    result.Add(n);
+                }
+            }
+
+            List&lt;NoteData&gt; pinned = new List&lt;NoteData&gt;();
+            List&lt;NoteData&gt; unpinned = new List&lt;NoteData&gt;();
+
+            foreach (NoteData n in result)
+            {
+                if (n.IsPinned) pinned.Add(n);
+                else unpinned.Add(n);
+            }
+
+            pinned.Sort((a, b) =&gt; b.Modified.CompareTo(a.Modified));
+            unpinned.Sort((a, b) =&gt; b.Modified.CompareTo(a.Modified));
+
+            List&lt;NoteData&gt; sorted = new List&lt;NoteData&gt;();
+            sorted.AddRange(pinned);
+            sorted.AddRange(unpinned);
+
+            return sorted;
+        }
+
+        public static UIElement BuildMainUI()
+        {
+            Color bgColor = GetSurfaceColor();
+            Color textColor = GetOnSurfaceColor();
+            Color textSecondary = GetOnSurfaceVariantColor();
+            Color variantColor = GetSurfaceVariantColor();
+            Color containerColor = GetSecondaryContainerColor();
+
+            Grid root = new Grid();
+            root.Background = new SolidColorBrush(bgColor);
+            root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            root.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            Border appBar = CreateAppBar(textColor, textSecondary);
+            Grid.SetRow(appBar, 0);
+            root.Children.Add(appBar);
+
+            Border searchBar = CreateSearchBar(variantColor, textSecondary);
+            Grid.SetRow(searchBar, 1);
+            root.Children.Add(searchBar);
+
+            ScrollViewer chipsScroll = CreateCategoryChips(containerColor, textColor, textSecondary);
+            Grid.SetRow(chipsScroll, 2);
+            root.Children.Add(chipsScroll);
+
+            ScrollViewer notesScroll = CreateNotesList(textColor, textSecondary);
+            Grid.SetRow(notesScroll, 3);
+            root.Children.Add(notesScroll);
+
+            Border fab = CreateFAB();
+            Grid.SetRow(fab, 3);
+            root.Children.Add(fab);
+
+            Border bottomNav = CreateBottomNav(variantColor, containerColor, textColor, textSecondary);
+            Grid.SetRow(bottomNav, 4);
+            root.Children.Add(bottomNav);
+
+            return root;
+        }
+
+        public static Border CreateAppBar(Color textColor, Color textSecondary)
+        {
+            Border appBar = new Border();
+            appBar.Background = new SolidColorBrush(GetSurfaceColor());
+            appBar.Padding = new Thickness(20, 48, 20, 12);
+
+            Grid appBarGrid = new Grid();
+            appBarGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            appBarGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            appBarGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+            StackPanel titleStack = new StackPanel();
+            titleStack.VerticalAlignment = VerticalAlignment.Center;
+
+            TextBlock titleTb = new TextBlock();
+            titleTb.Text = "Notes";
+            titleTb.FontSize = 28;
+            titleTb.FontWeight = FontWeights.Normal;
+            titleTb.Foreground = new SolidColorBrush(textColor);
+            titleStack.Children.Add(titleTb);
+
+            int noteCount = GetNoteCount();
+            TextBlock subtitleTb = new TextBlock();
+            subtitleTb.Text = noteCount.ToString() + " notes";
+            subtitleTb.FontSize = 12;
+            subtitleTb.Foreground = new SolidColorBrush(textSecondary);
+            subtitleTb.Margin = new Thickness(0, 2, 0, 0);
+            titleStack.Children.Add(subtitleTb);
+
+            Grid.SetColumn(titleStack, 0);
+            appBarGrid.Children.Add(titleStack);
+
+            Border themeBtn = new Border();
+            themeBtn.Width = 44;
+            themeBtn.Height = 44;
+            themeBtn.CornerRadius = new CornerRadius(22);
+            themeBtn.Cursor = Cursors.Hand;
+            themeBtn.Margin = new Thickness(0, 0, 8, 0);
+            TextBlock themeIcon = new TextBlock();
+            themeIcon.Text = isDarkMode ? "L" : "D";
+            themeIcon.FontSize = 18;
+            themeIcon.FontWeight = FontWeights.Bold;
+            themeIcon.Foreground = new SolidColorBrush(textSecondary);
+            themeIcon.HorizontalAlignment = HorizontalAlignment.Center;
+            themeIcon.VerticalAlignment = VerticalAlignment.Center;
+            themeBtn.Child = themeIcon;
+            Grid.SetColumn(themeBtn, 1);
+            appBarGrid.Children.Add(themeBtn);
+
+            Border menuBtn = new Border();
+            menuBtn.Width = 44;
+            menuBtn.Height = 44;
+            menuBtn.CornerRadius = new CornerRadius(22);
+            menuBtn.Cursor = Cursors.Hand;
+            TextBlock menuIcon = new TextBlock();
+            menuIcon.Text = "...";
+            menuIcon.FontSize = 22;
+            menuIcon.FontWeight = FontWeights.Bold;
+            menuIcon.Foreground = new SolidColorBrush(textSecondary);
+            menuIcon.HorizontalAlignment = HorizontalAlignment.Center;
+            menuIcon.VerticalAlignment = VerticalAlignment.Center;
+            menuBtn.Child = menuIcon;
+            Grid.SetColumn(menuBtn, 2);
+            appBarGrid.Children.Add(menuBtn);
+
+            appBar.Child = appBarGrid;
+            return appBar;
+        }
+
+        public static Border CreateSearchBar(Color bgColor, Color textColor)
+        {
+            Border searchBar = new Border();
+            searchBar.Margin = new Thickness(16, 4, 16, 8);
+            searchBar.Background = new SolidColorBrush(bgColor);
+            searchBar.CornerRadius = new CornerRadius(28);
+            searchBar.Padding = new Thickness(20, 14, 20, 14);
+
+            Grid searchGrid = new Grid();
+            searchGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            searchGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            searchGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+            TextBlock searchIcon = new TextBlock();
+            searchIcon.Text = "O";
+            searchIcon.FontSize = 18;
+            searchIcon.FontWeight = FontWeights.Bold;
+            searchIcon.Foreground = new SolidColorBrush(textColor);
+            searchIcon.VerticalAlignment = VerticalAlignment.Center;
+            searchIcon.Margin = new Thickness(0, 0, 14, 0);
+            Grid.SetColumn(searchIcon, 0);
+            searchGrid.Children.Add(searchIcon);
+
+            TextBlock searchText = new TextBlock();
+            searchText.Text = string.IsNullOrEmpty(searchQuery) ? "Search your notes..." : searchQuery;
+            searchText.FontSize = 16;
+            searchText.Foreground = new SolidColorBrush(textColor);
+            searchText.VerticalAlignment = VerticalAlignment.Center;
+            searchText.Opacity = string.IsNullOrEmpty(searchQuery) ? 0.7 : 1.0;
+            Grid.SetColumn(searchText, 1);
+            searchGrid.Children.Add(searchText);
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                Border clearBtn = new Border();
+                clearBtn.Width = 32;
+                clearBtn.Height = 32;
+                clearBtn.CornerRadius = new CornerRadius(16);
+                clearBtn.Cursor = Cursors.Hand;
+                clearBtn.Background = new SolidColorBrush(Color.FromArgb(20, 0, 0, 0));
+                TextBlock clearIcon = new TextBlock();
+                clearIcon.Text = "X";
+                clearIcon.FontSize = 14;
+                clearIcon.FontWeight = FontWeights.Bold;
+                clearIcon.Foreground = new SolidColorBrush(textColor);
+                clearIcon.HorizontalAlignment = HorizontalAlignment.Center;
+                clearIcon.VerticalAlignment = VerticalAlignment.Center;
+                clearBtn.Child = clearIcon;
+                Grid.SetColumn(clearBtn, 2);
+                searchGrid.Children.Add(clearBtn);
+            }
+
+            searchBar.Child = searchGrid;
+            return searchBar;
+        }
+
+        public static ScrollViewer CreateCategoryChips(Color containerColor, Color textColor, Color textSecondary)
+        {
+            ScrollViewer chipsScroll = new ScrollViewer();
+            chipsScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
+            chipsScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
+            chipsScroll.Margin = new Thickness(0, 4, 0, 8);
+
+            StackPanel chipsPanel = new StackPanel();
+            chipsPanel.Orientation = Orientation.Horizontal;
+            chipsPanel.Margin = new Thickness(16, 0, 16, 0);
+
+            for (int i = 0; i &lt; categories.Length; i++)
+            {
+                string cat = categories[i];
+                bool isActive = (cat == currentCategory);
+                int catCount = GetCategoryCount(cat);
+
+                Border chip = new Border();
+                chip.Background = isActive ? new SolidColorBrush(containerColor) : new SolidColorBrush(Colors.Transparent);
+                chip.BorderBrush = isActive ? new SolidColorBrush(Colors.Transparent) : new SolidColorBrush(outline);
+                chip.BorderThickness = new Thickness(1);
+                chip.CornerRadius = new CornerRadius(8);
+                chip.Padding = new Thickness(14, 8, 14, 8);
+                chip.Margin = new Thickness(0, 0, 8, 0);
+                chip.Cursor = Cursors.Hand;
+                chip.Tag = cat;
+
+                StackPanel chipContent = new StackPanel();
+                chipContent.Orientation = Orientation.Horizontal;
+
+                if (i &lt; categoryIcons.Length)
+                {
+                    TextBlock iconTb = new TextBlock();
+                    iconTb.Text = categoryIcons[i];
+                    iconTb.FontSize = 12;
+                    iconTb.FontWeight = FontWeights.Bold;
+                    iconTb.Foreground = isActive ? new SolidColorBrush(secondary) : new SolidColorBrush(textSecondary);
+                    iconTb.Margin = new Thickness(0, 0, 6, 0);
+                    iconTb.VerticalAlignment = VerticalAlignment.Center;
+                    chipContent.Children.Add(iconTb);
+                }
+
+                TextBlock chipText = new TextBlock();
+                chipText.Text = cat;
+                chipText.FontSize = 13;
+                chipText.FontWeight = isActive ? FontWeights.SemiBold : FontWeights.Normal;
+                chipText.Foreground = isActive ? new SolidColorBrush(secondary) : new SolidColorBrush(textSecondary);
+                chipText.VerticalAlignment = VerticalAlignment.Center;
+                chipContent.Children.Add(chipText);
+
+                if (catCount > 0 &amp;&amp; cat != "All")
+                {
+                    TextBlock countTb = new TextBlock();
+                    countTb.Text = " (" + catCount.ToString() + ")";
+                    countTb.FontSize = 11;
+                    countTb.Foreground = new SolidColorBrush(textSecondary);
+                    countTb.Opacity = 0.7;
+                    countTb.VerticalAlignment = VerticalAlignment.Center;
+                    chipContent.Children.Add(countTb);
+                }
+
+                chip.Child = chipContent;
+                chipsPanel.Children.Add(chip);
+            }
+
+            chipsScroll.Content = chipsPanel;
+            return chipsScroll;
+        }
+
+        public static ScrollViewer CreateNotesList(Color textColor, Color textSecondary)
+        {
+            ScrollViewer notesScroll = new ScrollViewer();
+            notesScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
+            notesScroll.Padding = new Thickness(16, 4, 16, 100);
+
+            StackPanel notesList = new StackPanel();
+
+            List&lt;NoteData&gt; filteredNotes = GetFilteredNotes();
+
+            List&lt;NoteData&gt; pinned = new List&lt;NoteData&gt;();
+            List&lt;NoteData&gt; others = new List&lt;NoteData&gt;();
+
+            foreach (NoteData n in filteredNotes)
+            {
+                if (n.IsPinned) pinned.Add(n);
+                else others.Add(n);
+            }
+
+            if (pinned.Count > 0)
+            {
+                Border pinnedHeader = CreateSectionHeader("Pinned", pinned.Count.ToString() + " notes", textSecondary);
+                notesList.Children.Add(pinnedHeader);
+
+                foreach (NoteData n in pinned)
+                {
+                    UIElement card = CreateNoteCard(n, textColor, textSecondary);
+                    notesList.Children.Add(card);
+                }
+
+                Border spacer = new Border();
+                spacer.Height = 16;
+                notesList.Children.Add(spacer);
+            }
+
+            if (others.Count > 0)
+            {
+                if (pinned.Count > 0)
+                {
+                    Border othersHeader = CreateSectionHeader("Others", others.Count.ToString() + " notes", textSecondary);
+                    notesList.Children.Add(othersHeader);
+                }
+
+                foreach (NoteData n in others)
+                {
+                    UIElement card = CreateNoteCard(n, textColor, textSecondary);
+                    notesList.Children.Add(card);
+                }
+            }
+
+            if (filteredNotes.Count == 0)
+            {
+                UIElement emptyState = CreateEmptyState(textColor, textSecondary);
+                notesList.Children.Add(emptyState);
+            }
+
+            notesScroll.Content = notesList;
+            return notesScroll;
+        }
+
+        public static Border CreateSectionHeader(string title, string subtitle, Color textColor)
+        {
+            Border header = new Border();
+            header.Margin = new Thickness(4, 8, 4, 12);
+
+            Grid headerGrid = new Grid();
+            headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+            TextBlock titleTb = new TextBlock();
+            titleTb.Text = title;
+            titleTb.FontSize = 13;
+            titleTb.FontWeight = FontWeights.SemiBold;
+            titleTb.Foreground = new SolidColorBrush(textColor);
+            titleTb.VerticalAlignment = VerticalAlignment.Center;
+            Grid.SetColumn(titleTb, 0);
+            headerGrid.Children.Add(titleTb);
+
+            TextBlock subtitleTb = new TextBlock();
+            subtitleTb.Text = subtitle;
+            subtitleTb.FontSize = 11;
+            subtitleTb.Foreground = new SolidColorBrush(textColor);
+            subtitleTb.Opacity = 0.6;
+            subtitleTb.VerticalAlignment = VerticalAlignment.Center;
+            Grid.SetColumn(subtitleTb, 1);
+            headerGrid.Children.Add(subtitleTb);
+
+            header.Child = headerGrid;
+            return header;
+        }
+
+        public static UIElement CreateNoteCard(NoteData note, Color textColor, Color textSecondary)
+        {
+            Border card = new Border();
+            card.Background = new SolidColorBrush(HexToColor(note.Color));
+            card.BorderBrush = new SolidColorBrush(outline);
+            card.BorderThickness = new Thickness(1);
+            card.CornerRadius = new CornerRadius(16);
+            card.Padding = new Thickness(18);
+            card.Margin = new Thickness(0, 0, 0, 12);
+            card.Cursor = Cursors.Hand;
+            card.Tag = note.Id;
+
+            if (isDarkMode)
+            {
+                Color noteColor = HexToColor(note.Color);
+                byte darkR = (byte)(noteColor.R * 0.3);
+                byte darkG = (byte)(noteColor.G * 0.3);
+                byte darkB = (byte)(noteColor.B * 0.3);
+                card.Background = new SolidColorBrush(Color.FromRgb(darkR, darkG, darkB));
+                card.BorderBrush = new SolidColorBrush(Color.FromArgb(40, 255, 255, 255));
+            }
+
+            StackPanel content = new StackPanel();
+
+            Grid titleRow = new Grid();
+            titleRow.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            titleRow.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+            TextBlock titleTb = new TextBlock();
+            titleTb.Text = note.Title;
+            titleTb.FontSize = 16;
+            titleTb.FontWeight = FontWeights.SemiBold;
+            titleTb.Foreground = new SolidColorBrush(isDarkMode ? darkOnSurface : onSurface);
+            titleTb.TextTrimming = TextTrimming.CharacterEllipsis;
+            titleTb.MaxWidth = 280;
+            Grid.SetColumn(titleTb, 0);
+            titleRow.Children.Add(titleTb);
+
+            if (note.IsPinned)
+            {
+                Border pinBadge = new Border();
+                pinBadge.Background = new SolidColorBrush(Color.FromArgb(40, 103, 80, 164));
+                pinBadge.CornerRadius = new CornerRadius(10);
+                pinBadge.Padding = new Thickness(6, 2, 6, 2);
+                TextBlock pinTb = new TextBlock();
+                pinTb.Text = "PIN";
+                pinTb.FontSize = 9;
+                pinTb.FontWeight = FontWeights.Bold;
+                pinTb.Foreground = new SolidColorBrush(primary);
+                pinBadge.Child = pinTb;
+                Grid.SetColumn(pinBadge, 1);
+                titleRow.Children.Add(pinBadge);
+            }
+
+            content.Children.Add(titleRow);
+
+            if (!string.IsNullOrEmpty(note.Content))
+            {
+                TextBlock contentTb = new TextBlock();
+                string preview = note.Content;
+                if (preview.Length > 100)
+                {
+                    preview = preview.Substring(0, 100) + "...";
+                }
+                preview = preview.Replace("\n", " ");
+                contentTb.Text = preview;
+                contentTb.FontSize = 14;
+                contentTb.Foreground = new SolidColorBrush(isDarkMode ? darkOnSurfaceVariant : onSurfaceVariant);
+                contentTb.TextWrapping = TextWrapping.Wrap;
+                contentTb.MaxHeight = 60;
+                contentTb.Margin = new Thickness(0, 10, 0, 0);
+                content.Children.Add(contentTb);
+            }
+
+            Grid footer = new Grid();
+            footer.Margin = new Thickness(0, 14, 0, 0);
+            footer.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            footer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            footer.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+            Border categoryChip = new Border();
+            categoryChip.Background = new SolidColorBrush(Color.FromArgb(25, 0, 0, 0));
+            if (isDarkMode)
+            {
+                categoryChip.Background = new SolidColorBrush(Color.FromArgb(40, 255, 255, 255));
+            }
+            categoryChip.CornerRadius = new CornerRadius(6);
+            categoryChip.Padding = new Thickness(10, 5, 10, 5);
+            TextBlock categoryTb = new TextBlock();
+            categoryTb.Text = note.Category;
+            categoryTb.FontSize = 11;
+            categoryTb.FontWeight = FontWeights.Medium;
+            categoryTb.Foreground = new SolidColorBrush(isDarkMode ? darkOnSurfaceVariant : onSurfaceVariant);
+            categoryChip.Child = categoryTb;
+            Grid.SetColumn(categoryChip, 0);
+            footer.Children.Add(categoryChip);
+
+            TextBlock timeTb = new TextBlock();
+            string timeStr = "";
+            if (note.Modified.Date == DateTime.Today)
+            {
+                timeStr = note.Modified.ToString("HH:mm");
+            }
+            else if (note.Modified.Date == DateTime.Today.AddDays(-1))
+            {
+                timeStr = "Yesterday";
+            }
+            else
+            {
+                timeStr = note.Modified.ToString("MMM d");
+            }
+            timeTb.Text = timeStr;
+            timeTb.FontSize = 11;
+            timeTb.Foreground = new SolidColorBrush(isDarkMode ? darkOnSurfaceVariant : onSurfaceVariant);
+            timeTb.Opacity = 0.7;
+            timeTb.VerticalAlignment = VerticalAlignment.Center;
+            timeTb.HorizontalAlignment = HorizontalAlignment.Right;
+            Grid.SetColumn(timeTb, 2);
+            footer.Children.Add(timeTb);
+
+            content.Children.Add(footer);
+            card.Child = content;
+
+            return card;
+        }
+
+        public static UIElement CreateEmptyState(Color textColor, Color textSecondary)
+        {
+            StackPanel empty = new StackPanel();
+            empty.HorizontalAlignment = HorizontalAlignment.Center;
+            empty.Margin = new Thickness(0, 80, 0, 0);
+
+            Border iconCircle = new Border();
+            iconCircle.Width = 100;
+            iconCircle.Height = 100;
+            iconCircle.CornerRadius = new CornerRadius(50);
+            iconCircle.Background = new SolidColorBrush(GetSurfaceVariantColor());
+            iconCircle.HorizontalAlignment = HorizontalAlignment.Center;
+            iconCircle.Margin = new Thickness(0, 0, 0, 24);
+
+            TextBlock emptyIcon = new TextBlock();
+            emptyIcon.Text = "N";
+            emptyIcon.FontSize = 40;
+            emptyIcon.FontWeight = FontWeights.Light;
+            emptyIcon.Foreground = new SolidColorBrush(textSecondary);
+            emptyIcon.HorizontalAlignment = HorizontalAlignment.Center;
+            emptyIcon.VerticalAlignment = VerticalAlignment.Center;
+            iconCircle.Child = emptyIcon;
+            empty.Children.Add(iconCircle);
+
+            TextBlock emptyTitle = new TextBlock();
+            emptyTitle.Text = "No notes found";
+            emptyTitle.FontSize = 20;
+            emptyTitle.FontWeight = FontWeights.SemiBold;
+            emptyTitle.Foreground = new SolidColorBrush(textColor);
+            emptyTitle.TextAlignment = TextAlignment.Center;
+            empty.Children.Add(emptyTitle);
+
+            TextBlock emptySub = new TextBlock();
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                emptySub.Text = "Try a different search term";
+            }
+            else if (currentCategory != "All")
+            {
+                emptySub.Text = "No notes in this category yet";
+            }
+            else
+            {
+                emptySub.Text = "Tap + to create your first note";
+            }
+            emptySub.FontSize = 14;
+            emptySub.Foreground = new SolidColorBrush(textSecondary);
+            emptySub.TextAlignment = TextAlignment.Center;
+            emptySub.Margin = new Thickness(0, 8, 0, 0);
+            emptySub.Opacity = 0.8;
+            empty.Children.Add(emptySub);
+
+            return empty;
+        }
+
+        public static Border CreateFAB()
+        {
+            Border fab = new Border();
+            fab.Width = 56;
+            fab.Height = 56;
+            fab.CornerRadius = new CornerRadius(16);
+            fab.Background = new SolidColorBrush(primary);
+            fab.HorizontalAlignment = HorizontalAlignment.Right;
+            fab.VerticalAlignment = VerticalAlignment.Bottom;
+            fab.Margin = new Thickness(0, 0, 20, 96);
+            fab.Cursor = Cursors.Hand;
+
+            DropShadowEffect shadow = new DropShadowEffect();
+            shadow.Color = Colors.Black;
+            shadow.BlurRadius = 20;
+            shadow.ShadowDepth = 6;
+            shadow.Opacity = 0.35;
+            shadow.Direction = 270;
+            fab.Effect = shadow;
+
+            TextBlock fabIcon = new TextBlock();
+            fabIcon.Text = "+";
+            fabIcon.FontSize = 32;
+            fabIcon.FontWeight = FontWeights.Light;
+            fabIcon.Foreground = new SolidColorBrush(Colors.White);
+            fabIcon.HorizontalAlignment = HorizontalAlignment.Center;
+            fabIcon.VerticalAlignment = VerticalAlignment.Center;
+            fabIcon.Margin = new Thickness(0, -2, 0, 0);
+            fab.Child = fabIcon;
+
+            return fab;
+        }
+
+        public static Border CreateBottomNav(Color bgColor, Color containerColor, Color textColor, Color textSecondary)
+        {
+            Border bottomNav = new Border();
+            bottomNav.Background = new SolidColorBrush(bgColor);
+            bottomNav.Padding = new Thickness(0, 8, 0, 24);
+
+            Border topBorder = new Border();
+            topBorder.BorderBrush = new SolidColorBrush(Color.FromArgb(20, 0, 0, 0));
+            topBorder.BorderThickness = new Thickness(0, 1, 0, 0);
+
+            Grid navGrid = new Grid();
+            navGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            navGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            navGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            navGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+            string[] navLabels = new string[] { "Notes", "Archive", "Labels", "Settings" };
+            string[] navIcons = new string[] { "N", "A", "L", "S" };
+            bool[] navActive = new bool[] { true, false, false, false };
+
+            for (int i = 0; i &lt; 4; i++)
+            {
+                StackPanel navItem = new StackPanel();
+                navItem.HorizontalAlignment = HorizontalAlignment.Center;
+                navItem.Cursor = Cursors.Hand;
+                navItem.Margin = new Thickness(0, 4, 0, 0);
+
+                Border indicator = new Border();
+                indicator.Width = 64;
+                indicator.Height = 32;
+                indicator.CornerRadius = new CornerRadius(16);
+                indicator.Background = navActive[i] ? new SolidColorBrush(containerColor) : new SolidColorBrush(Colors.Transparent);
+                indicator.HorizontalAlignment = HorizontalAlignment.Center;
+
+                TextBlock navIconTb = new TextBlock();
+                navIconTb.Text = navIcons[i];
+                navIconTb.FontSize = 16;
+                navIconTb.FontWeight = FontWeights.SemiBold;
+                navIconTb.Foreground = navActive[i] ? new SolidColorBrush(textColor) : new SolidColorBrush(textSecondary);
+                navIconTb.HorizontalAlignment = HorizontalAlignment.Center;
+                navIconTb.VerticalAlignment = VerticalAlignment.Center;
+                indicator.Child = navIconTb;
+                navItem.Children.Add(indicator);
+
+                TextBlock navLabel = new TextBlock();
+                navLabel.Text = navLabels[i];
+                navLabel.FontSize = 12;
+                navLabel.FontWeight = navActive[i] ? FontWeights.SemiBold : FontWeights.Normal;
+                navLabel.Foreground = navActive[i] ? new SolidColorBrush(textColor) : new SolidColorBrush(textSecondary);
+                navLabel.HorizontalAlignment = HorizontalAlignment.Center;
+                navLabel.Margin = new Thickness(0, 4, 0, 0);
+                navItem.Children.Add(navLabel);
+
+                Grid.SetColumn(navItem, i);
+                navGrid.Children.Add(navItem);
+            }
+
+            bottomNav.Child = navGrid;
+            return bottomNav;
+        }
+
+        public static UIElement BuildEditorUI(int noteId)
+        {
+            NoteData note = null;
+            foreach (NoteData n in notes)
+            {
+                if (n.Id == noteId)
+                {
+                    note = n;
+                    break;
+                }
+            }
+
+            bool isNew = (note == null);
+            Color bgColor = GetSurfaceColor();
+            Color textColor = GetOnSurfaceColor();
+            Color textSecondary = GetOnSurfaceVariantColor();
+
+            Grid root = new Grid();
+            root.Background = new SolidColorBrush(bgColor);
+            root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            root.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            Border toolbar = new Border();
+            toolbar.Background = new SolidColorBrush(bgColor);
+            toolbar.Padding = new Thickness(8, 44, 8, 8);
+
+            Grid toolbarGrid = new Grid();
+            toolbarGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            toolbarGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            toolbarGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            toolbarGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            toolbarGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+            Border backBtn = new Border();
+            backBtn.Width = 48;
+            backBtn.Height = 48;
+            backBtn.CornerRadius = new CornerRadius(24);
+            backBtn.Cursor = Cursors.Hand;
+            TextBlock backIcon = new TextBlock();
+            backIcon.Text = "00";
+            backIcon.FontSize = 24;
+            backIcon.FontWeight = FontWeights.Light;
+            backIcon.Foreground = new SolidColorBrush(textColor);
+            backIcon.HorizontalAlignment = HorizontalAlignment.Center;
+            backIcon.VerticalAlignment = VerticalAlignment.Center;
+            backBtn.Child = backIcon;
+            Grid.SetColumn(backBtn, 0);
+            toolbarGrid.Children.Add(backBtn);
+
+            Border pinBtn = new Border();
+            pinBtn.Width = 48;
+            pinBtn.Height = 48;
+            pinBtn.CornerRadius = new CornerRadius(24);
+            pinBtn.Cursor = Cursors.Hand;
+            TextBlock pinIcon = new TextBlock();
+            bool isPinned = (note != null &amp;&amp; note.IsPinned);
+            pinIcon.Text = isPinned ? "U" : "P";
+            pinIcon.FontSize = 18;
+            pinIcon.FontWeight = FontWeights.Bold;
+            pinIcon.Foreground = isPinned ? new SolidColorBrush(primary) : new SolidColorBrush(textSecondary);
+            pinIcon.HorizontalAlignment = HorizontalAlignment.Center;
+            pinIcon.VerticalAlignment = VerticalAlignment.Center;
+            pinBtn.Child = pinIcon;
+            Grid.SetColumn(pinBtn, 2);
+            toolbarGrid.Children.Add(pinBtn);
+
+            Border archiveBtn = new Border();
+            archiveBtn.Width = 48;
+            archiveBtn.Height = 48;
+            archiveBtn.CornerRadius = new CornerRadius(24);
+            archiveBtn.Cursor = Cursors.Hand;
+            TextBlock archiveIcon = new TextBlock();
+            archiveIcon.Text = "A";
+            archiveIcon.FontSize = 18;
+            archiveIcon.FontWeight = FontWeights.Bold;
+            archiveIcon.Foreground = new SolidColorBrush(textSecondary);
+            archiveIcon.HorizontalAlignment = HorizontalAlignment.Center;
+            archiveIcon.VerticalAlignment = VerticalAlignment.Center;
+            archiveBtn.Child = archiveIcon;
+            Grid.SetColumn(archiveBtn, 3);
+            toolbarGrid.Children.Add(archiveBtn);
+
+            Border moreBtn = new Border();
+            moreBtn.Width = 48;
+            moreBtn.Height = 48;
+            moreBtn.CornerRadius = new CornerRadius(24);
+            moreBtn.Cursor = Cursors.Hand;
+            TextBlock moreIcon = new TextBlock();
+            moreIcon.Text = "...";
+            moreIcon.FontSize = 22;
+            moreIcon.FontWeight = FontWeights.Bold;
+            moreIcon.Foreground = new SolidColorBrush(textSecondary);
+            moreIcon.HorizontalAlignment = HorizontalAlignment.Center;
+            moreIcon.VerticalAlignment = VerticalAlignment.Center;
+            moreBtn.Child = moreIcon;
+            Grid.SetColumn(moreBtn, 4);
+            toolbarGrid.Children.Add(moreBtn);
+
+            toolbar.Child = toolbarGrid;
+            Grid.SetRow(toolbar, 0);
+            root.Children.Add(toolbar);
+
+            ScrollViewer contentScroll = new ScrollViewer();
+            contentScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
+            contentScroll.Padding = new Thickness(24, 8, 24, 24);
+
+            StackPanel contentPanel = new StackPanel();
+
+            TextBlock titleInput = new TextBlock();
+            titleInput.Text = isNew ? "Title" : note.Title;
+            titleInput.FontSize = 26;
+            titleInput.FontWeight = FontWeights.Normal;
+            titleInput.Foreground = isNew ? new SolidColorBrush(textSecondary) : new SolidColorBrush(textColor);
+            titleInput.Margin = new Thickness(0, 0, 0, 16);
+            contentPanel.Children.Add(titleInput);
+
+            TextBlock contentInput = new TextBlock();
+            contentInput.Text = isNew ? "Start typing your note..." : note.Content;
+            contentInput.FontSize = 16;
+            contentInput.Foreground = isNew ? new SolidColorBrush(textSecondary) : new SolidColorBrush(textColor);
+            contentInput.TextWrapping = TextWrapping.Wrap;
+            contentInput.LineHeight = 26;
+            contentInput.MinHeight = 400;
+            contentPanel.Children.Add(contentInput);
+
+            contentScroll.Content = contentPanel;
+            Grid.SetRow(contentScroll, 1);
+            root.Children.Add(contentScroll);
+
+            Border bottomBar = new Border();
+            bottomBar.Background = new SolidColorBrush(GetSurfaceVariantColor());
+            bottomBar.Padding = new Thickness(16, 12, 16, 32);
+
+            Grid bottomGrid = new Grid();
+            bottomGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            bottomGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+            TextBlock editedTb = new TextBlock();
+            if (isNew)
+            {
+                editedTb.Text = "New note";
+            }
+            else
+            {
+                editedTb.Text = "Edited " + note.Modified.ToString("MMM d, HH:mm");
+            }
+            editedTb.FontSize = 12;
+            editedTb.Foreground = new SolidColorBrush(textSecondary);
+            editedTb.VerticalAlignment = VerticalAlignment.Center;
+            Grid.SetColumn(editedTb, 0);
+            bottomGrid.Children.Add(editedTb);
+
+            StackPanel colorPalette = new StackPanel();
+            colorPalette.Orientation = Orientation.Horizontal;
+
+            foreach (string c in noteColors)
+            {
+                Border colorDot = new Border();
+                colorDot.Width = 28;
+                colorDot.Height = 28;
+                colorDot.CornerRadius = new CornerRadius(14);
+                colorDot.Background = new SolidColorBrush(HexToColor(c));
+                colorDot.BorderBrush = new SolidColorBrush(outline);
+                colorDot.BorderThickness = new Thickness(1);
+                colorDot.Margin = new Thickness(4, 0, 0, 0);
+                colorDot.Cursor = Cursors.Hand;
+                colorDot.Tag = c;
+
+                if (note != null &amp;&amp; note.Color == c)
+                {
+                    colorDot.BorderBrush = new SolidColorBrush(primary);
+                    colorDot.BorderThickness = new Thickness(2);
+                }
+
+                colorPalette.Children.Add(colorDot);
+            }
+
+            Grid.SetColumn(colorPalette, 1);
+            bottomGrid.Children.Add(colorPalette);
+
+            bottomBar.Child = bottomGrid;
+            Grid.SetRow(bottomBar, 2);
+            root.Children.Add(bottomBar);
+
+            return root;
+        }
+
+        public static UIElement RefreshUI()
+        {
+            if (currentView == "editor")
+            {
+                return BuildEditorUI(editingNoteId);
+            }
+            return BuildMainUI();
+        }
+
+        public static string SetCurrentView(string view)
+        {
+            currentView = view;
+            return view;
+        }
+
+        public static string SetEditingNote(int id)
+        {
+            editingNoteId = id;
+            return id.ToString();
+        }
+
+        public static string SetCategory(string category)
+        {
+            currentCategory = category;
+            return category;
+        }
+
+        public static string SetSearchQuery(string query)
+        {
+            searchQuery = query;
+            return query;
+        }
+
+        public static string ClearSearch()
+        {
+            searchQuery = "";
+            return "cleared";
+        }
+    }
+}
+        </ManualC>
+        <!-- ═══════════════════════════════════════ -->
+        <!--               HANDLERS                  -->
+        <!-- ═══════════════════════════════════════ -->
+                        <Handler Name="OnAppLoad">
+            <CallManualC id="NotesEngine" Method="Init" ToState="uiResult"/>
+            <CallManualC id="NotesEngine" Method="GetNoteCount" ToState="noteCount"/>
+            <CallManualC id="NotesEngine" Method="BuildMainUI" ToControl="rootContainer"/>
+            <Toast Message="Notes loaded - {noteCount} notes" 
+                   Type="Success" Position="BottomRight" Duration="2500"/>
+        </Handler>
+
+        <Handler Name="RefreshUI">
+            <ClearItems Container="rootContainer"/>
+            <CallManualC id="NotesEngine" Method="RefreshUI" ToControl="rootContainer"/>
+        </Handler>
+
+        <Handler Name="CreateNewNote">
+            <CallManualC id="NotesEngine" Method="AddNote" 
+                         Params=",,Personal,#FFFBFE,false" ToState="currentNoteId"/>
+            <Call Handler="RefreshUI"/>
+            <Toast Message="New note created" 
+                   Type="Success" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="ToggleDarkMode">
+            <CallManualC id="NotesEngine" Method="ToggleDarkMode" ToState="uiResult"/>
+            <Call Handler="RefreshUI"/>
+            <Toast Message="Theme: {uiResult}" 
+                   Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="OpenNote">
+            <Set Var="currentView" Value="editor"/>
+            <Call Handler="RefreshUI"/>
+        </Handler>
+
+        <Handler Name="CloseEditor">
+            <Set Var="currentView" Value="list"/>
+            <Set Var="currentNoteId" Value="-1"/>
+            <Call Handler="RefreshUI"/>
+        </Handler>
+
+        <Handler Name="DeleteCurrentNote">
+            <If Condition="{currentNoteId} >= 0">
+                <CallManualC id="NotesEngine" Method="DeleteNote" 
+                             Params="{currentNoteId}" ToState="uiResult"/>
+                <Call Handler="CloseEditor"/>
+                <Toast Message="🗑️ Note deleted" 
+                       Type="Info" Position="BottomRight" Duration="2000"/>
+            </If>
+        </Handler>
+
+        <Handler Name="TogglePinNote">
+            <If Condition="{currentNoteId} >= 0">
+                <CallManualC id="NotesEngine" Method="TogglePin" 
+                             Params="{currentNoteId}" ToState="uiResult"/>
+                <Call Handler="RefreshUI"/>
+                <Toast Message="📌 {uiResult}" 
+                       Type="Success" Position="BottomRight" Duration="1500"/>
+            </If>
+        </Handler>
+
+    </Logic>
+</App>

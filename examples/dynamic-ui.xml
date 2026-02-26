@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8"?>
+<NimbusApp 
+    Name="Dynamic Effects Demo" 
+    Version="2.0.0"
+    Publisher="Nimbus Framework"
+    Description="Showcase of blur, shadows, and effects"
+    Copyright="© 2024"
+    Theme="Dark" 
+    Width="950" 
+    Height="750"
+    Blur="Acrylic"
+    BlurOpacity="85"
+    DarkMode="true"
+    Corners="Round">
+    
+    <UI>
+        <Grid Background="#0A0A0F">
+            <Grid.RowDefinitions>Auto, *</Grid.RowDefinitions>
+            
+            <!-- Header with Shadow -->
+            <Border Grid.Row="0" Background="#12121A" Padding="20">
+                <Shadow Color="#00D4FF" BlurRadius="20" ShadowDepth="0" Opacity="0.3"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>*, Auto, Auto</Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <TextBlock Text="🎨" FontSize="28" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <StackPanel>
+                            <TextBlock Text="Dynamic Effects Demo" FontSize="24" FontWeight="Bold" Foreground="#00D4FF"/>
+                            <TextBlock Name="osInfoLabel" Text="Detecting OS..." FontSize="11" Foreground="#666"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <Button Grid.Column="1" Name="btnCheckOS" Content="🖥️ Check OS" Background="#333340" Foreground="White" Padding="15,8" Margin="0,0,10,0" onClick="CheckOSHandler"/>
+                    <Button Grid.Column="2" Name="btnReset" Content="🔄 Reset All" Background="#333340" Foreground="White" Padding="15,8" onClick="ResetAll"/>
+                </Grid>
+            </Border>
+            
+            <!-- Main Content -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20">
+                <StackPanel>
+                    
+                    <!-- OS Specific Effects Section -->
+                    <TextBlock Text="🖥️ OS-SPECIFIC EFFECTS" FontSize="18" FontWeight="Bold" Foreground="#A855F7" Margin="0,10,0,15"/>
+                    <Border CornerRadius="15" Background="#12121A" Padding="20" Margin="0,0,0,20">
+                        <Shadow Color="#A855F7" BlurRadius="15" ShadowDepth="0" Opacity="0.2"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>*, *, *, *</Grid.ColumnDefinitions>
+                            
+                            <Border Grid.Column="0" Name="win7Card" Margin="5" CornerRadius="12" Background="#1D2951" Height="100" Opacity="0.5">
+                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <TextBlock Text="Windows 7" FontSize="14" FontWeight="Bold" Foreground="#00B4D8" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Aero Glass" FontSize="11" Foreground="#666" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <Border Grid.Column="1" Name="win8Card" Margin="5" CornerRadius="12" Background="#1D2951" Height="100" Opacity="0.5">
+                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <TextBlock Text="Windows 8" FontSize="14" FontWeight="Bold" Foreground="#0077B6" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Metro Style" FontSize="11" Foreground="#666" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <Border Grid.Column="2" Name="win10Card" Margin="5" CornerRadius="12" Background="#1D2951" Height="100" Opacity="0.5">
+                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <TextBlock Text="Windows 10" FontSize="14" FontWeight="Bold" Foreground="#0096C7" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Acrylic Blur" FontSize="11" Foreground="#666" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <Border Grid.Column="3" Name="win11Card" Margin="5" CornerRadius="12" Background="#1D2951" Height="100" Opacity="0.5">
+                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <TextBlock Text="Windows 11" FontSize="14" FontWeight="Bold" Foreground="#48CAE4" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Mica Effect" FontSize="11" Foreground="#666" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    
+                    <!-- Shadow Effects -->
+                    <TextBlock Text="🌑 SHADOW EFFECTS" FontSize="18" FontWeight="Bold" Foreground="#FF6B6B" Margin="0,10,0,15"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>*, *, *, *</Grid.ColumnDefinitions>
+                        
+                        <Border Grid.Column="0" Name="shadowCard1" Margin="10" CornerRadius="15" Background="#FF6B6B" Height="120">
+                            <Shadow Color="#FF6B6B" BlurRadius="20" ShadowDepth="5" Opacity="0.6"/>
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="Drop Shadow" FontSize="14" Foreground="White" HorizontalAlignment="Center"/>
+                                <Button Name="btnShadow1" Content="Apply" Margin="0,8,0,0" Padding="12,4" Background="#FFFFFF" Foreground="#FF6B6B" onClick="ApplyShadow1"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <Border Grid.Column="1" Name="shadowCard2" Margin="10" CornerRadius="15" Background="#4ECDC4" Height="120">
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="Glow Effect" FontSize="14" Foreground="White" HorizontalAlignment="Center"/>
+                                <Button Name="btnShadow2" Content="Apply" Margin="0,8,0,0" Padding="12,4" Background="#FFFFFF" Foreground="#4ECDC4" onClick="ApplyGlow"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <Border Grid.Column="2" Name="shadowCard3" Margin="10" CornerRadius="15" Background="#A855F7" Height="120">
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="Soft Shadow" FontSize="14" Foreground="White" HorizontalAlignment="Center"/>
+                                <Button Name="btnShadow3" Content="Apply" Margin="0,8,0,0" Padding="12,4" Background="#FFFFFF" Foreground="#A855F7" onClick="ApplySoftShadow"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <Border Grid.Column="3" Name="shadowCard4" Margin="10" CornerRadius="15" Background="#F59E0B" Height="120">
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="Clear Effect" FontSize="14" Foreground="White" HorizontalAlignment="Center"/>
+                                <Button Name="btnShadow4" Content="Clear" Margin="0,8,0,0" Padding="12,4" Background="#FFFFFF" Foreground="#F59E0B" onClick="ClearAllShadows"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                    
+                    <!-- Blur Effects -->
+                    <TextBlock Text="💫 BLUR &amp; OPACITY" FontSize="18" FontWeight="Bold" Foreground="#00D4FF" Margin="0,30,0,15"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>*, *, *</Grid.ColumnDefinitions>
+                        
+                        <Border Grid.Column="0" Name="blurCard1" Margin="15" CornerRadius="15" Background="#0D2137" Height="100" Opacity="1">
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="Blur Effect" FontSize="14" Foreground="#00D4FF" HorizontalAlignment="Center"/>
+                                <Button Name="btnBlur1" Content="Blur" Margin="0,8,0,0" Padding="15,4" Background="#00D4FF" Foreground="#0D2137" onClick="ApplyBlur"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <Border Grid.Column="1" Name="blurCard2" Margin="15" CornerRadius="15" Background="#1D0D37" Height="100">
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="Fade In/Out" FontSize="14" Foreground="#A855F7" HorizontalAlignment="Center"/>
+                                <Button Name="btnBlur2" Content="Fade" Margin="0,8,0,0" Padding="15,4" Background="#A855F7" Foreground="White" onClick="ApplyFade"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <Border Grid.Column="2" Name="blurCard3" Margin="15" CornerRadius="15" Background="#0D3720" Height="100">
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="Opacity" FontSize="14" Foreground="#10B981" HorizontalAlignment="Center"/>
+                                <Button Name="btnBlur3" Content="50%" Margin="0,8,0,0" Padding="15,4" Background="#10B981" Foreground="White" onClick="ApplyOpacity"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                    
+                    <!-- Animated Cards -->
+                    <TextBlock Text="✨ ANIMATED CARDS" FontSize="18" FontWeight="Bold" Foreground="#EC4899" Margin="0,30,0,15"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>*, *, *, *</Grid.ColumnDefinitions>
+                        
+                        <Border Grid.Column="0" Name="pulseCard" Margin="10" CornerRadius="15" Background="#EC4899" Height="140">
+                            <Shadow Color="#EC4899" BlurRadius="0" ShadowDepth="0" Opacity="0.5"/>
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="PULSE" FontSize="14" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                                <Button Name="btnPulse" Content="Animate" Margin="0,10,0,0" Padding="10,5" Background="#FFFFFF" Foreground="#EC4899" onClick="AnimatePulse"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <Border Grid.Column="1" Name="rotateCard" Margin="10" CornerRadius="15" Background="#3B82F6" Height="140">
+                            <Shadow Color="#3B82F6" BlurRadius="0" ShadowDepth="0" Opacity="0.5"/>
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="ROTATE" FontSize="14" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                                <Button Name="btnRotate" Content="Spin" Margin="0,10,0,0" Padding="10,5" Background="#FFFFFF" Foreground="#3B82F6" onClick="AnimateRotate"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <Border Grid.Column="2" Name="scaleCard" Margin="10" CornerRadius="15" Background="#10B981" Height="140">
+                            <Shadow Color="#10B981" BlurRadius="0" ShadowDepth="0" Opacity="0.5"/>
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="SCALE" FontSize="14" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                                <Button Name="btnScale" Content="Grow" Margin="0,10,0,0" Padding="10,5" Background="#FFFFFF" Foreground="#10B981" onClick="AnimateScale"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <Border Grid.Column="3" Name="fadeCard" Margin="10" CornerRadius="15" Background="#F59E0B" Height="140">
+                            <Shadow Color="#F59E0B" BlurRadius="0" ShadowDepth="0" Opacity="0.5"/>
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="FADE" FontSize="14" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                                <Button Name="btnFade" Content="Fade" Margin="0,10,0,0" Padding="10,5" Background="#FFFFFF" Foreground="#F59E0B" onClick="AnimateFade"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                    
+                    <!-- Interactive Controls with Context Menu -->
+                    <TextBlock Text="🎛️ INTERACTIVE CONTROLS" FontSize="18" FontWeight="Bold" Foreground="#F59E0B" Margin="0,30,0,15"/>
+                    <Border CornerRadius="15" Background="#12121A" Padding="25">
+                        <Shadow Color="#000000" BlurRadius="20" ShadowDepth="5" Opacity="0.4"/>
+                        
+                        <!-- Context Menu for this Border -->
+                        <!-- <Border.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Name="menuCopy" Header="📋 Copy" Shortcut="Ctrl+C" onClick="CopyHandler"/>
+                                <MenuItem Name="menuPaste" Header="📝 Paste" Shortcut="Ctrl+V" onClick="PasteHandler"/>
+                                <Separator/>
+                                <MenuItem Name="menuReset" Header="🔄 Reset" onClick="ResetAll"/>
+                                <Separator/>
+                                <MenuItem Name="menuAbout" Header="ℹ️ About" onClick="ShowAbout"/>
+                            </ContextMenu>
+                        </Border.ContextMenu> -->
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>*, *, *</Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0" Margin="15">
+                                <TextBlock Text="Opacity Control" FontSize="14" FontWeight="Bold" Foreground="White" Margin="0,0,0,10"/>
+                                <Border Name="opacityDemo" Height="60" CornerRadius="10" Background="#00D4FF" Margin="0,0,0,10">
+                                    <Shadow Color="#00D4FF" BlurRadius="15" ShadowDepth="0" Opacity="0.5"/>
+                                </Border>
+                                <Slider Name="opacitySlider" Minimum="0" Maximum="100" Value="100" onValueChanged="OpacityChanged"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="1" Margin="15">
+                                <TextBlock Text="Scale Demo" FontSize="14" FontWeight="Bold" Foreground="White" Margin="0,0,0,10"/>
+                                <Border Name="sizeDemo" Height="60" Width="60" CornerRadius="30" Background="#A855F7" HorizontalAlignment="Center" Margin="0,0,0,10">
+                                    <Shadow Color="#A855F7" BlurRadius="15" ShadowDepth="0" Opacity="0.5"/>
+                                </Border>
+                                <Slider Name="sizeSlider" Minimum="30" Maximum="120" Value="60" onValueChanged="SizeChanged"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="2" Margin="15">
+                                <TextBlock Text="Color Demo" FontSize="14" FontWeight="Bold" Foreground="White" Margin="0,0,0,10"/>
+                                <Border Name="colorDemo" Height="60" CornerRadius="10" Background="#10B981" Margin="0,0,0,10" ToolTip="Click color buttons below">
+                                    <Shadow Color="#10B981" BlurRadius="15" ShadowDepth="0" Opacity="0.5"/>
+                                </Border>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Name="btnRed" Content="R" Width="40" Height="40" Margin="3" Background="#EF4444" Foreground="White" onClick="SetRed"/>
+                                    <Button Name="btnGreen" Content="G" Width="40" Height="40" Margin="3" Background="#10B981" Foreground="White" onClick="SetGreen"/>
+                                    <Button Name="btnBlue" Content="B" Width="40" Height="40" Margin="3" Background="#3B82F6" Foreground="White" onClick="SetBlue"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    
+                    <!-- Footer with App Info -->
+                    <Border Margin="0,30,0,0" CornerRadius="10" Background="#1A1A24" Padding="15">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="Nimbus Framework v2.0" FontSize="12" Foreground="#666"/>
+                            <TextBlock Text=" • " FontSize="12" Foreground="#444"/>
+                            <TextBlock Name="footerOS" Text="Windows" FontSize="12" Foreground="#666"/>
+                            <TextBlock Text=" • " FontSize="12" Foreground="#444"/>
+                            <TextBlock Text="Blur, Shadow, Opacity, Animations" FontSize="12" Foreground="#555"/>
+                        </StackPanel>
+                    </Border>
+                    
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </UI>
+    
+    <Logic>
+        <!-- OS Detection Handler -->
+        <Handler Name="CheckOSHandler">
+            <CheckOS ToControl="osInfoLabel" ToProperty="Text"/>
+            <CheckOS ToState="currentOS"/>
+            
+            <!-- Highlight current OS card -->
+            <IfWindows7>
+                <Then>
+                    <Opacity Control="win7Card" Value="1" Animate="true"/>
+                    <Glow Control="win7Card" Color="#00B4D8" Intensity="20" Animate="true"/>
+                    <Set Control="footerOS" Property="Text" Value="Windows 7"/>
+                </Then>
+            </IfWindows7>
+            
+            <IfWindows8>
+                <Then>
+                    <Opacity Control="win8Card" Value="1" Animate="true"/>
+                    <Glow Control="win8Card" Color="#0077B6" Intensity="20" Animate="true"/>
+                    <Set Control="footerOS" Property="Text" Value="Windows 8"/>
+                </Then>
+            </IfWindows8>
+            
+            <IfWindows10>
+                <Then>
+                    <Opacity Control="win10Card" Value="1" Animate="true"/>
+                    <Glow Control="win10Card" Color="#0096C7" Intensity="20" Animate="true"/>
+                    <Set Control="footerOS" Property="Text" Value="Windows 10"/>
+                    <IfSupportsAcrylic>
+                        <Then>
+                            <EnableBlur Window="MainWindow" Type="Acrylic" Opacity="85"/>
+                        </Then>
+                    </IfSupportsAcrylic>
+                </Then>
+            </IfWindows10>
+            
+            <IfWindows11>
+                <Then>
+                    <Opacity Control="win11Card" Value="1" Animate="true"/>
+                    <Glow Control="win11Card" Color="#48CAE4" Intensity="20" Animate="true"/>
+                    <Set Control="footerOS" Property="Text" Value="Windows 11"/>
+                    <IfSupportsMica>
+                        <Then>
+                            <EnableMica Window="MainWindow"/>
+                        </Then>
+                    </IfSupportsMica>
+                </Then>
+            </IfWindows11>
+        </Handler>
+        
+        <!-- Shadow Effects -->
+        <Handler Name="ApplyShadow1">
+            <DropShadow Control="shadowCard1" Color="#FF6B6B" BlurRadius="25" ShadowDepth="8" Opacity="0.7" Animate="true"/>
+        </Handler>
+        
+        <Handler Name="ApplyGlow">
+            <Glow Control="shadowCard2" Color="#4ECDC4" Intensity="25" Opacity="1" Animate="true" Duration="400"/>
+        </Handler>
+        
+        <Handler Name="ApplySoftShadow">
+            <DropShadow Control="shadowCard3" Color="#000000" BlurRadius="30" ShadowDepth="10" Opacity="0.4" Animate="true"/>
+        </Handler>
+        
+        <Handler Name="ClearAllShadows">
+            <ClearEffect Control="shadowCard1" Animate="true"/>
+            <ClearEffect Control="shadowCard2" Animate="true"/>
+            <ClearEffect Control="shadowCard3" Animate="true"/>
+            <ClearEffect Control="shadowCard4" Animate="true"/>
+        </Handler>
+        
+        <!-- Blur Effects -->
+        <Handler Name="ApplyBlur">
+            <BlurEffect Control="blurCard1" Radius="5" Animate="true" Duration="300"/>
+        </Handler>
+        
+        <Handler Name="ApplyFade">
+            <Opacity Control="blurCard2" Value="0,8" Animate="true" Duration="400"/>
+        </Handler>
+        
+        <Handler Name="ApplyOpacity">
+            <Opacity Control="blurCard3" Value="0,5" Animate="true" Duration="300"/>
+        </Handler>
+        
+        <!-- Animation Handlers -->
+        <Handler Name="AnimatePulse">
+            <Animate Control="pulseCard" Property="ScaleX" From="1" To="1.1" Duration="300" Easing="QuadraticEase"/>
+            <Animate Control="pulseCard" Property="ScaleY" From="1" To="1.1" Duration="300" Easing="QuadraticEase"/>
+            <Glow Control="pulseCard" Color="#EC4899" Intensity="20" Animate="true"/>
+        </Handler>
+        
+        <Handler Name="AnimateRotate">
+            <Animate Control="rotateCard" Property="Rotate" From="0" To="360" Duration="800" Easing="CubicEase"/>
+            <Glow Control="rotateCard" Color="#3B82F6" Intensity="15" Animate="true"/>
+        </Handler>
+        
+        <Handler Name="AnimateScale">
+            <Animate Control="scaleCard" Property="ScaleX" From="1" To="1.3" Duration="500" Easing="ElasticEase"/>
+            <Animate Control="scaleCard" Property="ScaleY" From="1" To="1.3" Duration="500" Easing="ElasticEase"/>
+            <Glow Control="scaleCard" Color="#10B981" Intensity="20" Animate="true"/>
+        </Handler>
+        
+        <Handler Name="AnimateFade">
+            <Animate Control="fadeCard" Property="Opacity" From="1" To="0.3" Duration="400"/>
+            <Glow Control="fadeCard" Color="#F59E0B" Intensity="10" Animate="true"/>
+        </Handler>
+        
+        <!-- Reset Handler -->
+        <Handler Name="ResetAll">
+            <Animate Control="pulseCard" Property="ScaleX" To="1" Duration="200"/>
+            <Animate Control="pulseCard" Property="ScaleY" To="1" Duration="200"/>
+            <Animate Control="rotateCard" Property="Rotate" To="0" Duration="200"/>
+            <Animate Control="scaleCard" Property="ScaleX" To="1" Duration="200"/>
+            <Animate Control="scaleCard" Property="ScaleY" To="1" Duration="200"/>
+            <Animate Control="fadeCard" Property="Opacity" To="1" Duration="200"/>
+            
+            <ClearEffect Control="pulseCard" Animate="true"/>
+            <ClearEffect Control="rotateCard" Animate="true"/>
+            <ClearEffect Control="scaleCard" Animate="true"/>
+            <ClearEffect Control="fadeCard" Animate="true"/>
+            
+            <ClearEffect Control="blurCard1" Animate="true"/>
+            <Opacity Control="blurCard2" Value="1" Animate="true"/>
+            <Opacity Control="blurCard3" Value="1" Animate="true"/>
+        </Handler>
+        
+        <!-- Color Handlers -->
+        <Handler Name="SetRed">
+            <Set Control="colorDemo" Property="Background" Value="#EF4444"/>
+            <Glow Control="colorDemo" Color="#EF4444" Intensity="15" Animate="true"/>
+        </Handler>
+        
+        <Handler Name="SetGreen">
+            <Set Control="colorDemo" Property="Background" Value="#10B981"/>
+            <Glow Control="colorDemo" Color="#10B981" Intensity="15" Animate="true"/>
+        </Handler>
+        
+        <Handler Name="SetBlue">
+            <Set Control="colorDemo" Property="Background" Value="#3B82F6"/>
+            <Glow Control="colorDemo" Color="#3B82F6" Intensity="15" Animate="true"/>
+        </Handler>
+        
+        <!-- Context Menu Handlers -->
+        <Handler Name="CopyHandler">
+            <Copy FromControl="osInfoLabel" FromProperty="Text"/>
+            <Alert Message="OS info copied to clipboard!" Title="Copied"/>
+        </Handler>
+        
+        <Handler Name="PasteHandler">
+            <Paste ToState="pastedText"/>
+            <Alert Message="Pasted from clipboard" Title="Paste"/>
+        </Handler>
+        
+        <Handler Name="ShowAbout">
+            <Alert Message="Nimbus Framework v2.0&#10;&#10;Features:&#10;• Blur/Acrylic/Mica Effects&#10;• Drop Shadows &amp; Glow&#10;• OS Detection (Win 7/8/10/11)&#10;• Custom ScrollBars&#10;• Context Menus&#10;• Rich Animations" Title="About Nimbus"/>
+        </Handler>
+    </Logic>
+    
+    <Shortcuts>
+        <KeyBinding Key="R" Modifiers="Control" Handler="ResetAll"/>
+        <KeyBinding Key="O" Modifiers="Control" Handler="CheckOSHandler"/>
+        <KeyBinding Key="Escape" Handler="ResetAll"/>
+    </Shortcuts>
+    
+</NimbusApp>

@@ -1,0 +1,2458 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="Nimbus Music"
+     Width="1100"
+     Height="750"
+     Theme="Dark"
+     DarkMode="true"
+     DevMode="true"
+     OnLoad="OnAppLoad"
+     Icon="music.ico">
+
+    <Plugins>
+        <Plugin Name="FilePlugin"/>
+    </Plugins>
+
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <!--                        COMPONENTS                              -->
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <Components>
+        <Colors>
+            <Color Name="BgMain" Value="#121212"/>
+            <Color Name="BgSidebar" Value="#000000"/>
+            <Color Name="BgCard" Value="#181818"/>
+            <Color Name="BgCardHover" Value="#282828"/>
+            <Color Name="BgPlayer" Value="#181818"/>
+            <Color Name="BgInput" Value="#2A2A2A"/>
+            <Color Name="BgHighlight" Value="#1A1A1A"/>
+            <Color Name="AccentGreen" Value="#1DB954"/>
+            <Color Name="AccentGreenHover" Value="#1ED760"/>
+            <Color Name="AccentGreenDark" Value="#158C3F"/>
+            <Color Name="TextPrimary" Value="#FFFFFF"/>
+            <Color Name="TextSecondary" Value="#B3B3B3"/>
+            <Color Name="TextMuted" Value="#727272"/>
+            <Color Name="TextLink" Value="#1DB954"/>
+            <Color Name="BorderSubtle" Value="#282828"/>
+            <Color Name="SliderBg" Value="#4D4D4D"/>
+            <Color Name="SliderFill" Value="#1DB954"/>
+            <Color Name="NowPlaying" Value="#1DB954"/>
+        </Colors>
+    </Components>
+
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <!--                          UI LAYOUT                             -->
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <UI>
+        <Grid Background="#121212">
+            <Grid.RowDefinitions>*,90</Grid.RowDefinitions>
+
+            <!-- ══════════════════════════════════ -->
+            <!--         TOP AREA (Sidebar+Content) -->
+            <!-- ══════════════════════════════════ -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>240,*</Grid.ColumnDefinitions>
+
+                <!-- ══════════════════════════════════ -->
+                <!--             SIDEBAR                -->
+                <!-- ══════════════════════════════════ -->
+                <Border Grid.Column="0" Background="#000000">
+                    <Grid>
+                        <Grid.RowDefinitions>Auto,Auto,*,Auto</Grid.RowDefinitions>
+
+                        <!-- Logo -->
+                        <StackPanel Grid.Row="0" Orientation="Horizontal"
+                                    Margin="24,28,24,32">
+                            <TextBlock Text="🎵" FontSize="28" Margin="0,0,10,0"/>
+                            <TextBlock Text="Nimbus Music" FontSize="20"
+                                       FontWeight="Bold" Foreground="#FFFFFF"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Main Nav -->
+                        <StackPanel Grid.Row="1" Margin="12,0,12,24">
+                            <!-- Home -->
+                            <Border Name="navHome" Background="#282828"
+                                    CornerRadius="8" Padding="14,12"
+                                    Margin="0,0,0,4" Cursor="Hand"
+                                    onClick="ShowHome">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="🏠" FontSize="20"
+                                               Margin="0,0,14,0"/>
+                                    <TextBlock Text="Home" FontSize="15"
+                                               FontWeight="SemiBold"
+                                               Foreground="#FFFFFF"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Search -->
+                            <Border Name="navSearch" Background="Transparent"
+                                    CornerRadius="8" Padding="14,12"
+                                    Margin="0,0,0,4" Cursor="Hand"
+                                    onClick="ShowSearch">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="🔍" FontSize="20"
+                                               Margin="0,0,14,0"/>
+                                    <TextBlock Text="Search" FontSize="15"
+                                               FontWeight="SemiBold"
+                                               Foreground="#B3B3B3"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Library -->
+                            <Border Name="navLibrary" Background="Transparent"
+                                    CornerRadius="8" Padding="14,12"
+                                    Cursor="Hand" onClick="ShowLibrary">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📚" FontSize="20"
+                                               Margin="0,0,14,0"/>
+                                    <TextBlock Text="Your Library" FontSize="15"
+                                               FontWeight="SemiBold"
+                                               Foreground="#B3B3B3"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Playlists Section -->
+                        <ScrollViewer Grid.Row="2"
+                                      VerticalScrollBarVisibility="Hidden">
+                            <StackPanel Margin="12,0,12,0">
+                                <!-- Divider -->
+                                <Border Height="1" Background="#282828"
+                                        Margin="0,0,0,16"/>
+
+                                <!-- Create Playlist -->
+                                <Border Name="btnCreatePlaylist" Background="Transparent"
+                                        CornerRadius="8" Padding="14,10"
+                                        Margin="0,0,0,4" Cursor="Hand"
+                                        onClick="CreatePlaylist">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Width="28" Height="28"
+                                                CornerRadius="4"
+                                                Background="#282828">
+                                            <TextBlock Text="+" FontSize="18"
+                                                       Foreground="#B3B3B3"
+                                                       FontWeight="Bold"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Border>
+                                        <TextBlock Text="Create Playlist"
+                                                   FontSize="14"
+                                                   Foreground="#B3B3B3"
+                                                   VerticalAlignment="Center"
+                                                   Margin="12,0,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Liked Songs -->
+                                <Border Name="navLiked" Background="Transparent"
+                                        CornerRadius="8" Padding="14,10"
+                                        Margin="0,0,0,4" Cursor="Hand"
+                                        onClick="ShowLikedSongs">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Width="28" Height="28"
+                                                CornerRadius="4">
+                                            <Border.Background>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                    <GradientStop Color="#7B68EE" Offset="0"/>
+                                                    <GradientStop Color="#B0C4FF" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                            <TextBlock Text="♥" FontSize="14"
+                                                       Foreground="White"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Border>
+                                        <TextBlock Text="Liked Songs"
+                                                   FontSize="14"
+                                                   Foreground="#B3B3B3"
+                                                   VerticalAlignment="Center"
+                                                   Margin="12,0,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Divider -->
+                                <Border Height="1" Background="#282828"
+                                        Margin="0,8,0,12"/>
+
+                                <!-- Playlist Items -->
+                                <Border Name="pl1" Padding="14,8" CornerRadius="6" Cursor="Hand" onClick="PlayPlaylist1">
+    <TextBlock Text="Chill Vibes 🌊" FontSize="13" Foreground="#B3B3B3"/>
+</Border>
+<Border Name="pl2" Padding="14,8" CornerRadius="6" Cursor="Hand" onClick="PlayPlaylist2">
+    <TextBlock Text="Workout Mix 💪" FontSize="13" Foreground="#B3B3B3"/>
+</Border>
+<Border Name="pl3" Padding="14,8" CornerRadius="6" Cursor="Hand" onClick="PlayPlaylist3">
+    <TextBlock Text="Late Night Jazz 🎷" FontSize="13" Foreground="#B3B3B3"/>
+</Border>
+<Border Name="pl4" Padding="14,8" CornerRadius="6" Cursor="Hand" onClick="PlayPlaylist4">
+    <TextBlock Text="Focus Mode 🎯" FontSize="13" Foreground="#B3B3B3"/>
+</Border>
+<Border Name="pl5" Padding="14,8" CornerRadius="6" Cursor="Hand" onClick="PlayPlaylist5">
+    <TextBlock Text="Road Trip 🚗" FontSize="13" Foreground="#B3B3B3"/>
+</Border>
+<Border Name="pl6" Padding="14,8" CornerRadius="6" Cursor="Hand" onClick="PlayPlaylist6">
+    <TextBlock Text="Uzbek Hits 🇺🇿" FontSize="13" Foreground="#B3B3B3"/>
+</Border>
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <!-- Sidebar Footer -->
+                        <Border Name="btnopenff" Grid.Row="3" Padding="16,12"
+                                BorderBrush="#282828"
+                                BorderThickness="0,1,0,0">
+                            <StackPanel Orientation="Horizontal"
+                                        Cursor="Hand" onClick="OpenMusicFolder">
+                                <TextBlock Text="📁" FontSize="16"
+                                           Margin="0,0,8,0"/>
+                                <TextBlock Text="Open Music Folder"
+                                           FontSize="12" Foreground="#727272"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- ══════════════════════════════════ -->
+                <!--           MAIN CONTENT             -->
+                <!-- ══════════════════════════════════ -->
+                <Grid Grid.Column="1">
+
+                    <!-- ────── HOME VIEW ────── -->
+                    <ScrollViewer Name="homeView" Visibility="Visible"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel>
+
+                            <!-- Hero Banner -->
+                            <Border Margin="0,0,0,0" Height="300">
+                                <Border CornerRadius="0">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="#1DB954" Offset="0"/>
+                                            <GradientStop Color="#121212" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+
+                                    <StackPanel Margin="32,48,32,0">
+                                        <!-- Greeting -->
+                                        <TextBlock Name="lblGreeting"
+                                                   Text="Good Evening"
+                                                   FontSize="32" FontWeight="Bold"
+                                                   Foreground="White"
+                                                   Margin="0,0,0,28"/>
+
+                                        <!-- Quick Play Cards (2x3 grid) -->
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>*,8,*,8,*</Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>Auto,8,Auto</Grid.RowDefinitions>
+
+                                            <!-- Row 1 -->
+                                            <Border Grid.Row="0" Grid.Column="0"
+                                                    Background="#FFFFFF18" CornerRadius="6"
+                                                    Cursor="Hand" onClick="QuickPlay1">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Border Width="52" Height="52"
+                                                            CornerRadius="6,0,0,6"
+                                                            Background="#1DB954">
+                                                        <TextBlock Text="🎵" FontSize="24"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"/>
+                                                    </Border>
+                                                    <TextBlock Text="Liked Songs"
+                                                               FontSize="14" FontWeight="Bold"
+                                                               Foreground="White" Margin="14,0,0,0"
+                                                               VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <Border Grid.Row="0" Grid.Column="2"
+                                                    Background="#FFFFFF18" CornerRadius="6"
+                                                    Cursor="Hand" onClick="QuickPlay2">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Border Width="52" Height="52"
+                                                            CornerRadius="6,0,0,6"
+                                                            Background="#E91E63">
+                                                        <TextBlock Text="🌊" FontSize="24"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"/>
+                                                    </Border>
+                                                    <TextBlock Text="Chill Vibes"
+                                                               FontSize="14" FontWeight="Bold"
+                                                               Foreground="White" Margin="14,0,0,0"
+                                                               VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <Border Grid.Row="0" Grid.Column="4"
+                                                    Background="#FFFFFF18" CornerRadius="6"
+                                                    Cursor="Hand" onClick="QuickPlay3">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Border Width="52" Height="52"
+                                                            CornerRadius="6,0,0,6"
+                                                            Background="#FF6F00">
+                                                        <TextBlock Text="💪" FontSize="24"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"/>
+                                                    </Border>
+                                                    <TextBlock Text="Workout"
+                                                               FontSize="14" FontWeight="Bold"
+                                                               Foreground="White" Margin="14,0,0,0"
+                                                               VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- Row 2 -->
+                                            <Border Grid.Row="2" Grid.Column="0"
+                                                    Background="#FFFFFF18" CornerRadius="6"
+                                                    Cursor="Hand" onClick="QuickPlay4">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Border Width="52" Height="52"
+                                                            CornerRadius="6,0,0,6"
+                                                            Background="#5C6BC0">
+                                                        <TextBlock Text="🎷" FontSize="24"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"/>
+                                                    </Border>
+                                                    <TextBlock Text="Jazz Night"
+                                                               FontSize="14" FontWeight="Bold"
+                                                               Foreground="White" Margin="14,0,0,0"
+                                                               VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <Border Grid.Row="2" Grid.Column="2"
+                                                    Background="#FFFFFF18" CornerRadius="6"
+                                                    Cursor="Hand" onClick="QuickPlay5">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Border Width="52" Height="52"
+                                                            CornerRadius="6,0,0,6"
+                                                            Background="#00897B">
+                                                        <TextBlock Text="🎯" FontSize="24"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"/>
+                                                    </Border>
+                                                    <TextBlock Text="Focus"
+                                                               FontSize="14" FontWeight="Bold"
+                                                               Foreground="White" Margin="14,0,0,0"
+                                                               VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <Border Grid.Row="2" Grid.Column="4"
+                                                    Background="#FFFFFF18" CornerRadius="6"
+                                                    Cursor="Hand" onClick="QuickPlay6">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Border Width="52" Height="52"
+                                                            CornerRadius="6,0,0,6"
+                                                            Background="#D32F2F">
+                                                        <TextBlock Text="🇺🇿" FontSize="24"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"/>
+                                                    </Border>
+                                                    <TextBlock Text="Uzbek Hits"
+                                                               FontSize="14" FontWeight="Bold"
+                                                               Foreground="White" Margin="14,0,0,0"
+                                                               VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+                            </Border>
+
+                            <!-- ── Recently Played Section ── -->
+                            <StackPanel Margin="32,8,32,0">
+                                <Grid Margin="0,0,0,20">
+                                    <TextBlock Text="Recently Played"
+                                               FontSize="24" FontWeight="Bold"
+                                               Foreground="White"/>
+                                    <TextBlock Text="Show All"
+                                               FontSize="13" FontWeight="SemiBold"
+                                               Foreground="#B3B3B3"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Bottom"
+                                               Cursor="Hand"/>
+                                </Grid>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>*,16,*,16,*,16,*,16,*</Grid.ColumnDefinitions>
+
+                                    <!-- Card 1 -->
+                                    <Border Grid.Column="0" Background="#181818"
+                                            CornerRadius="8" Padding="16"
+                                            Cursor="Hand" onClick="PlayRecent1">
+                                        <StackPanel>
+                                            <Border Height="140" CornerRadius="6"
+                                                    Background="#282828" Margin="0,0,0,16">
+                                                <TextBlock Text="🎧" FontSize="48"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+                                            <TextBlock Text="Daily Mix 1"
+                                                       FontSize="15" FontWeight="Bold"
+                                                       Foreground="White" Margin="0,0,0,6"/>
+                                            <TextBlock Text="Pop, R&amp;B, Hip-Hop"
+                                                       FontSize="12" Foreground="#727272"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Card 2 -->
+                                    <Border Grid.Column="2" Background="#181818"
+                                            CornerRadius="8" Padding="16"
+                                            Cursor="Hand" onClick="PlayRecent2">
+                                        <StackPanel>
+                                            <Border Height="140" CornerRadius="6"
+                                                    Background="#1A3A2A" Margin="0,0,0,16">
+                                                <TextBlock Text="🎸" FontSize="48"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+                                            <TextBlock Text="Rock Classics"
+                                                       FontSize="15" FontWeight="Bold"
+                                                       Foreground="White" Margin="0,0,0,6"/>
+                                            <TextBlock Text="Queen, AC/DC, Nirvana"
+                                                       FontSize="12" Foreground="#727272"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Card 3 -->
+                                    <Border Grid.Column="4" Background="#181818"
+                                            CornerRadius="8" Padding="16"
+                                            Cursor="Hand" onClick="PlayRecent3">
+                                        <StackPanel>
+                                            <Border Height="140" CornerRadius="6"
+                                                    Background="#2A1A3A" Margin="0,0,0,16">
+                                                <TextBlock Text="🎹" FontSize="48"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+                                            <TextBlock Text="Piano Chill"
+                                                       FontSize="15" FontWeight="Bold"
+                                                       Foreground="White" Margin="0,0,0,6"/>
+                                            <TextBlock Text="Relax, Classical, Ambient"
+                                                       FontSize="12" Foreground="#727272"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Card 4 -->
+                                    <Border Grid.Column="6" Background="#181818"
+                                            CornerRadius="8" Padding="16"
+                                            Cursor="Hand" onClick="PlayRecent4">
+                                        <StackPanel>
+                                            <Border Height="140" CornerRadius="6"
+                                                    Background="#3A2A1A" Margin="0,0,0,16">
+                                                <TextBlock Text="🎤" FontSize="48"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+                                            <TextBlock Text="Top Hits 2024"
+                                                       FontSize="15" FontWeight="Bold"
+                                                       Foreground="White" Margin="0,0,0,6"/>
+                                            <TextBlock Text="Trending Worldwide"
+                                                       FontSize="12" Foreground="#727272"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Card 5 -->
+                                    <Border Grid.Column="8" Background="#181818"
+                                            CornerRadius="8" Padding="16"
+                                            Cursor="Hand" onClick="PlayRecent5">
+                                        <StackPanel>
+                                            <Border Height="140" CornerRadius="6"
+                                                    Background="#1A2A3A" Margin="0,0,0,16">
+                                                <TextBlock Text="🎻" FontSize="48"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+                                            <TextBlock Text="Uzbek Classics"
+                                                       FontSize="15" FontWeight="Bold"
+                                                       Foreground="White" Margin="0,0,0,6"/>
+                                            <TextBlock Text="Traditional, Modern"
+                                                       FontSize="12" Foreground="#727272"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </StackPanel>
+
+                            <!-- ── Made For You Section ── -->
+                            <StackPanel Margin="32,36,32,0">
+                                <TextBlock Text="Made For You"
+                                           FontSize="24" FontWeight="Bold"
+                                           Foreground="White" Margin="0,0,0,20"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>*,16,*,16,*,16,*,16,*</Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Background="#181818"
+                                            CornerRadius="8" Padding="16" Cursor="Hand">
+                                        <StackPanel>
+                                            <Border Height="140" CornerRadius="6"
+                                                    Margin="0,0,0,16">
+                                                <Border.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                        <GradientStop Color="#E91E63" Offset="0"/>
+                                                        <GradientStop Color="#9C27B0" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                </Border.Background>
+                                                <TextBlock Text="DM" FontSize="36"
+                                                           FontWeight="Bold" Foreground="White"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+                                            <TextBlock Text="Discover Weekly"
+                                                       FontSize="15" FontWeight="Bold"
+                                                       Foreground="White" Margin="0,0,0,6"/>
+                                            <TextBlock Text="Your weekly mixtape"
+                                                       FontSize="12" Foreground="#727272"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Grid.Column="2" Background="#181818"
+                                            CornerRadius="8" Padding="16" Cursor="Hand">
+                                        <StackPanel>
+                                            <Border Height="140" CornerRadius="6"
+                                                    Margin="0,0,0,16">
+                                                <Border.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                        <GradientStop Color="#1DB954" Offset="0"/>
+                                                        <GradientStop Color="#006400" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                </Border.Background>
+                                                <TextBlock Text="RR" FontSize="36"
+                                                           FontWeight="Bold" Foreground="White"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+                                            <TextBlock Text="Release Radar"
+                                                       FontSize="15" FontWeight="Bold"
+                                                       Foreground="White" Margin="0,0,0,6"/>
+                                            <TextBlock Text="New music from artists"
+                                                       FontSize="12" Foreground="#727272"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Grid.Column="4" Background="#181818"
+                                            CornerRadius="8" Padding="16" Cursor="Hand">
+                                        <StackPanel>
+                                            <Border Height="140" CornerRadius="6"
+                                                    Background="#FF6F00" Margin="0,0,0,16">
+                                                <TextBlock Text="🔥" FontSize="48"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+                                            <TextBlock Text="On Repeat"
+                                                       FontSize="15" FontWeight="Bold"
+                                                       Foreground="White" Margin="0,0,0,6"/>
+                                            <TextBlock Text="Songs you love right now"
+                                                       FontSize="12" Foreground="#727272"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Grid.Column="6" Background="#181818"
+                                            CornerRadius="8" Padding="16" Cursor="Hand">
+                                        <StackPanel>
+                                            <Border Height="140" CornerRadius="6"
+                                                    Background="#00695C" Margin="0,0,0,16">
+                                                <TextBlock Text="🕐" FontSize="48"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+                                            <TextBlock Text="Time Capsule"
+                                                       FontSize="15" FontWeight="Bold"
+                                                       Foreground="White" Margin="0,0,0,6"/>
+                                            <TextBlock Text="Nostalgic throwbacks"
+                                                       FontSize="12" Foreground="#727272"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Grid.Column="8" Background="#181818"
+                                            CornerRadius="8" Padding="16" Cursor="Hand">
+                                        <StackPanel>
+                                            <Border Height="140" CornerRadius="6"
+                                                    Background="#4A148C" Margin="0,0,0,16">
+                                                <TextBlock Text="✨" FontSize="48"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+                                            <TextBlock Text="Blend"
+                                                       FontSize="15" FontWeight="Bold"
+                                                       Foreground="White" Margin="0,0,0,6"/>
+                                            <TextBlock Text="Made with friends"
+                                                       FontSize="12" Foreground="#727272"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </StackPanel>
+
+                            <!-- Spacer for player bar -->
+                            <Border Height="40"/>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- ────── SEARCH VIEW ────── -->
+                                        <!-- ════ SEARCH VIEW ════ -->
+                    <ScrollViewer Name="searchView" Visibility="Collapsed"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel Margin="32,24,32,40">
+                            <TextBlock Text="Search" FontSize="28"
+                                       FontWeight="Bold" Foreground="White"
+                                       Margin="0,0,0,20"/>
+
+                            <!-- Search Input -->
+                            <Border Name="searchBarBorder" Background="#FFFFFF14"
+                                    CornerRadius="8" Height="48"
+                                    Margin="0,0,0,24"
+                                    BorderBrush="#FFFFFF20" BorderThickness="1">
+                                <Grid Margin="16,0">
+                                    <Grid.ColumnDefinitions>Auto,*,Auto</Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="🔍" FontSize="18"
+                                               Foreground="#B3B3B3"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,12,0"/>
+
+                                    <TextBox Name="txtSearch" Grid.Column="1"
+                                             Background="Transparent"
+                                             BorderThickness="0"
+                                             Foreground="White" FontSize="15"
+                                             VerticalAlignment="Center"
+                                             Placeholder="What do you want to listen to?"
+                                             CaretBrush="White"
+                                             onTextChanged="OnSearchChanged"/>
+
+                                    <Border Name="btnClearSearch" Grid.Column="2"
+                                            Cursor="Hand" onClick="ClearSearch"
+                                            Visibility="Collapsed">
+                                        <TextBlock Text="✕" FontSize="16"
+                                                   Foreground="#B3B3B3"
+                                                   VerticalAlignment="Center"
+                                                   Margin="8,0,0,0"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                            <!-- ═══ Search Results Panel ═══ -->
+                            <Border Name="searchResultsPanel" Visibility="Collapsed">
+                                <StackPanel>
+                                    <!-- Result Count -->
+                                    <TextBlock Name="lblSearchResultCount" Text=""
+                                               FontSize="14" Foreground="#B3B3B3"
+                                               Margin="0,0,0,16"/>
+
+                                    <!-- Results Table Header -->
+                                    <Grid Margin="0,0,0,8" Opacity="0.6">
+                                        <Grid.ColumnDefinitions>30,*,Auto,60</Grid.ColumnDefinitions>
+                                        <TextBlock Text="#" FontSize="13"
+                                                   Foreground="#B3B3B3"
+                                                   HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="1" Text="TITLE"
+                                                   FontSize="12" FontWeight="SemiBold"
+                                                   Foreground="#B3B3B3"
+                                                   Margin="16,0,0,0"/>
+                                        <TextBlock Grid.Column="2" Text="ARTIST"
+                                                   FontSize="12" FontWeight="SemiBold"
+                                                   Foreground="#B3B3B3" Width="150"/>
+                                        <TextBlock Grid.Column="3" Text="⏱"
+                                                   FontSize="14" Foreground="#B3B3B3"
+                                                   HorizontalAlignment="Center"/>
+                                    </Grid>
+                                    <Border Height="1" Background="#282828"
+                                            Margin="0,0,0,4"/>
+
+                                    <!-- Dynamic Results List -->
+                                    <StackPanel Name="searchResultsList"/>
+
+                                    <!-- No Results Message -->
+                                    <Border Name="noSearchResults"
+                                            Visibility="Collapsed"
+                                            Margin="0,40,0,0">
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <TextBlock Text="🔍" FontSize="48"
+                                                       TextAlignment="Center"
+                                                       Margin="0,0,0,16"/>
+                                            <TextBlock Name="lblNoResults"
+                                                       Text="No results found"
+                                                       FontSize="18"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="White"
+                                                       TextAlignment="Center"/>
+                                            <TextBlock Text="Try different keywords or check spelling"
+                                                       FontSize="14"
+                                                       Foreground="#727272"
+                                                       TextAlignment="Center"
+                                                       Margin="0,8,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- ═══ Browse Categories Panel ═══ -->
+                            <Border Name="browseCategoriesPanel" Visibility="Visible">
+                                <StackPanel>
+                                    <TextBlock Text="Browse All" FontSize="22"
+                                               FontWeight="Bold" Foreground="White"
+                                               Margin="0,0,0,16"/>
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>*,12,*,12,*,12,*</Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>Auto,12,Auto,12,Auto</Grid.RowDefinitions>
+
+                                        <Border Name="catPodcasts" Grid.Row="0" Grid.Column="0"
+                                                Background="#E13300" CornerRadius="8"
+                                                Height="100" Padding="16,14"
+                                                Cursor="Hand" onClick="BrowseCategory">
+                                            <TextBlock Text="Podcasts" FontSize="16"
+                                                       FontWeight="Bold" Foreground="White"/>
+                                        </Border>
+                                        <Border Name="catCharts" Grid.Row="0" Grid.Column="2"
+                                                Background="#1DB954" CornerRadius="8"
+                                                Height="100" Padding="16,14"
+                                                Cursor="Hand" onClick="BrowseCategory">
+                                            <TextBlock Text="Charts" FontSize="16"
+                                                       FontWeight="Bold" Foreground="White"/>
+                                        </Border>
+                                        <Border Name="catPop" Grid.Row="0" Grid.Column="4"
+                                                Background="#E91E63" CornerRadius="8"
+                                                Height="100" Padding="16,14"
+                                                Cursor="Hand" onClick="BrowseCategory">
+                                            <TextBlock Text="Pop" FontSize="16"
+                                                       FontWeight="Bold" Foreground="White"/>
+                                        </Border>
+                                        <Border Name="catHipHop" Grid.Row="0" Grid.Column="6"
+                                                Background="#5C6BC0" CornerRadius="8"
+                                                Height="100" Padding="16,14"
+                                                Cursor="Hand" onClick="BrowseCategory">
+                                            <TextBlock Text="Hip-Hop" FontSize="16"
+                                                       FontWeight="Bold" Foreground="White"/>
+                                        </Border>
+
+                                        <Border Name="catRock" Grid.Row="2" Grid.Column="0"
+                                                Background="#00897B" CornerRadius="8"
+                                                Height="100" Padding="16,14"
+                                                Cursor="Hand" onClick="BrowseCategory">
+                                            <TextBlock Text="Rock" FontSize="16"
+                                                       FontWeight="Bold" Foreground="White"/>
+                                        </Border>
+                                        <Border Name="catLatin" Grid.Row="2" Grid.Column="2"
+                                                Background="#FF6F00" CornerRadius="8"
+                                                Height="100" Padding="16,14"
+                                                Cursor="Hand" onClick="BrowseCategory">
+                                            <TextBlock Text="Latin" FontSize="16"
+                                                       FontWeight="Bold" Foreground="White"/>
+                                        </Border>
+                                        <Border Name="catRnB" Grid.Row="2" Grid.Column="4"
+                                                Background="#8E24AA" CornerRadius="8"
+                                                Height="100" Padding="16,14"
+                                                Cursor="Hand" onClick="BrowseCategory">
+                                            <TextBlock Text="R&amp;B" FontSize="16"
+                                                       FontWeight="Bold" Foreground="White"/>
+                                        </Border>
+                                        <Border Name="catUzbek" Grid.Row="2" Grid.Column="6"
+                                                Background="#D32F2F" CornerRadius="8"
+                                                Height="100" Padding="16,14"
+                                                Cursor="Hand" onClick="BrowseCategory">
+                                            <TextBlock Text="Uzbek" FontSize="16"
+                                                       FontWeight="Bold" Foreground="White"/>
+                                        </Border>
+
+                                        <Border Name="catMood" Grid.Row="4" Grid.Column="0"
+                                                Background="#827717" CornerRadius="8"
+                                                Height="100" Padding="16,14"
+                                                Cursor="Hand" onClick="BrowseCategory">
+                                            <TextBlock Text="Mood" FontSize="16"
+                                                       FontWeight="Bold" Foreground="White"/>
+                                        </Border>
+                                        <Border Name="catClassical" Grid.Row="4" Grid.Column="2"
+                                                Background="#01579B" CornerRadius="8"
+                                                Height="100" Padding="16,14"
+                                                Cursor="Hand" onClick="BrowseCategory">
+                                            <TextBlock Text="Classical" FontSize="16"
+                                                       FontWeight="Bold" Foreground="White"/>
+                                        </Border>
+                                        <Border Name="catJazz" Grid.Row="4" Grid.Column="4"
+                                                Background="#4E342E" CornerRadius="8"
+                                                Height="100" Padding="16,14"
+                                                Cursor="Hand" onClick="BrowseCategory">
+                                            <TextBlock Text="Jazz" FontSize="16"
+                                                       FontWeight="Bold" Foreground="White"/>
+                                        </Border>
+                                        <Border Name="catElectronic" Grid.Row="4" Grid.Column="6"
+                                                Background="#006064" CornerRadius="8"
+                                                Height="100" Padding="16,14"
+                                                Cursor="Hand" onClick="BrowseCategory">
+                                            <TextBlock Text="Electronic" FontSize="16"
+                                                       FontWeight="Bold" Foreground="White"/>
+                                        </Border>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- ────── LIBRARY VIEW ────── -->
+                    <ScrollViewer Name="libraryView" Visibility="Collapsed"
+                                  VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="32,24,32,40">
+                            <Grid Margin="0,0,0,24">
+                                <Grid.ColumnDefinitions>*,Auto</Grid.ColumnDefinitions>
+                                <TextBlock Text="Your Library"
+                                           FontSize="28" FontWeight="Bold"
+                                           Foreground="White"/>
+                                <StackPanel Grid.Column="1"
+                                            Orientation="Horizontal">
+                                    <Button Content="🔀 Shuffle All"
+                                            Background="#1DB954"
+                                            Foreground="White"
+                                            CornerRadius="20"
+                                            Padding="20,10"
+                                            FontSize="13" FontWeight="SemiBold"
+                                            HoverColor="#1ED760"
+                                            onClick="ShuffleAll"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Stats Bar -->
+                            <Grid Margin="0,0,0,20">
+                                <Grid.ColumnDefinitions>*,12,*,12,*</Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0" Background="#181818"
+                                        CornerRadius="10" Padding="16,14">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Name="lblTotalSongs"
+                                                   Text="0" FontSize="28"
+                                                   FontWeight="Bold"
+                                                   Foreground="#1DB954"
+                                                   TextAlignment="Center"/>
+                                        <TextBlock Text="Songs" FontSize="12"
+                                                   Foreground="#727272"
+                                                   TextAlignment="Center"
+                                                   Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Grid.Column="2" Background="#181818"
+                                        CornerRadius="10" Padding="16,14">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Name="lblTotalDuration"
+                                                   Text="0h" FontSize="28"
+                                                   FontWeight="Bold"
+                                                   Foreground="#E91E63"
+                                                   TextAlignment="Center"/>
+                                        <TextBlock Text="Duration" FontSize="12"
+                                                   Foreground="#727272"
+                                                   TextAlignment="Center"
+                                                   Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Grid.Column="4" Background="#181818"
+                                        CornerRadius="10" Padding="16,14">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Name="lblLikedCount"
+                                                   Text="0" FontSize="28"
+                                                   FontWeight="Bold"
+                                                   Foreground="#FF6F00"
+                                                   TextAlignment="Center"/>
+                                        <TextBlock Text="Liked" FontSize="12"
+                                                   Foreground="#727272"
+                                                   TextAlignment="Center"
+                                                   Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <!-- Song List Header -->
+                            <Grid Margin="0,8,0,12" Opacity="0.6">
+                                <Grid.ColumnDefinitions>30,*,Auto,60</Grid.ColumnDefinitions>
+                                <TextBlock Text="#" FontSize="13"
+                                           Foreground="#B3B3B3"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="TITLE"
+                                           FontSize="12" FontWeight="SemiBold"
+                                           Foreground="#B3B3B3" Margin="16,0,0,0"/>
+                                <TextBlock Grid.Column="2" Text="ARTIST"
+                                           FontSize="12" FontWeight="SemiBold"
+                                           Foreground="#B3B3B3" Width="180"/>
+                                <TextBlock Grid.Column="3" Text="⏱"
+                                           FontSize="14" Foreground="#B3B3B3"
+                                           HorizontalAlignment="Center"/>
+                            </Grid>
+                            <Border Height="1" Background="#282828"
+                                    Margin="0,0,0,4"/>
+
+                            <!-- Song List (dynamically populated) -->
+                            <StackPanel Name="songListContainer"/>
+
+                            <!-- Empty Library -->
+                            <Border Name="emptyLibrary" Visibility="Collapsed"
+                                    Margin="0,60,0,0">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="🎵" FontSize="64"
+                                               TextAlignment="Center"
+                                               Margin="0,0,0,20"/>
+                                    <TextBlock Text="Your library is empty"
+                                               FontSize="22" FontWeight="Bold"
+                                               Foreground="White"
+                                               TextAlignment="Center"/>
+                                    <TextBlock Text="Add music files to your Music folder to get started"
+                                               FontSize="14" Foreground="#727272"
+                                               TextAlignment="Center"
+                                               Margin="0,8,0,24"
+                                               TextWrapping="Wrap"/>
+                                    <Button Content="📁 Open Music Folder"
+                                            Background="#1DB954"
+                                            Foreground="White"
+                                            CornerRadius="24"
+                                            Padding="28,14"
+                                            FontSize="15" FontWeight="SemiBold"
+                                            HoverColor="#1ED760"
+                                            onClick="OpenMusicFolder"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- ────── NOW PLAYING VIEW ────── -->
+                    <Border Name="nowPlayingView" Visibility="Collapsed"
+                            Background="#121212">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="48,24,48,40">
+                                <!-- Back Button -->
+                                <Border Margin="0,0,0,24" Cursor="Hand"
+                                        HorizontalAlignment="Left"
+                                        onClick="CloseNowPlaying">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="‹" FontSize="28"
+                                                   Foreground="#B3B3B3"
+                                                   Margin="0,-4,6,0"/>
+                                        <TextBlock Text="Back" FontSize="15"
+                                                   Foreground="#B3B3B3"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto,48,*</Grid.ColumnDefinitions>
+
+                                    <!-- Large Album Art -->
+                                    <Border Grid.Column="0" Width="340"
+                                            Height="340" CornerRadius="8">
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#1DB954" Offset="0"/>
+                                                <GradientStop Color="#191414" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                        <Border.Effect>
+                                            <DropShadowEffect Color="#000000"
+                                                              BlurRadius="40"
+                                                              ShadowDepth="10"
+                                                              Opacity="0.6"/>
+                                        </Border.Effect>
+                                        <TextBlock Name="npArtEmoji" Text="🎵"
+                                                   FontSize="96"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <!-- Song Details -->
+                                    <StackPanel Grid.Column="2"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="NOW PLAYING" FontSize="12"
+                                                   FontWeight="Bold"
+                                                   Foreground="#1DB954"
+                                                   Margin="0,0,0,12"/>
+                                        <TextBlock Name="npTitle"
+                                                   Text="No Song Selected"
+                                                   FontSize="36" FontWeight="Bold"
+                                                   Foreground="White"
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,0,0,8"/>
+                                        <TextBlock Name="npArtist"
+                                                   Text="Unknown Artist"
+                                                   FontSize="20"
+                                                   Foreground="#B3B3B3"
+                                                   Margin="0,0,0,4"/>
+                                        <TextBlock Name="npAlbum"
+                                                   Text="" FontSize="14"
+                                                   Foreground="#727272"
+                                                   Margin="0,0,0,32"/>
+
+                                        <!-- Like + Info -->
+                                        <StackPanel Orientation="Horizontal"
+                                                    Margin="0,0,0,28">
+                                            <Border Name="btnNpLike"
+                                                    Cursor="Hand"
+                                                    onClick="ToggleLikeNP">
+                                                <TextBlock Name="npLikeIcon"
+                                                           Text="♡"
+                                                           FontSize="28"
+                                                           Foreground="#B3B3B3"
+                                                           Margin="0,0,20,0"/>
+                                            </Border>
+                                            <TextBlock Name="npFileInfo"
+                                                       Text=""
+                                                       FontSize="12"
+                                                       Foreground="#727272"
+                                                       VerticalAlignment="Center"/>
+                                        </StackPanel>
+
+                                        <!-- Playback Progress -->
+                                        <Grid Margin="0,0,0,16">
+                                            <Grid.ColumnDefinitions>Auto,*,Auto</Grid.ColumnDefinitions>
+                                            <TextBlock Name="npCurrentTime"
+                                                       Text="0:00" FontSize="12"
+                                                       Foreground="#B3B3B3"
+                                                       Margin="0,0,12,0"/>
+                                            <Border Grid.Column="1" Height="4"
+                                                    CornerRadius="2"
+                                                    Background="#4D4D4D"
+                                                    VerticalAlignment="Center">
+                                                <Border Name="npProgressFill"
+                                                        Height="4" CornerRadius="2"
+                                                        Background="#1DB954"
+                                                        HorizontalAlignment="Left"
+                                                        Width="0"/>
+                                            </Border>
+                                            <TextBlock Name="npDuration"
+                                                       Grid.Column="2"
+                                                       Text="0:00" FontSize="12"
+                                                       Foreground="#B3B3B3"
+                                                       Margin="12,0,0,0"/>
+                                        </Grid>
+
+                                        <!-- Playback Controls -->
+                                        <StackPanel Orientation="Horizontal">
+                                            <Border Width="44" Height="44"
+                                                    CornerRadius="22"
+                                                    Background="#282828"
+                                                    Margin="0,0,12,0"
+                                                    Cursor="Hand"
+                                                    onClick="PrevSong">
+                                                <TextBlock Text="⏮" FontSize="18"
+                                                           Foreground="White"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+
+                                            <Border Name="npPlayBtn" Width="56"
+                                                    Height="56" CornerRadius="28"
+                                                    Background="#1DB954"
+                                                    Margin="0,0,12,0"
+                                                    Cursor="Hand"
+                                                    onClick="TogglePlayback">
+                                                <TextBlock Name="npPlayIcon"
+                                                           Text="▶"
+                                                           FontSize="24"
+                                                           Foreground="White"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+
+                                            <Border Width="44" Height="44"
+                                                    CornerRadius="22"
+                                                    Background="#282828"
+                                                    Margin="0,0,24,0"
+                                                    Cursor="Hand"
+                                                    onClick="NextSong">
+                                                <TextBlock Text="⏭" FontSize="18"
+                                                           Foreground="White"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+
+                                            <Border Width="44" Height="44"
+                                                    CornerRadius="22"
+                                                    Background="#282828"
+                                                    Margin="0,0,8,0"
+                                                    Cursor="Hand"
+                                                    onClick="ToggleShuffle">
+                                                <TextBlock Name="npShuffleIcon"
+                                                           Text="🔀" FontSize="16"
+                                                           Foreground="#B3B3B3"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+
+                                            <Border Width="44" Height="44"
+                                                    CornerRadius="22"
+                                                    Background="#282828"
+                                                    Cursor="Hand"
+                                                    onClick="ToggleRepeat">
+                                                <TextBlock Name="npRepeatIcon"
+                                                           Text="🔁" FontSize="16"
+                                                           Foreground="#B3B3B3"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- Up Next Queue -->
+                                <TextBlock Text="Up Next" FontSize="20"
+                                           FontWeight="Bold" Foreground="White"
+                                           Margin="0,40,0,16"/>
+                                <StackPanel Name="queueContainer"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                    <!-- ════ CREATE PLAYLIST POPUP ════ -->
+<Border Name="playlistPopupOverlay" Visibility="Collapsed"
+        Background="#000000AA" >
+    <Border Name="playlistPopupBox" Width="440"
+            Background="#282828" CornerRadius="16"
+            Padding="32" VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            BorderBrush="#FFFFFF15" BorderThickness="1">
+        <Border.Effect>
+            <DropShadowEffect Color="Black" BlurRadius="60"
+                              Opacity="0.7" ShadowDepth="5"/>
+        </Border.Effect>
+        <StackPanel>
+            <Grid Margin="0,0,0,24">
+                <TextBlock Text="Create Playlist" FontSize="22"
+                           FontWeight="Bold" Foreground="White"/>
+                <Border Name="btnClosePopup"
+                        HorizontalAlignment="Right"
+                        Cursor="Hand"
+                        onClick="CloseCreatePlaylist">
+                    <TextBlock Text="✕" FontSize="20"
+                               Foreground="#B3B3B3"/>
+                </Border>
+            </Grid>
+
+            <TextBlock Text="Playlist Name" FontSize="13"
+                       Foreground="#B3B3B3" Margin="0,0,0,8"/>
+            <Border Background="#121212" CornerRadius="8"
+                    BorderBrush="#FFFFFF20" BorderThickness="1"
+                    Padding="14,12" Margin="0,0,0,20">
+                <TextBox Name="txtPlaylistName"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         Foreground="White" FontSize="15"
+                         Placeholder="My Awesome Playlist"
+                         CaretBrush="White"/>
+            </Border>
+
+            <TextBlock Text="Music Folder Path" FontSize="13"
+                       Foreground="#B3B3B3" Margin="0,0,0,8"/>
+            <Grid Margin="0,0,0,8">
+                <Grid.ColumnDefinitions>*,8,Auto</Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Background="#121212"
+                        CornerRadius="8" BorderBrush="#FFFFFF20"
+                        BorderThickness="1" Padding="14,12">
+                    <TextBox Name="txtPlaylistPath"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             Foreground="White" FontSize="14"
+                             Placeholder="C:\Music\MyPlaylist"
+                             CaretBrush="White"/>
+                </Border>
+                <Button Name="btnBrowsePath" Grid.Column="2"
+                        Content="📁 Browse"
+                        Background="#1DB954" Foreground="White"
+                        CornerRadius="8" Padding="16,12"
+                        FontSize="13" FontWeight="SemiBold"
+                        HoverColor="#1ED760"
+                        onClick="BrowsePlaylistPath"/>
+            </Grid>
+            <TextBlock Text="Select a folder containing music files"
+                       FontSize="11" Foreground="#727272"
+                       Margin="0,0,0,24"/>
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                <Button Name="btnCancelPlaylist" Content="Cancel"
+                        Background="#404040" Foreground="White"
+                        CornerRadius="20" Padding="24,10"
+                        FontSize="14" HoverColor="#505050"
+                        onClick="CloseCreatePlaylist"/>
+                <Border Width="12"/>
+                <Button Name="btnSavePlaylist"
+                        Content="Create Playlist"
+                        Background="#1DB954" Foreground="White"
+                        CornerRadius="20" Padding="24,10"
+                        FontSize="14" FontWeight="SemiBold"
+                        HoverColor="#1ED760"
+                        onClick="SavePlaylist"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Border>
+                </Grid>
+            </Grid>
+
+            <!-- ══════════════════════════════════════════════════ -->
+            <!--          BOTTOM PLAYER BAR (Row 1)                 -->
+            <!-- ══════════════════════════════════════════════════ -->
+            <!-- BOTTOM PLAYER BAR — Grid.Row="1" ni TO'LIQ almashtiring -->
+<Border Grid.Row="1" Background="#181818"
+        BorderBrush="#282828" BorderThickness="0,1,0,0"
+        Name="playerBar">
+    <Grid Margin="16,0">
+        <Grid.ColumnDefinitions>260,*,260</Grid.ColumnDefinitions>
+
+        <!-- LEFT -->
+        <StackPanel Grid.Column="0" Orientation="Horizontal"
+                    VerticalAlignment="Center">
+            <Border Name="btnOpenNP" Cursor="Hand"
+                    onClick="OpenNowPlaying">
+                <StackPanel Orientation="Horizontal">
+                    <Border Name="miniArt" Width="56" Height="56"
+                            CornerRadius="4" Margin="0,0,14,0"
+                            Background="#282828">
+                        <TextBlock Name="miniArtEmoji" Text="🎵"
+                                   FontSize="24"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center" Width="140">
+                        <TextBlock Name="playerTitle"
+                                   Text="No song playing"
+                                   FontSize="14" Foreground="White"
+                                   TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Name="playerArtist"
+                                   Text="Select a song"
+                                   FontSize="12" Foreground="#B3B3B3"
+                                   TextTrimming="CharacterEllipsis"
+                                   Margin="0,2,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Border Name="btnLike" Margin="8,0,0,0"
+                    Cursor="Hand" onClick="ToggleLike">
+                <TextBlock Name="likeIcon" Text="♡"
+                           FontSize="18" Foreground="#B3B3B3"
+                           VerticalAlignment="Center"/>
+            </Border>
+        </StackPanel>
+
+        <!-- CENTER -->
+        <StackPanel Grid.Column="1" VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,8">
+                <Border Name="btnShuffle" Width="32" Height="32"
+                        Cursor="Hand" onClick="ToggleShuffle"
+                        Margin="0,0,16,0">
+                    <TextBlock Name="shuffleIcon" Text="🔀"
+                               FontSize="14" Foreground="#B3B3B3"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Border>
+                <Border Name="btnPrev" Width="32" Height="32"
+                        Cursor="Hand" onClick="PrevSong"
+                        Margin="0,0,12,0">
+                    <TextBlock Text="⏮" FontSize="16"
+                               Foreground="White"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Border>
+                <Border Name="btnPlay" Width="36" Height="36"
+                        CornerRadius="18" Background="White"
+                        Cursor="Hand" onClick="TogglePlayback">
+                    <TextBlock Name="playIcon" Text="▶"
+                               FontSize="16" Foreground="Black"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Margin="2,0,0,0"/>
+                </Border>
+                <Border Name="btnNext" Width="32" Height="32"
+                        Cursor="Hand" onClick="NextSong"
+                        Margin="12,0,0,0">
+                    <TextBlock Text="⏭" FontSize="16"
+                               Foreground="White"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Border>
+                <Border Name="btnRepeat" Width="32" Height="32"
+                        Cursor="Hand" onClick="ToggleRepeat"
+                        Margin="16,0,0,0">
+                    <TextBlock Name="repeatIcon" Text="🔁"
+                               FontSize="14" Foreground="#B3B3B3"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Border>
+            </StackPanel>
+
+            <Grid Width="500">
+                <Grid.ColumnDefinitions>40,*,40</Grid.ColumnDefinitions>
+                <TextBlock Name="lblCurrentTime" Text="0:00"
+                           FontSize="11" Foreground="#B3B3B3"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Margin="0,0,8,0"/>
+                <Border Name="progressBg" Grid.Column="1"
+                        Height="4" CornerRadius="2"
+                        Background="#4D4D4D"
+                        VerticalAlignment="Center">
+                    <Border Name="progressBar" Height="4"
+                            CornerRadius="2"
+                            Background="#1DB954"
+                            HorizontalAlignment="Left"
+                            Width="0"/>
+                </Border>
+                <TextBlock Name="lblTotalTime" Grid.Column="2"
+                           Text="0:00" FontSize="11"
+                           Foreground="#B3B3B3"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="8,0,0,0"/>
+            </Grid>
+        </StackPanel>
+
+        <!-- RIGHT -->
+        <StackPanel Grid.Column="2" Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center">
+            <Border Name="btnQueue" Width="32" Height="32"
+                    Cursor="Hand" onClick="ShowQueue"
+                    Margin="0,0,8,0">
+                <TextBlock Text="☰" FontSize="16"
+                           Foreground="#B3B3B3"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+            </Border>
+            <Border Name="btnMute" Width="32" Height="32"
+                    Cursor="Hand" onClick="ToggleMute"
+                    Margin="0,0,4,0">
+                <TextBlock Name="volumeIcon" Text="🔊"
+                           FontSize="14" Foreground="#B3B3B3"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+            </Border>
+            <Border Name="volumeBg" Height="4" Width="100"
+                    CornerRadius="2" Background="#4D4D4D"
+                    VerticalAlignment="Center" Cursor="Hand"
+                    onClick="CycleVolume">
+                <Border Name="volumeBar" Height="4"
+                        CornerRadius="2" Background="#1DB954"
+                        HorizontalAlignment="Left" Width="70"/>
+            </Border>
+        </StackPanel>
+    </Grid>
+</Border>
+        </Grid>
+    </UI>
+
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <!--                           LOGIC                                -->
+    <!-- ══════════════════════════════════════════════════════════════ -->
+        <!-- ══════════════════════════════════════════════════════════════ -->
+    <!--                           LOGIC                                -->
+    <!-- ══════════════════════════════════════════════════════════════ -->
+    <Logic>
+        <!-- State Variables -->
+        <Var Name="songCount" Value="0" Type="int"/>
+        <Var Name="currentIndex" Value="-1" Type="int"/>
+        <Var Name="isPlaying" Value="false" Type="bool"/>
+        <Var Name="isShuffle" Value="false" Type="bool"/>
+        <Var Name="repeatMode" Value="0" Type="int"/>
+        <Var Name="isLiked" Value="false" Type="bool"/>
+        <Var Name="isMuted" Value="false" Type="bool"/>
+        <Var Name="volume" Value="70" Type="int"/>
+        <Var Name="currentSongPath" Value="" Type="string"/>
+        <Var Name="currentTitle" Value="" Type="string"/>
+        <Var Name="currentArtist" Value="" Type="string"/>
+        <Var Name="currentDuration" Value="" Type="string"/>
+        <Var Name="currentDurationSec" Value="0" Type="int"/>
+        <Var Name="currentPosSec" Value="0" Type="int"/>
+        <Var Name="likedCount" Value="0" Type="int"/>
+        <Var Name="totalDurationHours" Value="0" Type="string"/>
+        <Var Name="searchQuery" Value="" Type="string"/>
+        <Var Name="playResult" Value="" Type="string"/>
+        <Var Name="formattedPos" Value="0:00" Type="string"/>
+        <Var Name="formattedDur" Value="0:00" Type="string"/>
+        <Var Name="songFileSize" Value="" Type="string"/>
+        <Var Name="zeroTime" Value="0:00" Type="string"/>
+        <Var Name="searchIndices" Value="" Type="string"/>
+        <Var Name="musicFolderPath" Value="" Type="string"/>
+        <Var Name="nextIdx" Value="0" Type="int"/>
+        <Var Name="prevIdx" Value="0" Type="int"/>
+        <Var Name="progressWidth" Value="0" Type="double"/>
+        <Var Name="npProgressWidth" Value="0" Type="double"/>
+        <Var Name="volumeWidth" Value="70" Type="double"/>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--              MUSIC ENGINE (ManualC)                      -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <ManualC id="MusicEngine">
+using System;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+
+public static string[] musicFiles;
+public static int count = 0;
+public static HashSet&lt;int&gt; likedSongs = new HashSet&lt;int&gt;();
+public static string musicPath = "";
+public static MediaPlayer player = null;
+public static bool playerReady = false;
+public static Random rng = new Random();
+public static List&lt;int&gt; shuffleOrder = new List&lt;int&gt;();
+public static int shufflePos = 0;
+
+public static string InitPlayer()
+{
+    try
+    {
+        if (player == null)
+        {
+            player = new MediaPlayer();
+            player.Volume = 0.7;
+        }
+        return "ok";
+    }
+    catch (Exception ex) { return "error:" + ex.Message; }
+}
+public static int SearchCount(string csv)
+{
+    if (string.IsNullOrEmpty(csv)) return 0;
+    return csv.Split(',').Length;
+}
+public static int LoadMusic()
+{
+    InitPlayer();
+    musicPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+    
+    if (!Directory.Exists(musicPath))
+    {
+        try { Directory.CreateDirectory(musicPath); } catch { }
+        count = 0;
+        musicFiles = new string[0];
+        return 0;
+    }
+    
+    string[] extensions = { "*.mp3", "*.wav", "*.wma", "*.flac", "*.aac", "*.m4a", "*.ogg" };
+    List&lt;string&gt; files = new List&lt;string&gt;();
+
+    foreach (string ext in extensions)
+    {
+        try 
+        { 
+            files.AddRange(Directory.GetFiles(musicPath, ext, SearchOption.AllDirectories)); 
+        }
+        catch { }
+    }
+
+    files = files.OrderBy(f =&gt; Path.GetFileNameWithoutExtension(f)).ToList();
+    musicFiles = files.ToArray();
+    count = musicFiles.Length;
+    likedSongs.Clear();
+    BuildShuffleOrder();
+    return count;
+}
+
+public static void BuildShuffleOrder()
+{
+    if (count == 0) { shuffleOrder.Clear(); shufflePos = 0; return; }
+    shuffleOrder = Enumerable.Range(0, count).OrderBy(x =&gt; rng.Next()).ToList();
+    shufflePos = 0;
+}
+
+public static string GetSongPath(int index)
+{
+    if (musicFiles == null || index &lt; 0 || index &gt;= count) return "";
+    return musicFiles[index];
+}
+
+public static string GetSongTitle(int index)
+{
+    if (musicFiles == null || index &lt; 0 || index &gt;= count) return "Unknown";
+    return Path.GetFileNameWithoutExtension(musicFiles[index]);
+}
+
+public static string GetSongArtist(int index)
+{
+    if (musicFiles == null || index &lt; 0 || index &gt;= count) return "Unknown Artist";
+    try
+    {
+        string dir = Path.GetDirectoryName(musicFiles[index]);
+        string folderName = new DirectoryInfo(dir).Name;
+        string myMusicName = new DirectoryInfo(musicPath).Name;
+        if (folderName != myMusicName &amp;&amp; !string.IsNullOrEmpty(folderName))
+            return folderName;
+    }
+    catch { }
+    return "Unknown Artist";
+}
+
+public static string GetFileSize(int index)
+{
+    if (musicFiles == null || index &lt; 0 || index &gt;= count) return "";
+    try
+    {
+        long bytes = new FileInfo(musicFiles[index]).Length;
+        if (bytes &lt; 1024) return bytes + " B";
+        if (bytes &lt; 1048576) return (bytes / 1024.0).ToString("F1") + " KB";
+        return (bytes / 1048576.0).ToString("F1") + " MB";
+    }
+    catch { return ""; }
+}
+
+public static string GetTotalDuration()
+{
+    if (count == 0) return "0h";
+    int totalMin = count * 3;
+    if (totalMin &lt; 60) return totalMin + "m";
+    return (totalMin / 60) + "h " + (totalMin % 60) + "m";
+}
+
+public static string GetMusicPath()
+{
+    if (string.IsNullOrEmpty(musicPath))
+        musicPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+    return musicPath;
+}
+
+public static string PlaySong(string path)
+{
+    try
+    {
+        if (player == null) InitPlayer();
+        if (string.IsNullOrEmpty(path) || !File.Exists(path))
+            return "error:file not found";
+        
+        player.Stop();
+        player.Close();
+        player.Open(new Uri(path, UriKind.Absolute));
+        player.Play();
+        playerReady = true;
+        return "playing";
+    }
+    catch (Exception ex) { return "error:" + ex.Message; }
+}
+
+public static string PauseSong()
+{
+    try 
+    { 
+        if (player != null &amp;&amp; playerReady)
+        {
+            player.Pause(); 
+            return "paused"; 
+        }
+        return "not_ready";
+    }
+    catch { return "error"; }
+}
+
+public static string ResumeSong()
+{
+    try 
+    { 
+        if (player != null &amp;&amp; playerReady)
+        {
+            player.Play(); 
+            return "playing"; 
+        }
+        return "not_ready";
+    }
+    catch { return "error"; }
+}
+
+public static string StopSong()
+{
+    try 
+    { 
+        if (player != null)
+        {
+            player.Stop(); 
+            player.Close();
+            playerReady = false; 
+        }
+        return "stopped"; 
+    }
+    catch { return "error"; }
+}
+
+public static int GetPosition()
+{
+    try
+    {
+        if (player != null &amp;&amp; playerReady)
+            return (int)player.Position.TotalSeconds;
+    }
+    catch { }
+    return 0;
+}
+
+public static int GetNaturalDuration()
+{
+    try
+    {
+        if (player != null &amp;&amp; playerReady &amp;&amp; player.NaturalDuration.HasTimeSpan)
+            return (int)player.NaturalDuration.TimeSpan.TotalSeconds;
+    }
+    catch { }
+    return 0;
+}
+
+public static string FormatTime(int totalSec)
+{
+    if (totalSec &lt; 0) totalSec = 0;
+    int min = totalSec / 60;
+    int sec = totalSec % 60;
+    return min + ":" + sec.ToString("D2");
+}
+
+
+public static string SetPlayerVolume(int vol)
+{
+    try 
+    { 
+        if (player == null) InitPlayer();
+        if (vol &lt; 0) vol = 0;
+        if (vol &gt; 100) vol = 100;
+        player.Volume = vol / 100.0; 
+        return "vol:" + vol;
+    }
+    catch { return "error"; }
+}
+
+public static string MutePlayer()
+{
+    try
+    {
+        if (player == null) InitPlayer();
+        player.Volume = 0.0;
+        return "muted";
+    }
+    catch { return "error"; }
+}
+
+public static string UnmutePlayer(int vol)
+{
+    try
+    {
+        if (player == null) InitPlayer();
+        if (vol &lt; 0) vol = 0;
+        if (vol &gt; 100) vol = 100;
+        player.Volume = vol / 100.0;
+        return "unmuted";
+    }
+    catch { return "error"; }
+}
+
+public static bool ToggleLiked(int index)
+{
+    if (index &lt; 0 || index &gt;= count) return false;
+    if (likedSongs.Contains(index))
+    {
+        likedSongs.Remove(index);
+        return false;
+    }
+    likedSongs.Add(index);
+    return true;
+}
+
+public static bool IsLiked(int index)
+{
+    return likedSongs.Contains(index);
+}
+
+public static int GetLikedCount()
+{
+    return likedSongs.Count;
+}
+
+public static int GetNextIndex(int current)
+{
+    if (count == 0) return 0;
+    int next = current + 1;
+    if (next &gt;= count) next = 0;
+    return next;
+}
+
+public static int GetPrevIndex(int current)
+{
+    if (count == 0) return 0;
+    int prev = current - 1;
+    if (prev &lt; 0) prev = count - 1;
+    return prev;
+}
+
+public static int GetNextShuffleIndex()
+{
+    if (count == 0) return 0;
+    shufflePos++;
+    if (shufflePos &gt;= shuffleOrder.Count)
+    {
+        BuildShuffleOrder();
+    }
+    return shuffleOrder[shufflePos];
+}
+
+public static double CalcProgressWidth(int pos, int dur, double maxWidth)
+{
+    if (dur &lt;= 0) return 0;
+    double ratio = (double)pos / (double)dur;
+    if (ratio &gt; 1.0) ratio = 1.0;
+    if (ratio &lt; 0.0) ratio = 0.0;
+    return ratio * maxWidth;
+}
+
+public static double CalcVolumeWidth(int vol)
+{
+    if (vol &lt; 0) vol = 0;
+    if (vol &gt; 100) vol = 100;
+    return (double)vol;
+}
+
+public static string SearchSongs(string query)
+{
+    if (musicFiles == null || string.IsNullOrEmpty(query)) return "";
+    query = query.ToLower();
+    List&lt;string&gt; results = new List&lt;string&gt;();
+    for (int i = 0; i &lt; count; i++)
+    {
+        string name = Path.GetFileNameWithoutExtension(musicFiles[i]).ToLower();
+        string artist = GetSongArtist(i).ToLower();
+        if (name.Contains(query) || artist.Contains(query))
+        {
+            results.Add(i.ToString());
+            if (results.Count &gt;= 20) break;
+        }
+    }
+    return string.Join(",", results);
+}
+
+public static string OpenInExplorer(string path)
+{
+    try
+    {
+        if (string.IsNullOrEmpty(path)) return "error:empty path";
+        
+        if (File.Exists(path))
+        {
+            System.Diagnostics.Process.Start("explorer.exe", "/select,\"" + path + "\"");
+            return "ok";
+        }
+        if (Directory.Exists(path))
+        {
+            System.Diagnostics.Process.Start("explorer.exe", "\"" + path + "\"");
+            return "ok";
+        }
+        
+        string fallback = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+        if (Directory.Exists(fallback))
+        {
+            System.Diagnostics.Process.Start("explorer.exe", "\"" + fallback + "\"");
+            return "ok_fallback";
+        }
+        return "error:path not found";
+    }
+    catch (Exception ex) { return "error:" + ex.Message; }
+}
+
+public static UIElement CreateSongRow(int index, double width)
+{
+    if (musicFiles == null || index &lt; 0 || index &gt;= count) return new Border();
+
+    string title = Path.GetFileNameWithoutExtension(musicFiles[index]);
+    string artist = GetSongArtist(index);
+    string duration = "3:30";
+    bool liked = likedSongs.Contains(index);
+
+    Border row = new Border();
+    row.Padding = new Thickness(8, 10, 8, 10);
+    row.CornerRadius = new CornerRadius(6);
+    row.Cursor = System.Windows.Input.Cursors.Hand;
+    row.Tag = index;
+    row.Background = new SolidColorBrush(Colors.Transparent);
+
+    Grid grid = new Grid();
+    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(30) });
+    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(60) });
+
+    TextBlock num = new TextBlock();
+    num.Text = (index + 1).ToString();
+    num.FontSize = 14;
+    num.Foreground = new SolidColorBrush(Color.FromRgb(114, 114, 114));
+    num.HorizontalAlignment = HorizontalAlignment.Center;
+    num.VerticalAlignment = VerticalAlignment.Center;
+    Grid.SetColumn(num, 0);
+
+    StackPanel info = new StackPanel();
+    info.Margin = new Thickness(16, 0, 0, 0);
+    info.VerticalAlignment = VerticalAlignment.Center;
+
+    TextBlock titleTb = new TextBlock();
+    titleTb.Text = title;
+    titleTb.FontSize = 14;
+    titleTb.Foreground = new SolidColorBrush(Colors.White);
+    titleTb.TextTrimming = TextTrimming.CharacterEllipsis;
+
+    TextBlock artistTb = new TextBlock();
+    artistTb.Text = artist;
+    artistTb.FontSize = 12;
+    artistTb.Foreground = new SolidColorBrush(Color.FromRgb(179, 179, 179));
+    artistTb.Margin = new Thickness(0, 2, 0, 0);
+
+    info.Children.Add(titleTb);
+    info.Children.Add(artistTb);
+    Grid.SetColumn(info, 1);
+
+    TextBlock heart = new TextBlock();
+    heart.Text = liked ? "\u2665" : "\u2661";
+    heart.FontSize = 16;
+    heart.Foreground = liked
+        ? new SolidColorBrush(Color.FromRgb(29, 185, 84))
+        : new SolidColorBrush(Color.FromRgb(114, 114, 114));
+    heart.VerticalAlignment = VerticalAlignment.Center;
+    heart.Margin = new Thickness(0, 0, 16, 0);
+    Grid.SetColumn(heart, 2);
+
+    TextBlock dur = new TextBlock();
+    dur.Text = duration;
+    dur.FontSize = 13;
+    dur.Foreground = new SolidColorBrush(Color.FromRgb(179, 179, 179));
+    dur.HorizontalAlignment = HorizontalAlignment.Center;
+    dur.VerticalAlignment = VerticalAlignment.Center;
+    Grid.SetColumn(dur, 3);
+
+    grid.Children.Add(num);
+    grid.Children.Add(info);
+    grid.Children.Add(heart);
+    grid.Children.Add(dur);
+
+    row.Child = grid;
+    return row;
+}
+        </ManualC>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--                   INITIALIZATION                         -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="OnAppLoad">
+            <!-- Init Player First -->
+            <CallManualC id="MusicEngine" Method="InitPlayer" ToState="playResult"/>
+            
+            <!-- Load Music Files -->
+            <CallManualC id="MusicEngine" Method="LoadMusic" ToState="songCount"/>
+            
+            <!-- Set Volume -->
+            <CallManualC id="MusicEngine" Method="SetPlayerVolume" Params="70" ToState="playResult"/>
+            <Set Target="volumeBar" Property="Width" Value="70"/>
+
+            <!-- Update Library Stats -->
+            <Set Target="lblTotalSongs" Property="Text" Value="{songCount}"/>
+            <CallManualC id="MusicEngine" Method="GetTotalDuration" ToState="totalDurationHours"/>
+            <Set Target="lblTotalDuration" Property="Text" Value="{totalDurationHours}"/>
+            <CallManualC id="MusicEngine" Method="GetLikedCount" ToState="likedCount"/>
+            <Set Target="lblLikedCount" Property="Text" Value="{likedCount}"/>
+
+            <!-- Set Greeting -->
+            <Set Target="lblGreeting" Property="Text" Value="Good Evening 👋"/>
+
+            <!-- Build Song List -->
+            <If Condition="{songCount} > 0">
+                <Call Handler="BuildSongList"/>
+                <Hide Control="emptyLibrary"/>
+            </If>
+            <If Condition="{songCount} == 0">
+                <Show Control="emptyLibrary"/>
+            </If>
+
+            <!-- Playback Timer -->
+            <Timer Name="playbackTimer" Interval="500" Handler="OnPlaybackTick" Repeat="true"/>
+
+            <Toast Message="🎵 Nimbus Music loaded — {songCount} songs found" Type="Success" Position="BottomRight" Duration="3000"/>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--               BUILD SONG LIST                            -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="BuildSongList">
+            <ClearItems Container="songListContainer"/>
+            <If Condition="{songCount} > 0">
+                <ForEach Count="{songCount}" IndexVar="i">
+                    <CallManualC id="MusicEngine" Method="CreateSongRow" Params="{i},600" ToControl="songListContainer"/>
+                </ForEach>
+            </If>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--              NAVIGATION HANDLERS                         -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="ShowHome">
+            <Show Control="homeView"/>
+            <Hide Control="searchView"/>
+            <Hide Control="libraryView"/>
+            <Hide Control="nowPlayingView"/>
+            <Set Target="navHome" Property="Background" Value="#282828"/>
+            <Set Target="navSearch" Property="Background" Value="Transparent"/>
+            <Set Target="navLibrary" Property="Background" Value="Transparent"/>
+        </Handler>
+
+        <Handler Name="ShowSearch">
+            <Hide Control="homeView"/>
+            <Show Control="searchView"/>
+            <Hide Control="libraryView"/>
+            <Hide Control="nowPlayingView"/>
+            <Set Target="navHome" Property="Background" Value="Transparent"/>
+            <Set Target="navSearch" Property="Background" Value="#282828"/>
+            <Set Target="navLibrary" Property="Background" Value="Transparent"/>
+            <Focus Control="txtSearch"/>
+        </Handler>
+
+        <Handler Name="ShowLibrary">
+            <Hide Control="homeView"/>
+            <Hide Control="searchView"/>
+            <Show Control="libraryView"/>
+            <Hide Control="nowPlayingView"/>
+            <Set Target="navHome" Property="Background" Value="Transparent"/>
+            <Set Target="navSearch" Property="Background" Value="Transparent"/>
+            <Set Target="navLibrary" Property="Background" Value="#282828"/>
+
+            <!-- Refresh Stats -->
+            <CallManualC id="MusicEngine" Method="GetLikedCount" ToState="likedCount"/>
+            <Set Target="lblLikedCount" Property="Text" Value="{likedCount}"/>
+            <Set Target="lblTotalSongs" Property="Text" Value="{songCount}"/>
+            <CallManualC id="MusicEngine" Method="GetTotalDuration" ToState="totalDurationHours"/>
+            <Set Target="lblTotalDuration" Property="Text" Value="{totalDurationHours}"/>
+        </Handler>
+
+        <Handler Name="OpenNowPlaying">
+            <If Condition="{currentIndex} >= 0">
+                <Hide Control="homeView"/>
+                <Hide Control="searchView"/>
+                <Hide Control="libraryView"/>
+                <Show Control="nowPlayingView" Animate="true" Duration="300" Effect="SlideUp"/>
+            </If>
+            <If Condition="{currentIndex} &lt; 0">
+                <Toast Message="No song is playing — select a song first" Type="Warning" Position="BottomRight" Duration="2000"/>
+            </If>
+        </Handler>
+
+        <Handler Name="CloseNowPlaying">
+            <Hide Control="nowPlayingView" Animate="true" Duration="200"/>
+            <Show Control="homeView"/>
+            <Set Target="navHome" Property="Background" Value="#282828"/>
+            <Set Target="navSearch" Property="Background" Value="Transparent"/>
+            <Set Target="navLibrary" Property="Background" Value="Transparent"/>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--         CORE: PLAY SONG AT CURRENT INDEX                 -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="PlaySongAtIndex">
+            <!-- Get Song Info -->
+            <CallManualC id="MusicEngine" Method="GetSongPath" Params="{currentIndex}" ToState="currentSongPath"/>
+            <CallManualC id="MusicEngine" Method="GetSongTitle" Params="{currentIndex}" ToState="currentTitle"/>
+            <CallManualC id="MusicEngine" Method="GetSongArtist" Params="{currentIndex}" ToState="currentArtist"/>
+            <CallManualC id="MusicEngine" Method="GetFileSize" Params="{currentIndex}" ToState="songFileSize"/>
+            <CallManualC id="MusicEngine" Method="IsLiked" Params="{currentIndex}" ToState="isLiked"/>
+
+            <!-- Actually Play the Song -->
+            <CallManualC id="MusicEngine" Method="PlaySong" Params="{currentSongPath}" ToState="playResult"/>
+            <Set Var="isPlaying" Value="true"/>
+            <Set Var="currentPosSec" Value="0"/>
+
+            <!-- Update Bottom Player Bar -->
+            <Set Target="playerTitle" Property="Text" Value="{currentTitle}"/>
+            <Set Target="playerArtist" Property="Text" Value="{currentArtist}"/>
+            <Set Target="playIcon" Property="Text" Value="⏸"/>
+            <Set Target="lblCurrentTime" Property="Text" Value="0:00"/>
+            <Set Target="progressBar" Property="Width" Value="0"/>
+
+            <!-- Update Now Playing View -->
+            <Set Target="npTitle" Property="Text" Value="{currentTitle}"/>
+            <Set Target="npArtist" Property="Text" Value="{currentArtist}"/>
+            <Set Target="npCurrentTime" Property="Text" Value="0:00"/>
+            <Set Target="npPlayIcon" Property="Text" Value="⏸"/>
+            <Set Target="npFileInfo" Property="Text" Value="{songFileSize}"/>
+            <Set Target="npProgressFill" Property="Width" Value="0"/>
+
+            <!-- Update Like State in Player Bar -->
+            <If Condition="{isLiked} == true">
+                <Set Target="likeIcon" Property="Text" Value="♥"/>
+                <Set Target="likeIcon" Property="Foreground" Value="#1DB954"/>
+                <Set Target="npLikeIcon" Property="Text" Value="♥"/>
+                <Set Target="npLikeIcon" Property="Foreground" Value="#1DB954"/>
+            </If>
+            <If Condition="{isLiked} == false">
+                <Set Target="likeIcon" Property="Text" Value="♡"/>
+                <Set Target="likeIcon" Property="Foreground" Value="#B3B3B3"/>
+                <Set Target="npLikeIcon" Property="Text" Value="♡"/>
+                <Set Target="npLikeIcon" Property="Foreground" Value="#B3B3B3"/>
+            </If>
+
+            <Toast Message="▶ {currentTitle} — {currentArtist}" Type="Info" Position="BottomRight" Duration="2500"/>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--              PLAY / PAUSE TOGGLE                         -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="TogglePlayback">
+            <!-- No song selected yet — play first song -->
+            <If Condition="{currentIndex} == -1">
+                <If Condition="{songCount} > 0">
+                    <Set Var="currentIndex" Value="0"/>
+                    <Call Handler="PlaySongAtIndex"/>
+                </If>
+                <If Condition="{songCount} == 0">
+                    <Toast Message="No songs in library — add music to your Music folder" Type="Warning" Position="BottomRight" Duration="3000"/>
+                </If>
+            </If>
+
+            <!-- Song is selected — toggle play/pause -->
+            <If Condition="{currentIndex} >= 0">
+                <If Condition="{isPlaying} == true">
+                    <CallManualC id="MusicEngine" Method="PauseSong" ToState="playResult"/>
+                    <Set Var="isPlaying" Value="false"/>
+                    <Set Target="playIcon" Property="Text" Value="▶"/>
+                    <Set Target="npPlayIcon" Property="Text" Value="▶"/>
+                </If>
+                <If Condition="{isPlaying} == false">
+                    <CallManualC id="MusicEngine" Method="ResumeSong" ToState="playResult"/>
+                    <Set Var="isPlaying" Value="true"/>
+                    <Set Target="playIcon" Property="Text" Value="⏸"/>
+                    <Set Target="npPlayIcon" Property="Text" Value="⏸"/>
+                </If>
+            </If>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--              NEXT SONG                                   -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="NextSong">
+            <If Condition="{songCount} == 0">
+                <Toast Message="No songs available" Type="Warning" Position="BottomRight" Duration="1500"/>
+            </If>
+            <If Condition="{songCount} > 0">
+                <!-- Stop current -->
+                <CallManualC id="MusicEngine" Method="StopSong" ToState="playResult"/>
+
+                <If Condition="{isShuffle} == true">
+                    <CallManualC id="MusicEngine" Method="GetNextShuffleIndex" ToState="nextIdx"/>
+                    <Set Var="currentIndex" Value="{nextIdx}"/>
+                </If>
+                <If Condition="{isShuffle} == false">
+                    <CallManualC id="MusicEngine" Method="GetNextIndex" Params="{currentIndex}" ToState="nextIdx"/>
+                    <Set Var="currentIndex" Value="{nextIdx}"/>
+                </If>
+
+                <Call Handler="PlaySongAtIndex"/>
+            </If>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--              PREVIOUS SONG                               -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="PrevSong">
+            <If Condition="{songCount} == 0">
+                <Toast Message="No songs available" Type="Warning" Position="BottomRight" Duration="1500"/>
+            </If>
+            <If Condition="{songCount} > 0">
+                <!-- Stop current -->
+                <CallManualC id="MusicEngine" Method="StopSong" ToState="playResult"/>
+
+                <CallManualC id="MusicEngine" Method="GetPrevIndex" Params="{currentIndex}" ToState="prevIdx"/>
+                <Set Var="currentIndex" Value="{prevIdx}"/>
+
+                <Call Handler="PlaySongAtIndex"/>
+            </If>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--              SHUFFLE TOGGLE                              -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="ToggleShuffle">
+            <If Condition="{isShuffle} == false">
+                <Set Var="isShuffle" Value="true"/>
+                <Set Target="shuffleIcon" Property="Foreground" Value="#1DB954"/>
+                <Set Target="npShuffleIcon" Property="Foreground" Value="#1DB954"/>
+                <CallManualC id="MusicEngine" Method="BuildShuffleOrder"/>
+                <Toast Message="🔀 Shuffle enabled" Type="Success" Position="BottomRight" Duration="1500"/>
+            </If>
+            <If Condition="{isShuffle} == true">
+                <Set Var="isShuffle" Value="false"/>
+                <Set Target="shuffleIcon" Property="Foreground" Value="#B3B3B3"/>
+                <Set Target="npShuffleIcon" Property="Foreground" Value="#B3B3B3"/>
+                <Toast Message="🔀 Shuffle disabled" Type="Info" Position="BottomRight" Duration="1500"/>
+            </If>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--              REPEAT TOGGLE                               -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="ToggleRepeat">
+            <If Condition="{repeatMode} == 0">
+                <Set Var="repeatMode" Value="1"/>
+                <Set Target="repeatIcon" Property="Foreground" Value="#1DB954"/>
+                <Set Target="repeatIcon" Property="Text" Value="🔁"/>
+                <Set Target="npRepeatIcon" Property="Foreground" Value="#1DB954"/>
+                <Set Target="npRepeatIcon" Property="Text" Value="🔁"/>
+                <Toast Message="🔁 Repeat All" Type="Success" Position="BottomRight" Duration="1500"/>
+            </If>
+            <If Condition="{repeatMode} == 1">
+                <Set Var="repeatMode" Value="2"/>
+                <Set Target="repeatIcon" Property="Text" Value="🔂"/>
+                <Set Target="repeatIcon" Property="Foreground" Value="#1DB954"/>
+                <Set Target="npRepeatIcon" Property="Text" Value="🔂"/>
+                <Set Target="npRepeatIcon" Property="Foreground" Value="#1DB954"/>
+                <Toast Message="🔂 Repeat One" Type="Success" Position="BottomRight" Duration="1500"/>
+            </If>
+            <If Condition="{repeatMode} == 2">
+                <Set Var="repeatMode" Value="0"/>
+                <Set Target="repeatIcon" Property="Text" Value="🔁"/>
+                <Set Target="repeatIcon" Property="Foreground" Value="#B3B3B3"/>
+                <Set Target="npRepeatIcon" Property="Text" Value="🔁"/>
+                <Set Target="npRepeatIcon" Property="Foreground" Value="#B3B3B3"/>
+                <Toast Message="Repeat off" Type="Info" Position="BottomRight" Duration="1500"/>
+            </If>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--              PLAYBACK TIMER (every 500ms)                -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="OnPlaybackTick">
+            <If Condition="{isPlaying} == true">
+                <If Condition="{currentIndex} >= 0">
+                    <!-- Get current position and duration -->
+                    <CallManualC id="MusicEngine" Method="GetPosition" ToState="currentPosSec"/>
+                    <CallManualC id="MusicEngine" Method="GetNaturalDuration" ToState="currentDurationSec"/>
+
+                    <!-- Format times -->
+                    <CallManualC id="MusicEngine" Method="FormatTime" Params="{currentPosSec}" ToState="formattedPos"/>
+                    <CallManualC id="MusicEngine" Method="FormatTime" Params="{currentDurationSec}" ToState="formattedDur"/>
+
+                    <!-- Update time labels -->
+                    <Set Target="lblCurrentTime" Property="Text" Value="{formattedPos}"/>
+                    <Set Target="npCurrentTime" Property="Text" Value="{formattedPos}"/>
+
+                    <!-- Only update total time if we have valid duration -->
+                    <If Condition="{currentDurationSec} > 0">
+                        <Set Target="lblTotalTime" Property="Text" Value="{formattedDur}"/>
+                        <Set Target="npDuration" Property="Text" Value="{formattedDur}"/>
+
+                        <!-- Calculate progress bar width -->
+                        <CallManualC id="MusicEngine" Method="CalcProgressWidth" Params="{currentPosSec},{currentDurationSec},420" ToState="progressWidth"/>
+                        <Set Target="progressBar" Property="Width" Value="{progressWidth}"/>
+
+                        <CallManualC id="MusicEngine" Method="CalcProgressWidth" Params="{currentPosSec},{currentDurationSec},350" ToState="npProgressWidth"/>
+                        <Set Target="npProgressFill" Property="Width" Value="{npProgressWidth}"/>
+                    </If>
+
+                    <!-- Auto-next when song finishes -->
+                    <If Condition="{currentDurationSec} > 5">
+                        <If Condition="{currentPosSec} >= {currentDurationSec}">
+                            <If Condition="{repeatMode} == 2">
+                                <!-- Repeat One: replay same song -->
+                                <Call Handler="PlaySongAtIndex"/>
+                            </If>
+                            <If Condition="{repeatMode} == 1">
+                                <!-- Repeat All: next song -->
+                                <Call Handler="NextSong"/>
+                            </If>
+                            <If Condition="{repeatMode} == 0">
+                                <!-- No repeat: next song, stop at end -->
+                                <If Condition="{currentIndex} &lt; {songCount}">
+                                    <Call Handler="NextSong"/>
+                                </If>
+                            </If>
+                        </If>
+                    </If>
+                </If>
+            </If>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--              VOLUME CONTROLS                             -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="ToggleMute">
+            <If Condition="{isMuted} == false">
+                <Set Var="isMuted" Value="true"/>
+                <CallManualC id="MusicEngine" Method="MutePlayer" ToState="playResult"/>
+                <Set Target="volumeIcon" Property="Text" Value="🔇"/>
+                <Set Target="volumeBar" Property="Width" Value="0"/>
+                <Toast Message="🔇 Muted" Type="Info" Position="BottomRight" Duration="1000"/>
+            </If>
+            <If Condition="{isMuted} == true">
+                <Set Var="isMuted" Value="false"/>
+                <CallManualC id="MusicEngine" Method="UnmutePlayer" Params="{volume}" ToState="playResult"/>
+                <Set Target="volumeIcon" Property="Text" Value="🔊"/>
+                <CallManualC id="MusicEngine" Method="CalcVolumeWidth" Params="{volume}" ToState="volumeWidth"/>
+                <Set Target="volumeBar" Property="Width" Value="{volumeWidth}"/>
+                <Toast Message="🔊 Volume: {volume}%" Type="Info" Position="BottomRight" Duration="1000"/>
+            </If>
+        </Handler>
+
+        <Handler Name="SetVolume">
+            <Set Var="volume" Value="50"/>
+            <Set Var="isMuted" Value="false"/>
+            <CallManualC id="MusicEngine" Method="SetPlayerVolume" Params="50" ToState="playResult"/>
+            <Set Target="volumeBar" Property="Width" Value="50"/>
+            <Set Target="volumeIcon" Property="Text" Value="🔉"/>
+            <Toast Message="🔉 Volume: 50%" Type="Info" Position="BottomRight" Duration="1000"/>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--              LIKE FUNCTIONALITY                          -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="ToggleLike">
+            <If Condition="{currentIndex} >= 0">
+                <CallManualC id="MusicEngine" Method="ToggleLiked" Params="{currentIndex}" ToState="isLiked"/>
+
+                <If Condition="{isLiked} == true">
+                    <Set Target="likeIcon" Property="Text" Value="♥"/>
+                    <Set Target="likeIcon" Property="Foreground" Value="#1DB954"/>
+                    <Set Target="npLikeIcon" Property="Text" Value="♥"/>
+                    <Set Target="npLikeIcon" Property="Foreground" Value="#1DB954"/>
+                    <CallManualC id="MusicEngine" Method="GetLikedCount" ToState="likedCount"/>
+                    <Set Target="lblLikedCount" Property="Text" Value="{likedCount}"/>
+                    <Toast Message="♥ Added to Liked Songs" Type="Success" Position="BottomRight" Duration="2000"/>
+                </If>
+                <If Condition="{isLiked} == false">
+                    <Set Target="likeIcon" Property="Text" Value="♡"/>
+                    <Set Target="likeIcon" Property="Foreground" Value="#B3B3B3"/>
+                    <Set Target="npLikeIcon" Property="Text" Value="♡"/>
+                    <Set Target="npLikeIcon" Property="Foreground" Value="#B3B3B3"/>
+                    <CallManualC id="MusicEngine" Method="GetLikedCount" ToState="likedCount"/>
+                    <Set Target="lblLikedCount" Property="Text" Value="{likedCount}"/>
+                    <Toast Message="Removed from Liked Songs" Type="Info" Position="BottomRight" Duration="2000"/>
+                </If>
+            </If>
+            <If Condition="{currentIndex} &lt; 0">
+                <Toast Message="No song selected to like" Type="Warning" Position="BottomRight" Duration="1500"/>
+            </If>
+        </Handler>
+
+        <Handler Name="ToggleLikeNP">
+            <Call Handler="ToggleLike"/>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--              SEARCH HANDLER                              -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+            <!-- ═══════════════ SEARCH HANDLERS ═══════════════ -->
+        <Handler Name="OnSearchChanged">
+        <Get Control="txtSearch" Property="Text" ToState="searchQuery"/>
+
+        <If Condition="{searchQuery} != ">
+            <Show Control="btnClearSearch"/>
+            <Hide Control="browseCategoriesPanel"/>
+            <Show Control="searchResultsPanel"/>
+            <Hide Control="noSearchResults"/>
+            <ClearItems Container="searchResultsList"/>
+
+            <CallManualC id="MusicEngine" Method="SearchSongs"
+                         Params="{searchQuery}" ToState="searchIndices"/>
+
+            <If Condition="{searchIndices} != ">
+                <Hide Control="noSearchResults"/>
+                <Set Target="lblSearchResultCount" Property="Text"
+                     Value="Results for '{searchQuery}'"/>
+
+                <ForEachCSV Collection="{searchIndices}" Var="si">
+                    <CallManualC id="MusicEngine" Method="CreateHomeCard"
+                                 Params="{si}"
+                                 ToControl="searchResultsList"/>
+                </ForEachCSV>
+            </If>
+
+            <If Condition="{searchIndices} == ">
+                <Show Control="noSearchResults"/>
+                <Set Target="lblNoResults" Property="Text"
+                     Value="No results for '{searchQuery}'"/>
+                <Set Target="lblSearchResultCount" Property="Text"
+                     Value="No results for '{searchQuery}'"/>
+            </If>
+        </If>
+
+        <If Condition="{searchQuery} == ">
+            <Hide Control="btnClearSearch"/>
+            <Show Control="browseCategoriesPanel"/>
+            <Hide Control="searchResultsPanel"/>
+        </If>
+    </Handler>
+    <Handler Name="ClearSearch">
+        <Set Target="txtSearch" Property="Text" Value=""/>
+        <Hide Control="btnClearSearch"/>
+        <Show Control="browseCategoriesPanel"/>
+        <Hide Control="searchResultsPanel"/>
+    </Handler>
+
+    <Handler Name="BrowseCategory">
+        <Toast Message="Browse category — coming soon"
+               Type="Info" Position="BottomRight" Duration="1500"/>
+    </Handler>
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--              PLAYLIST / QUICK PLAY HANDLERS              -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="QuickPlay1">
+            <Call Handler="ShowLikedSongs"/>
+        </Handler>
+        <Handler Name="QuickPlay2">
+            <Call Handler="PlayPlaylist1"/>
+        </Handler>
+        <Handler Name="QuickPlay3">
+            <Call Handler="PlayPlaylist2"/>
+        </Handler>
+        <Handler Name="QuickPlay4">
+            <Call Handler="PlayPlaylist3"/>
+        </Handler>
+        <Handler Name="QuickPlay5">
+            <Call Handler="PlayPlaylist4"/>
+        </Handler>
+        <Handler Name="QuickPlay6">
+            <Call Handler="PlayPlaylist6"/>
+        </Handler>
+
+        <Handler Name="PlayPlaylist1">
+            <Toast Message="🌊 Playing: Chill Vibes" Type="Success" Position="BottomRight" Duration="2000"/>
+            <If Condition="{songCount} > 0">
+                <Set Var="currentIndex" Value="0"/>
+                <Call Handler="PlaySongAtIndex"/>
+            </If>
+            <If Condition="{songCount} == 0">
+                <Toast Message="No songs — add music to your Music folder" Type="Warning" Position="BottomRight" Duration="2500"/>
+            </If>
+        </Handler>
+
+        <Handler Name="PlayPlaylist2">
+            <Toast Message="💪 Playing: Workout Mix" Type="Success" Position="BottomRight" Duration="2000"/>
+            <If Condition="{songCount} > 0">
+                <Set Var="isShuffle" Value="true"/>
+                <Set Target="shuffleIcon" Property="Foreground" Value="#1DB954"/>
+                <Set Target="npShuffleIcon" Property="Foreground" Value="#1DB954"/>
+                <CallManualC id="MusicEngine" Method="BuildShuffleOrder"/>
+                <CallManualC id="MusicEngine" Method="GetNextShuffleIndex" ToState="nextIdx"/>
+                <Set Var="currentIndex" Value="{nextIdx}"/>
+                <Call Handler="PlaySongAtIndex"/>
+            </If>
+            <If Condition="{songCount} == 0">
+                <Toast Message="No songs — add music to your Music folder" Type="Warning" Position="BottomRight" Duration="2500"/>
+            </If>
+        </Handler>
+
+        <Handler Name="PlayPlaylist3">
+            <Toast Message="🎷 Playing: Late Night Jazz" Type="Success" Position="BottomRight" Duration="2000"/>
+            <If Condition="{songCount} > 1">
+                <Set Var="currentIndex" Value="1"/>
+                <Call Handler="PlaySongAtIndex"/>
+            </If>
+            <If Condition="{songCount} > 0">
+                <Set Var="currentIndex" Value="0"/>
+                <Call Handler="PlaySongAtIndex"/>
+            </If>
+        </Handler>
+
+        <Handler Name="PlayPlaylist4">
+            <Toast Message="🎯 Playing: Focus Mode" Type="Success" Position="BottomRight" Duration="2000"/>
+            <If Condition="{songCount} > 2">
+                <Set Var="currentIndex" Value="2"/>
+                <Call Handler="PlaySongAtIndex"/>
+            </If>
+            <If Condition="{songCount} > 0">
+                <Set Var="currentIndex" Value="0"/>
+                <Call Handler="PlaySongAtIndex"/>
+            </If>
+        </Handler>
+
+        <Handler Name="PlayPlaylist5">
+            <Toast Message="🚗 Playing: Road Trip" Type="Success" Position="BottomRight" Duration="2000"/>
+            <If Condition="{songCount} > 0">
+                <Set Var="isShuffle" Value="true"/>
+                <Set Target="shuffleIcon" Property="Foreground" Value="#1DB954"/>
+                <CallManualC id="MusicEngine" Method="BuildShuffleOrder"/>
+                <CallManualC id="MusicEngine" Method="GetNextShuffleIndex" ToState="nextIdx"/>
+                <Set Var="currentIndex" Value="{nextIdx}"/>
+                <Call Handler="PlaySongAtIndex"/>
+            </If>
+        </Handler>
+
+        <Handler Name="PlayPlaylist6">
+            <Toast Message="🇺🇿 Playing: Uzbek Hits" Type="Success" Position="BottomRight" Duration="2000"/>
+            <If Condition="{songCount} > 3">
+                <Set Var="currentIndex" Value="3"/>
+                <Call Handler="PlaySongAtIndex"/>
+            </If>
+            <If Condition="{songCount} > 0">
+                <Set Var="currentIndex" Value="0"/>
+                <Call Handler="PlaySongAtIndex"/>
+            </If>
+        </Handler>
+
+        <Handler Name="PlayRecent1">
+            <Call Handler="PlayPlaylist1"/>
+        </Handler>
+        <Handler Name="PlayRecent2">
+            <Call Handler="PlayPlaylist2"/>
+        </Handler>
+        <Handler Name="PlayRecent3">
+            <Call Handler="PlayPlaylist3"/>
+        </Handler>
+        <Handler Name="PlayRecent4">
+            <Call Handler="PlayPlaylist4"/>
+        </Handler>
+        <Handler Name="PlayRecent5">
+            <Call Handler="PlayPlaylist6"/>
+        </Handler>
+
+        <Handler Name="ShowLikedSongs">
+            <CallManualC id="MusicEngine" Method="GetLikedCount" ToState="likedCount"/>
+            <Toast Message="♥ Liked Songs ({likedCount})" Type="Info" Position="BottomRight" Duration="2000"/>
+            <Call Handler="ShowLibrary"/>
+        </Handler>
+
+        <Handler Name="ShowQueue">
+            <If Condition="{currentIndex} >= 0">
+                <Call Handler="OpenNowPlaying"/>
+            </If>
+            <If Condition="{currentIndex} &lt; 0">
+                <Toast Message="Queue is empty — play a song first" Type="Info" Position="BottomRight" Duration="1500"/>
+            </If>
+        </Handler>
+
+        <Handler Name="ShuffleAll">
+            <If Condition="{songCount} > 0">
+                <Set Var="isShuffle" Value="true"/>
+                <Set Target="shuffleIcon" Property="Foreground" Value="#1DB954"/>
+                <Set Target="npShuffleIcon" Property="Foreground" Value="#1DB954"/>
+                <CallManualC id="MusicEngine" Method="BuildShuffleOrder"/>
+                <CallManualC id="MusicEngine" Method="GetNextShuffleIndex" ToState="nextIdx"/>
+                <Set Var="currentIndex" Value="{nextIdx}"/>
+                <Call Handler="PlaySongAtIndex"/>
+                <Toast Message="🔀 Shuffling all {songCount} songs" Type="Success" Position="BottomRight" Duration="2000"/>
+            </If>
+            <If Condition="{songCount} == 0">
+                <Toast Message="No songs to shuffle" Type="Warning" Position="BottomRight" Duration="2000"/>
+            </If>
+        </Handler>
+
+        <Handler Name="CreatePlaylist">
+            <Toast Message="Create Playlist — Coming soon!" Type="Info" Position="BottomRight" Duration="2000"/>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--              OPEN MUSIC FOLDER                           -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="OpenMusicFolder">
+            <CallManualC id="MusicEngine" Method="GetMusicPath" ToState="musicFolderPath"/>
+            <CallManualC id="MusicEngine" Method="OpenInExplorer" Params="{musicFolderPath}" ToState="playResult"/>
+            <Toast Message="📁 Opening Music folder..." Type="Success" Position="BottomRight" Duration="2000"/>
+        </Handler>
+
+        <Handler Name="SeekPosition">
+            <Toast Message="Seek — drag support coming soon" Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+    </Logic>
+</App>

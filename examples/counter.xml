@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<NimbusApp Name="Counter App" Theme="Dark" Width="400" Height="500">
+    
+    <UI>
+        <Grid Background="#1A1A2E">
+            <Grid.RowDefinitions>Auto, Auto, *, Auto</Grid.RowDefinitions>
+            
+            <!-- Header -->
+            <Border Grid.Row="0" Background="#16213E" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="🔢 COUNTER" 
+                               FontSize="28" 
+                               FontWeight="Bold"
+                               Foreground="#E94560" 
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Nimbus Engine Counter" 
+                               FontSize="12" 
+                               Foreground="#888888" 
+                               HorizontalAlignment="Center"
+                               Margin="0,5,0,0"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Counter Display -->
+            <Border Grid.Row="1" Background="#0F3460" Margin="30,20" CornerRadius="70" Padding="50">
+                <TextBlock Name="counterDisplay" 
+                           Text="0" 
+                           FontSize="72" 
+                           FontWeight="Bold"
+                           Foreground="#FFFFFF" 
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+            </Border>
+            
+            <!-- Buttons Grid -->
+            <Grid Grid.Row="2" Margin="30,10">
+                <Grid.RowDefinitions>*, *</Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>*, *, *</Grid.ColumnDefinitions>
+                
+                <!-- Row 1: -10, -1, Reset -->
+                <Button Grid.Row="0" Grid.Column="0" 
+                        Name="btnMinus10"
+                        Content="-10" 
+                        Margin="5"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Background="#E94560"
+                        Foreground="White"
+                        onClick="Minus10"/>
+                        
+                <Button Grid.Row="0" Grid.Column="1" 
+                        Name="btnMinus1"
+                        Content="-1" 
+                        Margin="5"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Background="#FF6B6B"
+                        Foreground="White"
+                        onClick="Minus1"/>
+                        
+                <Button Grid.Row="0" Grid.Column="2" 
+                        Name="btnReset"
+                        Content="↺" 
+                        Margin="5"
+                        FontSize="24"
+                        FontWeight="Bold"
+                        Background="#4A4A4A"
+                        Foreground="White"
+                        onClick="Reset"/>
+                
+                <!-- Row 2: +1, +10, Random -->
+                <Button Grid.Row="1" Grid.Column="0" 
+                        Name="btnPlus1"
+                        Content="+1" 
+                        Margin="5"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Background="#4CAF50"
+                        Foreground="White"
+                        onClick="Plus1"/>
+                        
+                <Button Grid.Row="1" Grid.Column="1" 
+                        Name="btnPlus10"
+                        Content="+10" 
+                        Margin="5"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Background="#2E7D32"
+                        Foreground="White"
+                        onClick="Plus10"/>
+                        
+                <Button Grid.Row="1" Grid.Column="2" 
+                        Name="btnRandom"
+                        Content="🎲" 
+                        Margin="5"
+                        FontSize="24"
+                        Background="#9C27B0"
+                        Foreground="White"
+                        onClick="RandomNum"/>
+            </Grid>
+            
+            <!-- Status Bar -->
+            <Border Grid.Row="3" Background="#16213E" Padding="10">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Min: " Foreground="#888888" FontSize="12"/>
+                    <TextBlock Name="minValue" Text="0" Foreground="#4CAF50" FontSize="12"/>
+                    <TextBlock Text="  |  Max: " Foreground="#888888" FontSize="12"/>
+                    <TextBlock Name="maxValue" Text="0" Foreground="#E94560" FontSize="12"/>
+                    <TextBlock Text="  |  Steps: " Foreground="#888888" FontSize="12"/>
+                    <TextBlock Name="stepCount" Text="0" Foreground="#03A9F4" FontSize="12"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </UI>
+    
+    <Logic>
+        <Handler Name="Plus1">
+            <Get Control="counterDisplay" Property="Text" ToState="currentValue"/>
+            <Calculate Expression="{currentValue} + 1" ToControl="counterDisplay" ToProperty="Text"/>
+            <Increment State="steps" Amount="1"/>
+            <Get Control="stepCount" Property="Text" ToState="stepsDisplay"/>
+            <Calculate Expression="{steps}" ToControl="stepCount" ToProperty="Text"/>
+        </Handler>
+        
+        <Handler Name="Plus10">
+            <Get Control="counterDisplay" Property="Text" ToState="currentValue"/>
+            <Calculate Expression="{currentValue} + 10" ToControl="counterDisplay" ToProperty="Text"/>
+            <Increment State="steps" Amount="1"/>
+            <Calculate Expression="{steps}" ToControl="stepCount" ToProperty="Text"/>
+        </Handler>
+        
+        <Handler Name="Minus1">
+            <Get Control="counterDisplay" Property="Text" ToState="currentValue"/>
+            <Calculate Expression="{currentValue} - 1" ToControl="counterDisplay" ToProperty="Text"/>
+            <Increment State="steps" Amount="1"/>
+            <Calculate Expression="{steps}" ToControl="stepCount" ToProperty="Text"/>
+        </Handler>
+        
+        <Handler Name="Minus10">
+            <Get Control="counterDisplay" Property="Text" ToState="currentValue"/>
+            <Calculate Expression="{currentValue} - 10" ToControl="counterDisplay" ToProperty="Text"/>
+            <Increment State="steps" Amount="1"/>
+            <Calculate Expression="{steps}" ToControl="stepCount" ToProperty="Text"/>
+        </Handler>
+        
+        <Handler Name="Reset">
+            <Set Control="counterDisplay" Property="Text" Value="0"/>
+            <Set Control="minValue" Property="Text" Value="0"/>
+            <Set Control="maxValue" Property="Text" Value="0"/>
+            <Set Control="stepCount" Property="Text" Value="0"/>
+            <Set State="steps" Value="0"/>
+            <Set State="min" Value="0"/>
+            <Set State="max" Value="0"/>
+        </Handler>
+        
+        <Handler Name="RandomNum">
+            <Set Control="counterDisplay" Property="Text" Value="42"/>
+            <Increment State="steps" Amount="1"/>
+            <Calculate Expression="{steps}" ToControl="stepCount" ToProperty="Text"/>
+        </Handler>
+    </Logic>
+    
+</NimbusApp>

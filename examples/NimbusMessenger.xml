@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="Nimbus Messenger"
+     Width="1200" Height="800"
+     Theme="Dark"
+     DarkMode="true"
+     DevMode="true"
+     Version="2.0.0"
+     OnLoad="OnAppLoad">
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!--                    ASOSIY UI LAYOUT                    -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <UI>
+        <Grid Background="#0E1621">
+            <!-- 1. ASOSIY QATLAM (Chatlar va Xabarlar) -->
+            <Grid Name="MainLayout">
+                <Grid.ColumnDefinitions>80,320,*</Grid.ColumnDefinitions>
+
+                <!-- ─── 1. SIDEBAR (Serverlar/Tablar) ─── -->
+                <Border Grid.Column="0" Background="#17212B" 
+                        BorderBrush="#0E1621" BorderThickness="0,0,1,0">
+                    <StackPanel Margin="0,16,0,0">
+                        <!-- Home/Logo -->
+                        <Border Width="48" Height="48" CornerRadius="24" 
+                                Background="#5865F2" Margin="0,0,0,16"
+                                Cursor="Hand" Name="btnHome" onClick="OnHomeClick">
+                            <TextBlock Text="⚡" FontSize="24" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Border>
+
+                        <!-- Server 1 -->
+                        <Border Width="48" Height="48" CornerRadius="24" 
+                                Background="#36393F" Margin="0,0,0,12"
+                                Cursor="Hand" Name="srv1" onClick="OnServer1Click">
+                            <TextBlock Text="N" FontSize="20" FontWeight="Bold" Foreground="White"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+
+                        <!-- Server 2 -->
+                        <Border Width="48" Height="48" CornerRadius="24" 
+                                Background="#36393F" Margin="0,0,0,12"
+                                Cursor="Hand" Name="srv2" onClick="OnServer2Click">
+                            <TextBlock Text="G" FontSize="20" FontWeight="Bold" Foreground="White"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+
+                        <!-- Add Server -->
+                        <Border Width="48" Height="48" CornerRadius="24" 
+                                Background="#36393F" Margin="0,0,0,12"
+                                Cursor="Hand" Name="btnAddServer" onClick="OnAddServerClick">
+                            <TextBlock Text="+" FontSize="24" Foreground="#3BA55C"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- ─── 2. CHAT LIST (Contacts/Channels) ─── -->
+                <Border Grid.Column="1" Background="#2F3136">
+                    <Grid>
+                        <Grid.RowDefinitions>Auto,Auto,*</Grid.RowDefinitions>
+
+                        <!-- Search -->
+                        <Border Grid.Row="0" Margin="16,16,16,8" Height="36" 
+                                CornerRadius="4" Background="#202225">
+                            <Grid>
+                                <TextBlock Text="Search conversations" Foreground="#72767D" 
+                                           VerticalAlignment="Center" Margin="12,0" 
+                                           IsHitTestVisible="False"/>
+                                <TextBox Name="searchBox" Background="Transparent" BorderThickness="0"
+                                         Foreground="White" VerticalAlignment="Center" Margin="8,0"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Divider -->
+                        <Border Grid.Row="1" Height="1" Background="#202225" Margin="0,8"/>
+
+                        <!-- List -->
+                        <ScrollViewer Grid.Row="2">
+                            <StackPanel>
+                                <TextBlock Text="DIRECT MESSAGES" FontSize="12" FontWeight="Bold" 
+                                           Foreground="#8E9297" Margin="16,8,0,8"/>
+
+                                <!-- Chat Item 1 (Active) -->
+                                <Border Name="chatItem1" Background="#393C43" Margin="8,2" CornerRadius="4" 
+                                        Padding="8" Cursor="Hand" onClick="OnChat1Click">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>Auto,*</Grid.ColumnDefinitions>
+                                        <Border Width="32" Height="32" CornerRadius="16" Background="#ED4245">
+                                            <Border Width="10" Height="10" CornerRadius="5" Background="#3BA55C" 
+                                                    HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                                    BorderBrush="#2F3136" BorderThickness="2"/>
+                                        </Border>
+                                        <TextBlock Grid.Column="1" Text="Design Team" Foreground="White" 
+                                                   FontWeight="SemiBold" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                                    </Grid>
+                                </Border>
+
+                                <!-- Chat Item 2 -->
+                                <Border Name="chatItem2" Background="Transparent" Margin="8,2" CornerRadius="4" 
+                                        Padding="8" Cursor="Hand" onClick="OnChat2Click">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>Auto,*</Grid.ColumnDefinitions>
+                                        <Border Width="32" Height="32" CornerRadius="16" Background="#5865F2"/>
+                                        <TextBlock Grid.Column="1" Text="Nimbus Support" Foreground="#8E9297" 
+                                                   VerticalAlignment="Center" Margin="12,0,0,0"/>
+                                    </Grid>
+                                </Border>
+
+                                <!-- Chat Item 3 -->
+                                <Border Name="chatItem3" Background="Transparent" Margin="8,2" CornerRadius="4" 
+                                        Padding="8" Cursor="Hand" onClick="OnChat3Click">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>Auto,*</Grid.ColumnDefinitions>
+                                        <Border Width="32" Height="32" CornerRadius="16" Background="#FEE75C"/>
+                                        <TextBlock Grid.Column="1" Text="General Chat" Foreground="#8E9297" 
+                                                   VerticalAlignment="Center" Margin="12,0,0,0"/>
+                                    </Grid>
+                                </Border>
+
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <!-- User Profile (Bottom) -->
+                        <Border Grid.Row="2" VerticalAlignment="Bottom" Background="#292B2F" Padding="8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>Auto,*,Auto</Grid.ColumnDefinitions>
+                                <Border Width="32" Height="32" CornerRadius="16" Background="#5865F2" 
+                                        Name="myAvatar" onClick="OnProfileClick" Cursor="Hand">
+                                    <Border Width="10" Height="10" CornerRadius="5" Background="#3BA55C" 
+                                            HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                            BorderBrush="#292B2F" BorderThickness="2"/>
+                                </Border>
+                                <StackPanel Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock Text="User123" FontWeight="Bold" Foreground="White" FontSize="13"/>
+                                    <TextBlock Text="#8842" Foreground="#B9BBBE" FontSize="11"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                    <Button Name="btnMic" Content="🎙️" Background="Transparent" Foreground="#B9BBBE" 
+                                            Padding="6" FontSize="16" onClick="OnMicToggle"/>
+                                    <Button Name="btnSettings" Content="⚙️" Background="Transparent" Foreground="#B9BBBE" 
+                                            Padding="6" FontSize="16" onClick="OnSettingsClick"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- ─── 3. MESSAGES VIEW ─── -->
+                <Grid Grid.Column="2" Background="#36393F">
+                    <Grid.RowDefinitions>Auto,*,Auto</Grid.RowDefinitions>
+
+                    <!-- Header -->
+                    <Border Grid.Row="0" Background="#36393F" Padding="16,12" 
+                            BorderBrush="#26272D" BorderThickness="0,0,0,1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>Auto,*,Auto</Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="#" Foreground="#8E9297" FontSize="20" Margin="0,0,8,0"/>
+                                <TextBlock Text="Design Team" Foreground="White" FontWeight="Bold" FontSize="16"/>
+                                <TextBlock Text="Topic: New UI Updates" Foreground="#72767D" 
+                                           FontSize="13" Margin="12,2,0,0"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                <Button Name="btnCall" Content="📞" Background="Transparent" 
+                                        Foreground="#B9BBBE" FontSize="18" Margin="0,0,16,0" onClick="OnCallClick"/>
+                                <Button Name="btnPin" Content="📌" Background="Transparent" 
+                                        Foreground="#B9BBBE" FontSize="18" Margin="0,0,16,0" onClick="OnPinClick"/>
+                                <Button Name="btnMembers" Content="👥" Background="Transparent" 
+                                        Foreground="#B9BBBE" FontSize="18" onClick="OnMembersClick"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Messages -->
+                    <ScrollViewer Name="scrollMessages" Grid.Row="1" Padding="16">
+                        <StackPanel Name="pnlMessages">
+                            
+                            <!-- Message 1 -->
+                            <Grid Margin="0,0,0,16">
+                                <Grid.ColumnDefinitions>Auto,*</Grid.ColumnDefinitions>
+                                <Border Width="40" Height="40" CornerRadius="20" Background="#ED4245" VerticalAlignment="Top"/>
+                                <StackPanel Grid.Column="1" Margin="16,0,0,0">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <TextBlock Text="Alex" Foreground="#ED4245" FontWeight="Bold"/>
+                                        <TextBlock Text="Today at 12:30 PM" Foreground="#72767D" FontSize="11" Margin="8,2,0,0"/>
+                                    </StackPanel>
+                                    <TextBlock Text="Hey guys! Check out the new Nimbus Engine update. It's insane! 🚀" 
+                                               Foreground="#DCDDDE" TextWrapping="Wrap" LineHeight="20"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Message 2 -->
+                            <Grid Margin="0,0,0,16">
+                                <Grid.ColumnDefinitions>Auto,*</Grid.ColumnDefinitions>
+                                <Border Width="40" Height="40" CornerRadius="20" Background="#5865F2" VerticalAlignment="Top"/>
+                                <StackPanel Grid.Column="1" Margin="16,0,0,0">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <TextBlock Text="Sarah" Foreground="#5865F2" FontWeight="Bold"/>
+                                        <TextBlock Text="Today at 12:32 PM" Foreground="#72767D" FontSize="11" Margin="8,2,0,0"/>
+                                    </StackPanel>
+                                    <TextBlock Text="I saw the XML parser. It supports everything now? Even modals?" 
+                                               Foreground="#DCDDDE" TextWrapping="Wrap" LineHeight="20"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Message 3 (Me) -->
+                            <Grid Margin="0,0,0,16">
+                                <Grid.ColumnDefinitions>Auto,*</Grid.ColumnDefinitions>
+                                <Border Width="40" Height="40" CornerRadius="20" Background="#3BA55C" VerticalAlignment="Top"/>
+                                <StackPanel Grid.Column="1" Margin="16,0,0,0">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <TextBlock Text="Me" Foreground="#3BA55C" FontWeight="Bold"/>
+                                        <TextBlock Text="Today at 12:35 PM" Foreground="#72767D" FontSize="11" Margin="8,2,0,0"/>
+                                    </StackPanel>
+                                    <TextBlock Text="Yes! It's fully functional. Look at this attachment:" 
+                                               Foreground="#DCDDDE" TextWrapping="Wrap" LineHeight="20"/>
+                                    
+                                    <!-- Attachment -->
+                                    <Border Background="#2F3136" CornerRadius="4" Margin="0,8,0,0" Width="300" Height="150"
+                                            Name="imgPreview" Cursor="Hand" onClick="OnImageClick">
+                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <TextBlock Text="📷 IMAGE" FontSize="24" Foreground="#72767D" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="preview.png" FontSize="12" Foreground="#72767D" HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- Input Area -->
+                    <Grid Grid.Row="2" Margin="16,0,16,24">
+                        <Border Background="#40444B" CornerRadius="8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>Auto,*,Auto</Grid.ColumnDefinitions>
+                                
+                                <Button Name="btnAddFile" Content="+" Background="Transparent" Foreground="#B9BBBE" 
+                                        FontSize="20" FontWeight="Bold" Padding="12,0" 
+                                        onClick="OnAddFileClick"/>
+                                
+                                <TextBox Name="txtInput" Grid.Column="1" Background="Transparent" BorderThickness="0"
+                                         Foreground="#DCDDDE" FontSize="15" VerticalAlignment="Center" 
+                                         Padding="0,12" onEnter="OnSendMessage"/>
+                                
+                                <TextBlock Grid.Column="1" Text="Message #Design Team" Foreground="#72767D" 
+                                           VerticalAlignment="Center" Margin="2,0,0,0" IsHitTestVisible="False"/>
+                                
+                                <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="0,0,8,0">
+                                    <Button Name="btnGift" Content="🎁" Background="Transparent" Padding="8" onClick="OnGiftClick"/>
+                                    <Button Name="btnGif" Content="GIF" Background="Transparent" Foreground="#B9BBBE" Padding="8"/>
+                                    <Button Name="btnSticker" Content="😊" Background="Transparent" Padding="8" onClick="OnEmojiClick"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <!-- 2. POPUP/MODAL QATLAMI (Eng ustda) -->
+            <!-- Bu qatlam LogicRunner tomonidan dinamik boshqariladi, 
+                 lekin Modal ochilganda u shu Grid ustiga chiqadi -->
+        </Grid>
+    </UI>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!--                        LOGIC                               -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <Logic>
+        
+        <!-- === STARTUP === -->
+        <Handler Name="OnAppLoad">
+            <ScrollToBottom Control="scrollMessages"/>
+        </Handler>
+
+        <!-- === MESSAGE SEND === -->
+        <Handler Name="OnSendMessage">
+            <Get Control="txtInput" Property="Text" ToState="msgText"/>
+            
+            <If Condition="{msgText} != ">
+                <AddItem Container="pnlMessages" Type="Card" 
+                         Text="{msgText}" Background="#2F3136"/>
+                <Set Target="txtInput" Property="Text" Value=""/>
+                <ScrollToBottom Control="scrollMessages"/>
+            </If>
+        </Handler>
+
+        <!-- === MODALS & POPUPS (Full Screen!) === -->
+        
+        <!-- Settings Modal -->
+        <Handler Name="OnSettingsClick">
+            <Modal Name="SettingsModal" Title="User Settings" 
+                   Width="800" Height="600" Animation="Scale"
+                   Background="#36393F" Overlay="true" OverlayClose="true">
+                <Content>
+                    <Grid>
+                        <Grid.ColumnDefinitions>200,*</Grid.ColumnDefinitions>
+                        <!-- Sidebar -->
+                        <StackPanel Grid.Column="0" Background="#2F3136" Margin="-24">
+                            <TextBlock Text="User Settings" FontWeight="Bold" Foreground="#8E9297" Margin="20,20,0,10"/>
+                            <Button Name="btnMyAccount" Content="My Account" Background="#40444B" Foreground="White" 
+                                    HorizontalAlignment="Stretch" Margin="10,2" CornerRadius="4"/>
+                            <Button Name="btnProfile" Content="Profile" Background="Transparent" Foreground="#B9BBBE" 
+                                    HorizontalAlignment="Stretch" Margin="10,2" CornerRadius="4"/>
+                            <Button Name="btnPrivacy" Content="Privacy &amp; Safety" Background="Transparent" Foreground="#B9BBBE" 
+                                    HorizontalAlignment="Stretch" Margin="10,2" CornerRadius="4"/>
+                            
+                            <Border Height="1" Background="#40444B" Margin="10,10"/>
+                            
+                            <Button Name="btnLogout" Content="Log Out" Background="Transparent" Foreground="#ED4245" 
+                                    HorizontalAlignment="Stretch" Margin="10,2" CornerRadius="4" 
+                                    onClick="OnLogoutClick"/>
+                        </StackPanel>
+                        
+                        <!-- Content -->
+                        <StackPanel Grid.Column="1" Margin="40">
+                            <TextBlock Text="My Account" FontSize="20" FontWeight="Bold" Foreground="White" Margin="0,0,0,20"/>
+                            
+                            <Border Background="#2F3136" CornerRadius="8" Padding="16">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto,*,Auto</Grid.ColumnDefinitions>
+                                    <Border Width="80" Height="80" CornerRadius="40" Background="#5865F2"/>
+                                    <StackPanel Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="User123" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                                        <TextBlock Text="#8842" FontSize="14" Foreground="#B9BBBE"/>
+                                    </StackPanel>
+                                    <Button Name="btnEditProfile" Grid.Column="2" Content="Edit Profile" 
+                                            Background="#5865F2" Foreground="White" Padding="16,8" CornerRadius="4"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </Content>
+            </Modal>
+        </Handler>
+
+        <!-- Logout Confirm -->
+        <Handler Name="OnLogoutClick">
+            <!-- Modal ustidan Confirm chiqarish -->
+            <Confirm Title="Log Out" Message="Are you sure you want to log out?" 
+                     Custom="true" YesText="Log Out" YesBackground="#ED4245">
+                <Yes>
+                    <CloseModal Name="SettingsModal"/>
+                    <Toast Message="Logged out successfully" Type="Success"/>
+                </Yes>
+            </Confirm>
+        </Handler>
+
+        <!-- Add Server Modal -->
+        <Handler Name="OnAddServerClick">
+            <Modal Name="ServerModal" Title="Create a Server" Width="440" Height="Auto" 
+                   Background="White" Foreground="Black" CornerRadius="8">
+                <Content>
+                    <StackPanel Margin="0">
+                        <TextBlock Text="Your server is where you and your friends hang out." 
+                                   TextAlignment="Center" Foreground="#666" Margin="0,0,0,20"/>
+                        
+                        <TextBox Name="txtServerName" Text="My New Server" 
+                                 Background="#F0F0F0" Foreground="Black" Padding="10" Margin="0,0,0,20"/>
+                        
+                        <Button Name="btnCreate" Content="Create" Background="#5865F2" Foreground="White" 
+                                Height="40" CornerRadius="4" onClick="OnCreateServer"/>
+                    </StackPanel>
+                </Content>
+            </Modal>
+        </Handler>
+
+        <Handler Name="OnCreateServer">
+            <CloseModal Name="ServerModal"/>
+            <Toast Message="Server created!" Type="Success"/>
+        </Handler>
+
+        <!-- Attachment Drawer -->
+        <Handler Name="OnAddFileClick">
+            <Drawer Side="Bottom" Height="200" Background="#2F3136" Overlay="true">
+                <Content>
+                    <StackPanel Padding="20">
+                        <TextBlock Text="Upload File" FontWeight="Bold" Foreground="White" Margin="0,0,0,20"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="80" Height="80" Background="#40444B" CornerRadius="8" Margin="0,0,10,0" Cursor="Hand">
+                                <TextBlock Text="📷" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <Border Width="80" Height="80" Background="#40444B" CornerRadius="8" Margin="0,0,10,0" Cursor="Hand">
+                                <TextBlock Text="📁" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </StackPanel>
+                    </StackPanel>
+                </Content>
+            </Drawer>
+        </Handler>
+
+        <!-- Image Preview Modal -->
+        <Handler Name="OnImageClick">
+            <Modal Name="ImageModal" Width="800" Height="600" Background="Transparent" 
+                   ShowClose="false" OverlayClose="true" Animation="Scale">
+                <Content>
+                    <Border Background="#202225" CornerRadius="8" Padding="10">
+                        <StackPanel>
+                            <Border Height="500" Background="#000000">
+                                <TextBlock Text="📷 FULL IMAGE" Foreground="White" FontSize="40" 
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="Open in Browser" Foreground="White" Margin="0,10,0,0" Cursor="Hand"/>
+                        </StackPanel>
+                    </Border>
+                </Content>
+            </Modal>
+        </Handler>
+
+        <!-- Members Sidebar (Right Drawer) -->
+        <Handler Name="OnMembersClick">
+            <Drawer Side="Right" Width="240" Background="#2F3136" Overlay="true">
+                <Content>
+                    <ScrollViewer>
+                        <StackPanel Padding="16">
+                            <TextBlock Text="ONLINE — 3" FontSize="12" FontWeight="Bold" Foreground="#8E9297" Margin="0,0,0,8"/>
+                            
+                            <StackPanel Orientation="Horizontal" Margin="0,4">
+                                <Border Width="32" Height="32" CornerRadius="16" Background="#ED4245">
+                                    <Border Width="10" Height="10" CornerRadius="5" Background="#3BA55C" 
+                                            HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                            BorderBrush="#2F3136" BorderThickness="2"/>
+                                </Border>
+                                <TextBlock Text="Alex" Foreground="#ED4245" FontWeight="Bold" 
+                                           VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,4">
+                                <Border Width="32" Height="32" CornerRadius="16" Background="#3BA55C">
+                                    <Border Width="10" Height="10" CornerRadius="5" Background="#3BA55C" 
+                                            HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                            BorderBrush="#2F3136" BorderThickness="2"/>
+                                </Border>
+                                <TextBlock Text="Me" Foreground="#3BA55C" FontWeight="Bold" 
+                                           VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Content>
+            </Drawer>
+        </Handler>
+
+        <!-- Other interactions -->
+        <Handler Name="OnGiftClick">
+            <Toast Message="Nitro gifting is not available in demo." Type="Info"/>
+        </Handler>
+
+        <Handler Name="OnCallClick">
+            <Toast Message="Starting call..." Type="Success"/>
+        </Handler>
+
+        <Handler Name="OnPinClick">
+            <Alert Message="Pinned messages functionality coming soon!" Title="Pins"/>
+        </Handler>
+
+        <Handler Name="OnHomeClick">
+            <!-- Switch logic -->
+        </Handler>
+
+    </Logic>
+</App>

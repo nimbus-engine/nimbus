@@ -1,0 +1,746 @@
+<?xml version="1.0" encoding="utf-8"?>
+<NimbusApp Name="Nimbus Docs v1.0.0" Theme="Dark" Width="1400" Height="900">
+    
+    <UI>
+        <Grid Background="#0D1117">
+            <Grid.ColumnDefinitions>280, *</Grid.ColumnDefinitions>
+            
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- SIDEBAR - Navigation -->
+            <!-- ═══════════════════════════════════════════ -->
+            <Border Grid.Column="0" Background="#161B22">
+                <Grid>
+                    <Grid.RowDefinitions>Auto, Auto, *</Grid.RowDefinitions>
+                    
+                    <!-- Logo -->
+                    <Border Grid.Row="0" Padding="20,25,20,15">
+                        <StackPanel>
+                            <TextBlock Text="⚡ NIMBUS" FontSize="28" FontWeight="Bold" Foreground="#58A6FF"/>
+                            <TextBlock Text="Engine Documentation" FontSize="12" Foreground="#8B949E" Margin="0,5,0,0"/>
+                            <Border Background="#238636" CornerRadius="12" Padding="8,3" Margin="0,10,0,0" HorizontalAlignment="Left">
+                                <TextBlock Text="v1.0.0" FontSize="11" Foreground="White" FontWeight="Bold"/>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- Search -->
+                    <Border Grid.Row="1" Background="#21262D" Margin="15,5,15,15" CornerRadius="8" Padding="12,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>Auto, *</Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="🔍" FontSize="14" Foreground="#8B949E" VerticalAlignment="Center"/>
+                            <TextBox Grid.Column="1" Name="searchBox" Text="" Background="Transparent" Foreground="#C9D1D9" BorderThickness="0" FontSize="13" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                    
+                    <!-- Navigation Menu -->
+                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="10,0,10,20">
+                            
+                            <!-- GETTING STARTED -->
+                            <TextBlock Text="GETTING STARTED" FontSize="11" FontWeight="Bold" Foreground="#8B949E" Margin="10,15,0,8"/>
+                            
+                            <Button Name="navIntro" Content="📘  Kirish" Height="38" Background="#21262D" Foreground="#C9D1D9" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowIntro"/>
+                            <Button Name="navInstall" Content="📦  O'rnatish" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowInstall"/>
+                            <Button Name="navFirstApp" Content="🚀  Birinchi Dastur" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowFirstApp"/>
+                            
+                            <!-- UI COMPONENTS -->
+                            <TextBlock Text="UI KOMPONENTLAR" FontSize="11" FontWeight="Bold" Foreground="#8B949E" Margin="10,25,0,8"/>
+                            
+                            <Button Name="navWindow" Content="🪟  Window" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowWindow"/>
+                            <Button Name="navGrid" Content="📐  Grid" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowGrid"/>
+                            <Button Name="navStackPanel" Content="📚  StackPanel" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowStackPanel"/>
+                            <Button Name="navBorder" Content="🔲  Border" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowBorder"/>
+                            <Button Name="navButton" Content="🔘  Button" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowButton"/>
+                            <Button Name="navTextBox" Content="📝  TextBox" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowTextBox"/>
+                            <Button Name="navTextBlock" Content="🔤  TextBlock" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowTextBlock"/>
+                            <Button Name="navScrollViewer" Content="📜  ScrollViewer" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowScrollViewer"/>
+                            
+                            <!-- LOGIC METHODS -->
+                            <TextBlock Text="LOGIC METODLAR" FontSize="11" FontWeight="Bold" Foreground="#8B949E" Margin="10,25,0,8"/>
+                            
+                            <Button Name="navSet" Content="✏️  Set" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowSet"/>
+                            <Button Name="navGet" Content="📖  Get" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowGet"/>
+                            <Button Name="navIf" Content="❓  If / Then / Else" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowIf"/>
+                            <Button Name="navShowHide" Content="👁️  Show / Hide" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowShowHide"/>
+                            <Button Name="navAddItem" Content="➕  AddItem" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowAddItem"/>
+                            <Button Name="navAnimate" Content="🎬  Animate" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowAnimate"/>
+                            <Button Name="navAlert" Content="💬  Alert" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowAlert"/>
+                            
+                            <!-- ADVANCED -->
+                            <TextBlock Text="ADVANCED" FontSize="11" FontWeight="Bold" Foreground="#8B949E" Margin="10,25,0,8"/>
+                            
+                            <Button Name="navManualC" Content="⚡  ManualC" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowManualC"/>
+                            <Button Name="navShortcuts" Content="⌨️  Shortcuts" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowShortcuts"/>
+                            <Button Name="navEvents" Content="🎯  Events" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowEvents"/>
+                            
+                            <!-- EXAMPLES -->
+                            <TextBlock Text="MISOLLAR" FontSize="11" FontWeight="Bold" Foreground="#8B949E" Margin="10,25,0,8"/>
+                            
+                            <Button Name="navExCalculator" Content="🔢  Calculator" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowExCalculator"/>
+                            <Button Name="navExCounter" Content="🔄  Counter" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowExCounter"/>
+                            <Button Name="navExChat" Content="💬  Chat App" Height="38" Background="Transparent" Foreground="#8B949E" FontSize="13" HorizontalContentAlignment="Left" Padding="15,0" Margin="0,2" onClick="ShowExChat"/>
+                            
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+            
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- MAIN CONTENT AREA -->
+            <!-- ═══════════════════════════════════════════ -->
+            <Border Grid.Column="1" Background="#0D1117">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="40,30">
+                    <Grid>
+                        
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- PAGE: INTRO -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <StackPanel Name="pageIntro" Visibility="Visible">
+                            <TextBlock Text="Nimbus Engine'ga Xush Kelibsiz! 🎉" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9" TextWrapping="Wrap"/>
+                            <TextBlock Text="XML asosida WPF dasturlar yarating" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            
+                            <!-- Features Grid -->
+                            <Grid Margin="0,20">
+                                <Grid.ColumnDefinitions>*, *, *</Grid.ColumnDefinitions>
+                                
+                                <Border Grid.Column="0" Background="#161B22" CornerRadius="12" Padding="25" Margin="0,0,15,0">
+                                    <StackPanel>
+                                        <TextBlock Text="⚡" FontSize="32"/>
+                                        <TextBlock Text="Tez va Oson" FontSize="18" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,15,0,8"/>
+                                        <TextBlock Text="XML yozing, WPF dastur oling. Compile qilish, kutish yo'q." FontSize="13" Foreground="#8B949E" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Border>
+                                
+                                <Border Grid.Column="1" Background="#161B22" CornerRadius="12" Padding="25" Margin="0,0,15,0">
+                                    <StackPanel>
+                                        <TextBlock Text="🎨" FontSize="32"/>
+                                        <TextBlock Text="WPF Kuchi" FontSize="18" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,15,0,8"/>
+                                        <TextBlock Text="To'liq XAML qo'llab-quvvatlash, animatsiyalar va effektlar." FontSize="13" Foreground="#8B949E" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Border>
+                                
+                                <Border Grid.Column="2" Background="#161B22" CornerRadius="12" Padding="25">
+                                    <StackPanel>
+                                        <TextBlock Text="🔧" FontSize="32"/>
+                                        <TextBlock Text="ManualC" FontSize="18" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,15,0,8"/>
+                                        <TextBlock Text="Kerak bo'lsa C# kodni to'g'ridan-to'g'ri yozing." FontSize="13" Foreground="#8B949E" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                            
+                            <!-- Quick Start Code -->
+                            <TextBlock Text="Tez Boshlash" FontSize="24" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,40,0,15"/>
+                            
+                            <Border Background="#161B22" CornerRadius="8" Padding="20">
+                                <StackPanel>
+                                    <TextBlock Text="1. XML fayl yarating:" FontSize="14" Foreground="#8B949E" Margin="0,0,0,10"/>
+                                    <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                        <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" Text="&lt;NimbusApp Name=&quot;Hello&quot; Width=&quot;400&quot; Height=&quot;300&quot;&gt;&#x0A;    &lt;UI&gt;&#x0A;        &lt;StackPanel Background=&quot;#1E1E1E&quot;&gt;&#x0A;            &lt;TextBlock Text=&quot;Salom Dunyo!&quot; FontSize=&quot;32&quot; Foreground=&quot;White&quot;/&gt;&#x0A;            &lt;Button Name=&quot;btn&quot; Content=&quot;Bos!&quot; onClick=&quot;SayHello&quot;/&gt;&#x0A;        &lt;/StackPanel&gt;&#x0A;    &lt;/UI&gt;&#x0A;    &lt;Logic&gt;&#x0A;        &lt;Handler Name=&quot;SayHello&quot;&gt;&#x0A;            &lt;Alert Message=&quot;Salom!&quot;/&gt;&#x0A;        &lt;/Handler&gt;&#x0A;    &lt;/Logic&gt;&#x0A;&lt;/NimbusApp&gt;"/>
+                                    </Border>
+                                    
+                                    <TextBlock Text="2. Ishga tushiring:" FontSize="14" Foreground="#8B949E" Margin="0,20,0,10"/>
+                                    <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                        <TextBox IsReadOnly="True" Background="Transparent" Foreground="#FFA657" BorderThickness="0" FontFamily="Consolas" FontSize="13" Text="bin\Nimbus.exe hello.xml"/>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                        
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- PAGE: INSTALL -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <StackPanel Name="pageInstall" Visibility="Collapsed">
+                            <TextBlock Text="📦 O'rnatish" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Nimbus Engine'ni o'rnatish va sozlash" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            
+                            <TextBlock Text="Talablar" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,20,0,10"/>
+                            <Border Background="#161B22" CornerRadius="8" Padding="20">
+                                <StackPanel>
+                                    <TextBlock Text="• Windows 7/8/10/11" Foreground="#C9D1D9" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Text="• .NET Framework 4.0 yoki undan yuqori" Foreground="#C9D1D9" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Text="• csc.exe (C# Compiler)" Foreground="#C9D1D9" FontSize="14" Margin="0,5"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <TextBlock Text="Build qilish" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,30,0,10"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#FFA657" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" Text=":: build.bat ni ishga tushiring&#x0A;build.bat&#x0A;&#x0A;:: Yoki qo'lda:&#x0A;csc /target:winexe /out:Nimbus.exe ^&#x0A;    /r:PresentationCore.dll ^&#x0A;    /r:PresentationFramework.dll ^&#x0A;    /r:WindowsBase.dll ^&#x0A;    src\*.cs"/>
+                            </Border>
+                        </StackPanel>
+                        
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- PAGE: FIRST APP -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <StackPanel Name="pageFirstApp" Visibility="Collapsed">
+                            <TextBlock Text="🚀 Birinchi Dastur" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Oddiy Hello World dasturi yaratish" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            
+                            <TextBlock Text="XML Strukturasi" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,20,0,10"/>
+                            <Border Background="#161B22" CornerRadius="8" Padding="20">
+                                <StackPanel>
+                                    <TextBlock Foreground="#8B949E" FontSize="14" TextWrapping="Wrap" Text="Har bir Nimbus dasturi quyidagi strukturaga ega:"/>
+                                    <Border Background="#0D1117" CornerRadius="6" Padding="15" Margin="0,15,0,0">
+                                        <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" Text="&lt;NimbusApp Name=&quot;...&quot; Width=&quot;...&quot; Height=&quot;...&quot;&gt;&#x0A;    &lt;UI&gt;&#x0A;        &lt;!-- UI elementlar --&gt;&#x0A;    &lt;/UI&gt;&#x0A;    &lt;Logic&gt;&#x0A;        &lt;!-- Event handler'lar --&gt;&#x0A;    &lt;/Logic&gt;&#x0A;    &lt;Shortcuts&gt;&#x0A;        &lt;!-- Klaviatura shortcut'lar --&gt;&#x0A;    &lt;/Shortcuts&gt;&#x0A;    &lt;ManualC&gt;&#x0A;        &lt;!-- C# kodi --&gt;&#x0A;    &lt;/ManualC&gt;&#x0A;&lt;/NimbusApp&gt;"/>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                            
+                            <TextBlock Text="NimbusApp Atributlari" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,30,0,10"/>
+                            <Border Background="#161B22" CornerRadius="8" Padding="20">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>150, *</Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>Auto, Auto, Auto, Auto</Grid.RowDefinitions>
+                                    
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Name" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Dastur nomi (Window Title)" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                    
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Width" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="Oyna kengligi (piksel)" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                    
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Height" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Text="Oyna balandligi (piksel)" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                    
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Theme" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="3" Grid.Column="1" Text="Dark yoki Light" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                        
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- PAGE: GRID -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <StackPanel Name="pageGrid" Visibility="Collapsed">
+                            <TextBlock Text="📐 Grid" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Eng kuchli layout konteyner" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            
+                            <TextBlock Text="Asosiy Ishlatish" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,20,0,10"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" Text="&lt;Grid Background=&quot;#1E1E1E&quot;&gt;&#x0A;    &lt;Grid.RowDefinitions&gt;Auto, *, Auto&lt;/Grid.RowDefinitions&gt;&#x0A;    &lt;Grid.ColumnDefinitions&gt;200, *, 200&lt;/Grid.ColumnDefinitions&gt;&#x0A;    &#x0A;    &lt;TextBlock Grid.Row=&quot;0&quot; Grid.Column=&quot;0&quot; Text=&quot;Header&quot;/&gt;&#x0A;    &lt;TextBlock Grid.Row=&quot;1&quot; Grid.Column=&quot;1&quot; Text=&quot;Content&quot;/&gt;&#x0A;&lt;/Grid&gt;"/>
+                            </Border>
+                            
+                            <TextBlock Text="Row/Column Definitions" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,30,0,10"/>
+                            <Border Background="#161B22" CornerRadius="8" Padding="20">
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>100, *</Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>Auto, Auto, Auto</Grid.RowDefinitions>
+                                        
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Auto" Foreground="#FFA657" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Kontentga mos o'lcham" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                        
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="*" Foreground="#FFA657" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="Qolgan joyni egallaydi (proporsional)" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                        
+                                        <TextBlock Grid.Row="2" Grid.Column="0" Text="200" Foreground="#FFA657" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="1" Text="Aniq piksel qiymat" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                            
+                            <TextBlock Text="Atributlar" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,30,0,10"/>
+                            <Border Background="#161B22" CornerRadius="8" Padding="20">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>180, *</Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>Auto, Auto, Auto, Auto</Grid.RowDefinitions>
+                                    
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Grid.Row" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Element qaysi qatorda (0 dan boshlanadi)" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                    
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Grid.Column" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="Element qaysi ustunda" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                    
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Grid.RowSpan" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Text="Nechta qatorni egallaydi" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                    
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Grid.ColumnSpan" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="3" Grid.Column="1" Text="Nechta ustunni egallaydi" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                        
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- PAGE: SET -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <StackPanel Name="pageSet" Visibility="Collapsed">
+                            <TextBlock Text="✏️ Set" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Control property'larini o'zgartirish" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            
+                            <TextBlock Text="Sintaksis" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,20,0,10"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" Text="&lt;Set Control=&quot;controlId&quot; Property=&quot;Text&quot; Value=&quot;Yangi qiymat&quot;/&gt;"/>
+                            </Border>
+                            
+                            <TextBlock Text="Misollar" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,30,0,10"/>
+                            <Border Background="#161B22" CornerRadius="8" Padding="20">
+                                <StackPanel>
+                                    <TextBlock Text="Text o'zgartirish:" Foreground="#8B949E" FontSize="14" Margin="0,0,0,10"/>
+                                    <Border Background="#0D1117" CornerRadius="6" Padding="15" Margin="0,0,0,15">
+                                        <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" Text="&lt;Set Control=&quot;myLabel&quot; Property=&quot;Text&quot; Value=&quot;Salom!&quot;/&gt;"/>
+                                    </Border>
+                                    
+                                    <TextBlock Text="Rang o'zgartirish:" Foreground="#8B949E" FontSize="14" Margin="0,0,0,10"/>
+                                    <Border Background="#0D1117" CornerRadius="6" Padding="15" Margin="0,0,0,15">
+                                        <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" Text="&lt;Set Control=&quot;myButton&quot; Property=&quot;Background&quot; Value=&quot;#FF5722&quot;/&gt;"/>
+                                    </Border>
+                                    
+                                    <TextBlock Text="Visibility o'zgartirish:" Foreground="#8B949E" FontSize="14" Margin="0,0,0,10"/>
+                                    <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                        <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" Text="&lt;Set Control=&quot;myPanel&quot; Property=&quot;Visibility&quot; Value=&quot;Collapsed&quot;/&gt;"/>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                            
+                            <TextBlock Text="State o'zgartirish" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,30,0,10"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" Text="&lt;Set State=&quot;counter&quot; Value=&quot;0&quot;/&gt;"/>
+                            </Border>
+                        </StackPanel>
+                        
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- PAGE: ADDITEM -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <StackPanel Name="pageAddItem" Visibility="Collapsed">
+                            <TextBlock Text="➕ AddItem" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Dinamik element qo'shish" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            
+                            <TextBlock Text="Sintaksis" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,20,0,10"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" Text="&lt;AddItem Container=&quot;panelId&quot; Type=&quot;ChatBubble&quot; Text=&quot;Xabar&quot; Sender=&quot;me&quot; Animate=&quot;true&quot;/&gt;"/>
+                            </Border>
+                            
+                            <TextBlock Text="Qo'llab-quvvatlanadigan Type'lar" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,30,0,10"/>
+                            <Border Background="#161B22" CornerRadius="8" Padding="20">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>150, *</Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>Auto, Auto, Auto, Auto, Auto</Grid.RowDefinitions>
+                                    
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="ChatBubble" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Telegram style chat xabar" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                    
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="TextBlock" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="Oddiy matn elementi" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                    
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Button" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Text="Tugma elementi" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                    
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Border" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="3" Grid.Column="1" Text="Border/Card elementi" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                    
+                                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Card" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="4" Grid.Column="1" Text="Material design card" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                </Grid>
+                            </Border>
+                            
+                            <TextBlock Text="Chat Bubble Misol" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,30,0,10"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" Text="&lt;Handler Name=&quot;SendMessage&quot;&gt;&#x0A;    &lt;AddItem Container=&quot;messagesPanel&quot; &#x0A;             Type=&quot;ChatBubble&quot; &#x0A;             Text=&quot;{messageInput.Text}&quot; &#x0A;             Sender=&quot;me&quot; &#x0A;             Animate=&quot;true&quot;/&gt;&#x0A;    &lt;Set Control=&quot;messageInput&quot; Property=&quot;Text&quot; Value=&quot;&quot;/&gt;&#x0A;&lt;/Handler&gt;"/>
+                            </Border>
+                        </StackPanel>
+                        
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- PAGE: ANIMATE -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <StackPanel Name="pageAnimate" Visibility="Collapsed">
+                            <TextBlock Text="🎬 Animate" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="XAML Storyboard style animatsiyalar" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            
+                            <TextBlock Text="Sintaksis" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,20,0,10"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" Text="&lt;Animate Control=&quot;myControl&quot; Property=&quot;Opacity&quot; From=&quot;0&quot; To=&quot;1&quot; Duration=&quot;300&quot; Easing=&quot;QuadraticEase&quot;/&gt;"/>
+                            </Border>
+                            
+                            <TextBlock Text="Qo'llab-quvvatlanadigan Property'lar" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,30,0,10"/>
+                            <Border Background="#161B22" CornerRadius="8" Padding="20">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>150, *</Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>Auto, Auto, Auto, Auto, Auto, Auto, Auto</Grid.RowDefinitions>
+                                    
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Opacity" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Shaffoflik (0.0 - 1.0)" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                    
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Width" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="Kenglik" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                    
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Height" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Text="Balandlik" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                    
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="TranslateX" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="3" Grid.Column="1" Text="X bo'yicha siljish" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                    
+                                    <TextBlock Grid.Row="4" Grid.Column="0" Text="TranslateY" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="4" Grid.Column="1" Text="Y bo'yicha siljish" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                    
+                                    <TextBlock Grid.Row="5" Grid.Column="0" Text="ScaleX/Y" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="5" Grid.Column="1" Text="Masshtab (zoom)" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                    
+                                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Rotate" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="6" Grid.Column="1" Text="Aylantirish (gradus)" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                </Grid>
+                            </Border>
+                            
+                            <TextBlock Text="Easing Funksiyalar" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,30,0,10"/>
+                            <Border Background="#161B22" CornerRadius="8" Padding="20">
+                                <StackPanel>
+                                    <TextBlock Text="• QuadraticEase - Oddiy, smooth" Foreground="#C9D1D9" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Text="• CubicEase - Kuchliroq easing" Foreground="#C9D1D9" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Text="• BounceEase - Sakrovchi effekt" Foreground="#C9D1D9" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Text="• ElasticEase - Elastik effekt" Foreground="#C9D1D9" FontSize="14" Margin="0,5"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                        
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- PAGE: MANUALC -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <StackPanel Name="pageManualC" Visibility="Collapsed">
+                            <TextBlock Text="⚡ ManualC" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="To'g'ridan-to'g'ri C# kodi yozish" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            
+                            <Border Background="#21262D" CornerRadius="8" Padding="15" Margin="0,0,0,20">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="⚠️" FontSize="18" Margin="0,0,10,0"/>
+                                    <TextBlock Text="ManualC runtime'da compile bo'ladi. Xatolar bo'lsa, dastur ishga tushganda ko'rsatiladi." Foreground="#FFA657" FontSize="14" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <TextBlock Text="Sintaksis" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,20,0,10"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" AcceptsReturn="True" Height="200" Text="&lt;ManualC id=&quot;myFunction&quot; method=&quot;Calculate&quot;&gt;&#x0A;&lt;![CDATA[&#x0A;using System.Windows;&#x0A;&#x0A;public static void Calculate()&#x0A;{&#x0A;    // WPF API'ga to'liq kirish&#x0A;    MessageBox.Show(&quot;ManualC ishlayapti!&quot;);&#x0A;    &#x0A;    // Control'larga kirish&#x0A;    var window = Application.Current.MainWindow;&#x0A;    &#x0A;    // Animatsiya yaratish&#x0A;    var animation = new DoubleAnimation(0, 1, &#x0A;        TimeSpan.FromSeconds(0.5));&#x0A;}&#x0A;]]&gt;&#x0A;&lt;/ManualC&gt;"/>
+                            </Border>
+                            
+                            <TextBlock Text="Handler'dan chaqirish" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,30,0,10"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" Text="&lt;Button onClick=&quot;ManualC:myFunction&quot;/&gt;"/>
+                            </Border>
+                        </StackPanel>
+                        
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- PAGE: SHORTCUTS -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <StackPanel Name="pageShortcuts" Visibility="Collapsed">
+                            <TextBlock Text="⌨️ Shortcuts" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Klaviatura shortcut'larini sozlash" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            
+                            <TextBlock Text="Sintaksis" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,20,0,10"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" AcceptsReturn="True" Height="120" Text="&lt;Shortcuts&gt;&#x0A;    &lt;KeyBinding Key=&quot;F12&quot; Handler=&quot;ToggleDarkMode&quot;/&gt;&#x0A;    &lt;KeyBinding Key=&quot;Escape&quot; Handler=&quot;GoBack&quot;/&gt;&#x0A;    &lt;KeyBinding Key=&quot;S&quot; Modifiers=&quot;Control&quot; Handler=&quot;Save&quot;/&gt;&#x0A;    &lt;KeyBinding Key=&quot;N&quot; Modifiers=&quot;Control,Shift&quot; Handler=&quot;NewFile&quot;/&gt;&#x0A;&lt;/Shortcuts&gt;"/>
+                            </Border>
+                            
+                            <TextBlock Text="Atributlar" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,30,0,10"/>
+                            <Border Background="#161B22" CornerRadius="8" Padding="20">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>150, *</Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>Auto, Auto, Auto</Grid.RowDefinitions>
+                                    
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Key" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Tugma nomi (F1-F12, A-Z, Escape, Enter, ...)" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                    
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Modifiers" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="Control, Shift, Alt (vergul bilan ajratiladi)" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                    
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Handler" Foreground="#58A6FF" FontFamily="Consolas" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Text="Chaqiriladigan handler nomi" Foreground="#8B949E" FontSize="14" Margin="0,5"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                        
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- PAGE: IF -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <StackPanel Name="pageIf" Visibility="Collapsed">
+                            <TextBlock Text="❓ If / Then / Else" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Shartli mantiq" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            
+                            <TextBlock Text="Sintaksis" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,20,0,10"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" AcceptsReturn="True" Height="150" Text="&lt;If Condition=&quot;display.Text == 0&quot;&gt;&#x0A;    &lt;Then&gt;&#x0A;        &lt;Set Control=&quot;display&quot; Property=&quot;Text&quot; Value=&quot;1&quot;/&gt;&#x0A;    &lt;/Then&gt;&#x0A;    &lt;Else&gt;&#x0A;        &lt;AppendText Control=&quot;display&quot; Text=&quot;1&quot;/&gt;&#x0A;    &lt;/Else&gt;&#x0A;&lt;/If&gt;"/>
+                            </Border>
+                            
+                            <TextBlock Text="Operatorlar" FontSize="20" FontWeight="Bold" Foreground="#C9D1D9" Margin="0,30,0,10"/>
+                            <Border Background="#161B22" CornerRadius="8" Padding="20">
+                                <StackPanel>
+                                    <TextBlock Text="• == - Tenglik" Foreground="#C9D1D9" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Text="• != - Teng emas" Foreground="#C9D1D9" FontSize="14" Margin="0,5"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                        
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- Other pages (Window, StackPanel, Border, Button, etc.) -->
+                        <!-- Add visibility collapsed, shown via handlers -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        
+                        <StackPanel Name="pageWindow" Visibility="Collapsed">
+                            <TextBlock Text="🪟 Window" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="NimbusApp root elementi" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" Text="&lt;NimbusApp Name=&quot;My App&quot; Width=&quot;800&quot; Height=&quot;600&quot; Theme=&quot;Dark&quot;&gt;"/>
+                            </Border>
+                        </StackPanel>
+                        
+                        <StackPanel Name="pageStackPanel" Visibility="Collapsed">
+                            <TextBlock Text="📚 StackPanel" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Elementlarni ketma-ket joylashtirish" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" AcceptsReturn="True" Height="100" Text="&lt;StackPanel Orientation=&quot;Vertical&quot;&gt;&#x0A;    &lt;TextBlock Text=&quot;Birinchi&quot;/&gt;&#x0A;    &lt;TextBlock Text=&quot;Ikkinchi&quot;/&gt;&#x0A;&lt;/StackPanel&gt;"/>
+                            </Border>
+                        </StackPanel>
+                        
+                        <StackPanel Name="pageBorder" Visibility="Collapsed">
+                            <TextBlock Text="🔲 Border" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Chegara va fon berish" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" Text="&lt;Border Background=&quot;#1E1E1E&quot; CornerRadius=&quot;10&quot; Padding=&quot;20&quot;&gt;"/>
+                            </Border>
+                        </StackPanel>
+                        
+                        <StackPanel Name="pageButton" Visibility="Collapsed">
+                            <TextBlock Text="🔘 Button" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Interaktiv tugma" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" Text="&lt;Button Name=&quot;myBtn&quot; Content=&quot;Bos!&quot; onClick=&quot;HandleClick&quot;/&gt;"/>
+                            </Border>
+                        </StackPanel>
+                        
+                        <StackPanel Name="pageTextBox" Visibility="Collapsed">
+                            <TextBlock Text="📝 TextBox" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Matn kiritish maydoni" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" Text="&lt;TextBox Name=&quot;input&quot; Text=&quot;&quot; onEnter=&quot;Submit&quot;/&gt;"/>
+                            </Border>
+                        </StackPanel>
+                        
+                        <StackPanel Name="pageTextBlock" Visibility="Collapsed">
+                            <TextBlock Text="🔤 TextBlock" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Statik matn ko'rsatish" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" Text="&lt;TextBlock Text=&quot;Salom!&quot; FontSize=&quot;24&quot; Foreground=&quot;White&quot;/&gt;"/>
+                            </Border>
+                        </StackPanel>
+                        
+                        <StackPanel Name="pageScrollViewer" Visibility="Collapsed">
+                            <TextBlock Text="📜 ScrollViewer" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Scroll qilinadigan konteyner" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" AcceptsReturn="True" Height="80" Text="&lt;ScrollViewer VerticalScrollBarVisibility=&quot;Auto&quot;&gt;&#x0A;    &lt;StackPanel&gt;...&lt;/StackPanel&gt;&#x0A;&lt;/ScrollViewer&gt;"/>
+                            </Border>
+                        </StackPanel>
+                        
+                        <StackPanel Name="pageGet" Visibility="Collapsed">
+                            <TextBlock Text="📖 Get" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Control qiymatini o'qish" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" Text="&lt;Get Control=&quot;myInput&quot; Property=&quot;Text&quot; ToState=&quot;inputValue&quot;/&gt;"/>
+                            </Border>
+                        </StackPanel>
+                        
+                        <StackPanel Name="pageShowHide" Visibility="Collapsed">
+                            <TextBlock Text="👁️ Show / Hide" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Elementni ko'rsatish/yashirish" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" AcceptsReturn="True" Height="60" Text="&lt;Show Control=&quot;panel1&quot;/&gt;&#x0A;&lt;Hide Control=&quot;panel2&quot;/&gt;"/>
+                            </Border>
+                        </StackPanel>
+                        
+                        <StackPanel Name="pageAlert" Visibility="Collapsed">
+                            <TextBlock Text="💬 Alert" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Xabar oynasi chiqarish" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            <Border Background="#0D1117" CornerRadius="6" Padding="15">
+                                <TextBox IsReadOnly="True" Background="Transparent" Foreground="#7EE787" BorderThickness="0" FontFamily="Consolas" FontSize="13" TextWrapping="Wrap" Text="&lt;Alert Title=&quot;Ogohlantirish&quot; Message=&quot;Xabar matni&quot;/&gt;"/>
+                            </Border>
+                        </StackPanel>
+                        
+                        <StackPanel Name="pageEvents" Visibility="Collapsed">
+                            <TextBlock Text="🎯 Events" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Hodisalarni boshqarish" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            <Border Background="#161B22" CornerRadius="8" Padding="20">
+                                <StackPanel>
+                                    <TextBlock Text="• onClick - Tugma bosilganda" Foreground="#C9D1D9" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Text="• onEnter - Enter bosilganda (TextBox)" Foreground="#C9D1D9" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Text="• onTextChanged - Matn o'zgarganda" Foreground="#C9D1D9" FontSize="14" Margin="0,5"/>
+                                    <TextBlock Text="• onValueChanged - Qiymat o'zgarganda (Slider)" Foreground="#C9D1D9" FontSize="14" Margin="0,5"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                        
+                        <StackPanel Name="pageExCalculator" Visibility="Collapsed">
+                            <TextBlock Text="🔢 Calculator Example" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Oddiy kalkulyator" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            <TextBlock Text="apps/calculator.xml faylini ko'ring" Foreground="#8B949E" FontSize="14"/>
+                        </StackPanel>
+                        
+                        <StackPanel Name="pageExCounter" Visibility="Collapsed">
+                            <TextBlock Text="🔄 Counter Example" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Counter dasturi" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            <TextBlock Text="apps/counter.xml faylini ko'ring" Foreground="#8B949E" FontSize="14"/>
+                        </StackPanel>
+                        
+                        <StackPanel Name="pageExChat" Visibility="Collapsed">
+                            <TextBlock Text="💬 Chat App Example" FontSize="36" FontWeight="Bold" Foreground="#C9D1D9"/>
+                            <TextBlock Text="Telegram clone" FontSize="18" Foreground="#8B949E" Margin="0,10,0,30"/>
+                            <TextBlock Text="apps/telegram-clone.xml faylini ko'ring" Foreground="#8B949E" FontSize="14"/>
+                        </StackPanel>
+                        
+                    </Grid>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </UI>
+    
+    <Logic>
+        <!-- Navigation Handlers -->
+        <Handler Name="ShowIntro">
+            <Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageIntro"/>
+            <Set Control="navIntro" Property="Background" Value="#21262D"/>
+            <Set Control="navInstall" Property="Background" Value="Transparent"/>
+            <Set Control="navFirstApp" Property="Background" Value="Transparent"/>
+        </Handler>
+        
+        <Handler Name="ShowInstall">
+            <Hide Control="pageIntro"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageInstall"/>
+            <Set Control="navInstall" Property="Background" Value="#21262D"/>
+            <Set Control="navIntro" Property="Background" Value="Transparent"/>
+        </Handler>
+        
+        <Handler Name="ShowFirstApp">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageFirstApp"/>
+            <Set Control="navFirstApp" Property="Background" Value="#21262D"/>
+            <Set Control="navIntro" Property="Background" Value="Transparent"/>
+        </Handler>
+        
+        <Handler Name="ShowWindow">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageWindow"/>
+            <Set Control="navWindow" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowGrid">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageGrid"/>
+            <Set Control="navGrid" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowStackPanel">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageStackPanel"/>
+            <Set Control="navStackPanel" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowBorder">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageBorder"/>
+            <Set Control="navBorder" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowButton">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageButton"/>
+            <Set Control="navButton" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowTextBox">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageTextBox"/>
+            <Set Control="navTextBox" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowTextBlock">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageTextBlock"/>
+            <Set Control="navTextBlock" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowScrollViewer">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageScrollViewer"/>
+            <Set Control="navScrollViewer" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowSet">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageSet"/>
+            <Set Control="navSet" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowGet">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageGet"/>
+            <Set Control="navGet" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowIf">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageIf"/>
+            <Set Control="navIf" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowShowHide">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageShowHide"/>
+            <Set Control="navShowHide" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowAddItem">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageAddItem"/>
+            <Set Control="navAddItem" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowAnimate">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageAnimate"/>
+            <Set Control="navAnimate" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowAlert">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageAlert"/>
+            <Set Control="navAlert" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowManualC">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageManualC"/>
+            <Set Control="navManualC" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowShortcuts">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageShortcuts"/>
+            <Set Control="navShortcuts" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowEvents">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageEvents"/>
+            <Set Control="navEvents" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowExCalculator">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCounter"/><Hide Control="pageExChat"/>
+            <Show Control="pageExCalculator"/>
+            <Set Control="navExCalculator" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowExCounter">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExChat"/>
+            <Show Control="pageExCounter"/>
+            <Set Control="navExCounter" Property="Background" Value="#21262D"/>
+        </Handler>
+        
+        <Handler Name="ShowExChat">
+            <Hide Control="pageIntro"/><Hide Control="pageInstall"/><Hide Control="pageFirstApp"/><Hide Control="pageGrid"/><Hide Control="pageSet"/><Hide Control="pageAddItem"/><Hide Control="pageAnimate"/><Hide Control="pageManualC"/><Hide Control="pageShortcuts"/><Hide Control="pageIf"/><Hide Control="pageWindow"/><Hide Control="pageStackPanel"/><Hide Control="pageBorder"/><Hide Control="pageButton"/><Hide Control="pageTextBox"/><Hide Control="pageTextBlock"/><Hide Control="pageScrollViewer"/><Hide Control="pageGet"/><Hide Control="pageShowHide"/><Hide Control="pageAlert"/><Hide Control="pageEvents"/><Hide Control="pageExCalculator"/><Hide Control="pageExCounter"/>
+            <Show Control="pageExChat"/>
+            <Set Control="navExChat" Property="Background" Value="#21262D"/>
+        </Handler>
+    </Logic>
+    
+    <Shortcuts>
+        <KeyBinding Key="F1" Handler="ShowIntro"/>
+        <KeyBinding Key="Escape" Handler="ShowIntro"/>
+    </Shortcuts>
+    
+</NimbusApp>

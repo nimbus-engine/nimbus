@@ -1,0 +1,1925 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="Nimbus Notepad Pro"
+     Width="1200"
+     Height="800"
+     Theme="Dark"
+     DarkMode="true"
+     DevMode="true"
+     Version="2.0.0"
+     Background="#0D1117"
+     OnLoad="OnAppLoad">
+
+    <!-- ============================================ -->
+    <!-- CUSTOM COLORS & RESOURCES                   -->
+    <!-- ============================================ -->
+    <Components>
+        <Colors>
+            <Color Name="BgPrimary" Value="#0D1117"/>
+            <Color Name="BgSecondary" Value="#161B22"/>
+            <Color Name="BgTertiary" Value="#21262D"/>
+            <Color Name="BgHover" Value="#30363D"/>
+            <Color Name="BorderColor" Value="#30363D"/>
+            <Color Name="TextPrimary" Value="#E6EDF3"/>
+            <Color Name="TextSecondary" Value="#8B949E"/>
+            <Color Name="TextMuted" Value="#484F58"/>
+            <Color Name="AccentBlue" Value="#58A6FF"/>
+            <Color Name="AccentGreen" Value="#3FB950"/>
+            <Color Name="AccentOrange" Value="#D29922"/>
+            <Color Name="AccentRed" Value="#F85149"/>
+            <Color Name="AccentPurple" Value="#A371F7"/>
+            <Color Name="StatusBar" Value="#1F6FEB"/>
+        </Colors>
+    </Components>
+
+    <UI>
+        <Grid Background="#0D1117">
+            <Grid.RowDefinitions>Auto, Auto, Auto, *, Auto</Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>Auto, *</Grid.ColumnDefinitions>
+
+            <!-- ============================================ -->
+            <!-- 1. TITLE BAR (Row 0, Full Width)            -->
+            <!-- ============================================ -->
+            <Border Grid.Row="0" Grid.ColumnSpan="2"
+                    Background="#010409"
+                    BorderBrush="#21262D"
+                    BorderThickness="0,0,0,1"
+                    Padding="0">
+                <Grid>
+                    <Grid.ColumnDefinitions>Auto, Auto, *, Auto, Auto</Grid.ColumnDefinitions>
+
+                    <!-- App Icon & Menu Button -->
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="8,0">
+                        <Border Background="#21262D" CornerRadius="6" Padding="8,6" Margin="0,6">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="📝" FontSize="16" VerticalAlignment="Center"/>
+                                <TextBlock Text="Nimbus Notepad" 
+                                           FontSize="13" 
+                                           FontWeight="SemiBold"
+                                           Foreground="#E6EDF3" 
+                                           Margin="8,0,0,0"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Tab Bar -->
+                    <Border Grid.Column="1" Margin="10,0,0,0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <!-- Active Tab -->
+                            <Border Name="tab1" 
+                                    Background="#161B22" 
+                                    BorderBrush="#30363D"
+                                    BorderThickness="1,1,1,0"
+                                    CornerRadius="8,8,0,0" 
+                                    Padding="12,8" 
+                                    Margin="0,6,0,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📄" FontSize="12" Margin="0,0,6,0"/>
+                                    <TextBlock Name="lblTabName" 
+                                               Text="Untitled" 
+                                               FontSize="12" 
+                                               Foreground="#E6EDF3"/>
+                                    <TextBlock Name="lblModified" 
+                                               Text="" 
+                                               FontSize="14" 
+                                               Foreground="#F85149" 
+                                               Margin="4,0,0,0"/>
+                                    <Button Name="btnCloseTab"
+                                            Content="✕"
+                                            Background="Transparent"
+                                            Foreground="#8B949E"
+                                            FontSize="10"
+                                            Padding="6,2"
+                                            Margin="8,0,0,0"
+                                            HoverColor="#F85149"
+                                            onClick="NewFile"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- New Tab Button -->
+                            <Button Name="btnNewTab"
+                                    Content="+"
+                                    Background="Transparent"
+                                    Foreground="#8B949E"
+                                    FontSize="16"
+                                    FontWeight="Bold"
+                                    Padding="10,6"
+                                    Margin="4,6,0,0"
+                                    HoverColor="#58A6FF"
+                                    onClick="NewFile"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Center: Command Palette / Search -->
+                    <Border Grid.Column="2"
+                            Background="#21262D"
+                            BorderBrush="#30363D"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="0"
+                            Margin="50,8"
+                            HorizontalAlignment="Center"
+                            Width="400">
+                        <Grid>
+                            <Grid.ColumnDefinitions>Auto, *, Auto</Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0"
+                                       Text="🔍"
+                                       FontSize="13"
+                                       Foreground="#8B949E"
+                                       VerticalAlignment="Center"
+                                       Margin="12,0,0,0"/>
+
+                            <TextBox Name="txtCommandPalette"
+                                     Grid.Column="1"
+                                     Background="Transparent"
+                                     Foreground="#E6EDF3"
+                                     BorderThickness="0"
+                                     FontSize="13"
+                                     Padding="8,10"
+                                     Placeholder="Search or type a command..."
+                                     VerticalContentAlignment="Center"
+                                     onChange="OnSearchChanged"/>
+
+                            <Border Grid.Column="2" 
+                                    Background="#30363D" 
+                                    CornerRadius="4" 
+                                    Padding="6,3" 
+                                    Margin="0,0,8,0"
+                                    VerticalAlignment="Center">
+                                <TextBlock Text="Ctrl+P" 
+                                           FontSize="10" 
+                                           Foreground="#8B949E"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- Right: Quick Actions -->
+                    <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="0,0,8,0">
+                        <Button Name="btnTheme"
+                                Content="🌙"
+                                Background="Transparent"
+                                Foreground="#8B949E"
+                                FontSize="14"
+                                Padding="10,8"
+                                HoverColor="#58A6FF"
+                                onClick="ToggleTheme"/>
+
+                        <Button Name="btnSettings"
+                                Content="⚙️"
+                                Background="Transparent"
+                                Foreground="#8B949E"
+                                FontSize="14"
+                                Padding="10,8"
+                                HoverColor="#58A6FF"
+                                onClick="ShowSettings"/>
+
+                        <Border Width="1" Background="#30363D" Margin="8,10"/>
+                        
+                        <Button Name="btnNotifications"
+                                Content="🔔"
+                                Background="Transparent"
+                                Foreground="#8B949E"
+                                FontSize="14"
+                                Padding="10,8"
+                                HoverColor="#D29922"
+                                onClick="ShowNotifications"/>
+                    </StackPanel>
+
+                    <!-- Window Controls -->
+                    <StackPanel Grid.Column="4" Orientation="Horizontal">
+                        <Button Name="btnMinimize"
+                                Content="━"
+                                Background="Transparent"
+                                Foreground="#8B949E"
+                                FontSize="11"
+                                Width="46" Height="38"
+                                HoverColor="#30363D"
+                                onClick="MinimizeWindow"/>
+
+                        <Button Name="btnMaximize"
+                                Content="☐"
+                                Background="Transparent"
+                                Foreground="#8B949E"
+                                FontSize="12"
+                                Width="46" Height="38"
+                                HoverColor="#30363D"
+                                onClick="MaximizeWindow"/>
+
+                        <Button Name="btnCloseWin"
+                                Content="✕"
+                                Background="Transparent"
+                                Foreground="#8B949E"
+                                FontSize="12"
+                                Width="46" Height="38"
+                                HoverColor="#F85149"
+                                onClick="CloseWindow"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- ============================================ -->
+            <!-- 2. TOOLBAR (Row 1, Full Width)              -->
+            <!-- ============================================ -->
+            <Border Grid.Row="1" Grid.ColumnSpan="2"
+                    Background="#161B22"
+                    BorderBrush="#21262D"
+                    BorderThickness="0,0,0,1"
+                    Padding="8,4">
+                <Grid>
+                    <Grid.ColumnDefinitions>Auto, Auto, *, Auto</Grid.ColumnDefinitions>
+
+                    <!-- File Operations -->
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <Border Background="#21262D" CornerRadius="6" Padding="2" Margin="0,0,8,0">
+                            <StackPanel Orientation="Horizontal">
+                                <IconButton Name="toolNew"
+                                            Icon="📄"
+                                            Size="32"
+                                            Background="Transparent"
+                                            HoverColor="#30363D"
+                                            onClick="NewFile"/>
+                                <IconButton Name="toolOpen"
+                                            Icon="📂"
+                                            Size="32"
+                                            Background="Transparent"
+                                            HoverColor="#30363D"
+                                            onClick="OpenFileDialog"/>
+                                <IconButton Name="toolSave"
+                                            Icon="💾"
+                                            Size="32"
+                                            Background="Transparent"
+                                            HoverColor="#30363D"
+                                            onClick="SaveFile"/>
+                                <IconButton Name="toolSaveAs"
+                                            Icon="📥"
+                                            Size="32"
+                                            Background="Transparent"
+                                            HoverColor="#30363D"
+                                            onClick="SaveFileAs"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Separator -->
+                        <Border Width="1" Background="#30363D" Margin="4,6"/>
+
+                        <!-- Edit Operations -->
+                        <Border Background="#21262D" CornerRadius="6" Padding="2" Margin="8,0">
+                            <StackPanel Orientation="Horizontal">
+                                <IconButton Name="toolUndo"
+                                            Icon="↩️"
+                                            Size="32"
+                                            Background="Transparent"
+                                            HoverColor="#30363D"
+                                            onClick="UndoAction"/>
+                                <IconButton Name="toolRedo"
+                                            Icon="↪️"
+                                            Size="32"
+                                            Background="Transparent"
+                                            HoverColor="#30363D"
+                                            onClick="RedoAction"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Width="1" Background="#30363D" Margin="4,6"/>
+
+                        <!-- Clipboard -->
+                        <Border Background="#21262D" CornerRadius="6" Padding="2" Margin="8,0">
+                            <StackPanel Orientation="Horizontal">
+                                <IconButton Name="toolCut"
+                                            Icon="✂️"
+                                            Size="32"
+                                            Background="Transparent"
+                                            HoverColor="#30363D"
+                                            onClick="CutText"/>
+                                <IconButton Name="toolCopy"
+                                            Icon="📋"
+                                            Size="32"
+                                            Background="Transparent"
+                                            HoverColor="#30363D"
+                                            onClick="CopyText"/>
+                                <IconButton Name="toolPaste"
+                                            Icon="📌"
+                                            Size="32"
+                                            Background="Transparent"
+                                            HoverColor="#30363D"
+                                            onClick="PasteText"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Width="1" Background="#30363D" Margin="4,6"/>
+
+                        <!-- Find & Replace -->
+                        <Border Background="#21262D" CornerRadius="6" Padding="2" Margin="8,0">
+                            <StackPanel Orientation="Horizontal">
+                                <IconButton Name="toolFind"
+                                            Icon="🔍"
+                                            Size="32"
+                                            Background="Transparent"
+                                            HoverColor="#30363D"
+                                            onClick="ShowFindPanel"/>
+                                <IconButton Name="toolReplace"
+                                            Icon="🔄"
+                                            Size="32"
+                                            Background="Transparent"
+                                            HoverColor="#30363D"
+                                            onClick="ShowReplacePanel"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- View Options -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="20,0,0,0">
+                        <Border Background="#21262D" CornerRadius="6" Padding="2">
+                            <StackPanel Orientation="Horizontal">
+                                <Button Name="toolWordWrap"
+                                        Content="↔️ Wrap"
+                                        Background="Transparent"
+                                        Foreground="#8B949E"
+                                        FontSize="11"
+                                        Padding="10,6"
+                                        HoverColor="#30363D"
+                                        onClick="ToggleWordWrap"/>
+                                        
+                                <Border Width="1" Background="#30363D" Margin="2,6"/>
+                                
+                                <Button Name="toolFontDown"
+                                        Content="A-"
+                                        Background="Transparent"
+                                        Foreground="#8B949E"
+                                        FontSize="12"
+                                        FontWeight="Bold"
+                                        Padding="10,6"
+                                        HoverColor="#30363D"
+                                        onClick="FontSizeDown"/>
+                                        
+                                <TextBlock Name="lblFontSize" 
+                                           Text="14" 
+                                           FontSize="11" 
+                                           Foreground="#E6EDF3"
+                                           VerticalAlignment="Center"
+                                           Margin="4,0"/>
+                                           
+                                <Button Name="toolFontUp"
+                                        Content="A+"
+                                        Background="Transparent"
+                                        Foreground="#8B949E"
+                                        FontSize="12"
+                                        FontWeight="Bold"
+                                        Padding="10,6"
+                                        HoverColor="#30363D"
+                                        onClick="FontSizeUp"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Spacer -->
+                    <TextBlock Grid.Column="2"/>
+
+                    <!-- Right Side: Language Selector & Actions -->
+                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                        <!-- Language Selector -->
+                        <Border Background="#21262D" CornerRadius="6" Padding="8,4" Margin="0,0,8,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="📝" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                <TextBlock Name="lblLanguage" 
+                                           Text="Plain Text" 
+                                           FontSize="11" 
+                                           Foreground="#E6EDF3"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="▼" 
+                                           FontSize="8" 
+                                           Foreground="#8B949E" 
+                                           Margin="6,0,0,0"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Run/Execute -->
+                        <Win11Button Name="btnRun"
+                                     Text="▶ Run"
+                                     Icon=""
+                                     Background="#238636"
+                                     Foreground="White"
+                                     Padding="12,6"
+                                     onClick="RunCode"/>
+
+                        <!-- More Options -->
+                        <IconButton Name="toolMore"
+                                    Icon="⋯"
+                                    Size="32"
+                                    Background="#21262D"
+                                    HoverColor="#30363D"
+                                    Margin="8,0,0,0"
+                                    onClick="ShowMoreOptions"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- ============================================ -->
+            <!-- 3. FIND/REPLACE PANEL (Row 2, Collapsible)  -->
+            <!-- ============================================ -->
+            <Border Name="findPanel"
+                    Grid.Row="2" Grid.ColumnSpan="2"
+                    Background="#161B22"
+                    BorderBrush="#30363D"
+                    BorderThickness="0,0,0,1"
+                    Padding="12,8"
+                    Visibility="Collapsed">
+                <Grid>
+                    <Grid.ColumnDefinitions>Auto, *, Auto, Auto, Auto, Auto, Auto</Grid.ColumnDefinitions>
+
+                    <!-- Close Button -->
+                    <Button Grid.Column="0"
+                            Name="btnCloseFindPanel"
+                            Content="✕"
+                            Background="Transparent"
+                            Foreground="#8B949E"
+                            FontSize="12"
+                            Padding="8,6"
+                            HoverColor="#F85149"
+                            onClick="HideFindPanel"/>
+
+                    <!-- Find Input -->
+                    <Border Grid.Column="1" 
+                            Background="#21262D" 
+                            BorderBrush="#30363D"
+                            BorderThickness="1"
+                            CornerRadius="6" 
+                            Margin="8,0"
+                            Padding="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>Auto, *, Auto</Grid.ColumnDefinitions>
+                            
+                            <TextBlock Grid.Column="0" 
+                                       Text="🔍" 
+                                       FontSize="12"
+                                       Foreground="#8B949E"
+                                       VerticalAlignment="Center"
+                                       Margin="10,0,0,0"/>
+                                       
+                            <TextBox Name="txtFind"
+                                     Grid.Column="1"
+                                     Background="Transparent"
+                                     Foreground="#E6EDF3"
+                                     BorderThickness="0"
+                                     FontSize="13"
+                                     Padding="8"
+                                     Placeholder="Find..."
+                                     onChange="OnFindTextChanged"/>
+                                     
+                            <TextBlock Name="lblFindCount"
+                                       Grid.Column="2"
+                                       Text="0/0"
+                                       FontSize="11"
+                                       Foreground="#8B949E"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,10,0"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Replace Input -->
+                    <Border Name="replaceInputWrapper"
+                            Grid.Column="2" 
+                            Background="#21262D" 
+                            BorderBrush="#30363D"
+                            BorderThickness="1"
+                            CornerRadius="6" 
+                            Margin="0,0,8,0"
+                            Width="200"
+                            Visibility="Collapsed">
+                        <TextBox Name="txtReplace"
+                                 Background="Transparent"
+                                 Foreground="#E6EDF3"
+                                 BorderThickness="0"
+                                 FontSize="13"
+                                 Padding="10,8"
+                                 Placeholder="Replace with..."/>
+                    </Border>
+
+                    <!-- Navigation -->
+                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                        <Button Name="btnFindPrev"
+                                Content="◀"
+                                Background="#21262D"
+                                Foreground="#E6EDF3"
+                                FontSize="10"
+                                Padding="10,6"
+                                CornerRadius="4"
+                                HoverColor="#30363D"
+                                onClick="FindPrevious"/>
+                                
+                        <Button Name="btnFindNext"
+                                Content="▶"
+                                Background="#21262D"
+                                Foreground="#E6EDF3"
+                                FontSize="10"
+                                Padding="10,6"
+                                CornerRadius="4"
+                                Margin="4,0"
+                                HoverColor="#30363D"
+                                onClick="FindNext"/>
+                    </StackPanel>
+
+                    <!-- Replace Buttons -->
+                    <StackPanel Name="replaceButtons" 
+                                Grid.Column="4" 
+                                Orientation="Horizontal"
+                                Visibility="Collapsed"
+                                Margin="8,0,0,0">
+                        <Button Name="btnReplace"
+                                Content="Replace"
+                                Background="#21262D"
+                                Foreground="#E6EDF3"
+                                FontSize="11"
+                                Padding="12,6"
+                                CornerRadius="4"
+                                HoverColor="#30363D"
+                                onClick="ReplaceOne"/>
+                                
+                        <Button Name="btnReplaceAll"
+                                Content="Replace All"
+                                Background="#21262D"
+                                Foreground="#E6EDF3"
+                                FontSize="11"
+                                Padding="12,6"
+                                CornerRadius="4"
+                                Margin="4,0"
+                                HoverColor="#30363D"
+                                onClick="ReplaceAll"/>
+                    </StackPanel>
+
+                    <!-- Options -->
+                    <StackPanel Grid.Column="5" Orientation="Horizontal" Margin="12,0,0,0">
+                        <Border Name="optCaseSensitive" 
+                                Background="#21262D" 
+                                CornerRadius="4" 
+                                Padding="8,4"
+                                Margin="0,0,4,0">
+                            <TextBlock Text="Aa" 
+                                       FontSize="11" 
+                                       Foreground="#8B949E"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <Border Name="optWholeWord" 
+                                Background="#21262D" 
+                                CornerRadius="4" 
+                                Padding="8,4"
+                                Margin="0,0,4,0">
+                            <TextBlock Text="W" 
+                                       FontSize="11" 
+                                       FontWeight="Bold"
+                                       Foreground="#8B949E"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <Border Name="optRegex" 
+                                Background="#21262D" 
+                                CornerRadius="4" 
+                                Padding="8,4">
+                            <TextBlock Text=".*" 
+                                       FontSize="11" 
+                                       Foreground="#8B949E"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Toggle Replace -->
+                    <Button Grid.Column="6"
+                            Name="btnToggleReplace"
+                            Content="⇅"
+                            Background="#21262D"
+                            Foreground="#8B949E"
+                            FontSize="14"
+                            Padding="10,6"
+                            CornerRadius="4"
+                            Margin="12,0,0,0"
+                            HoverColor="#30363D"
+                            onClick="ToggleReplaceMode"/>
+                </Grid>
+            </Border>
+
+            <!-- ============================================ -->
+            <!-- 4. SIDEBAR (Row 3-4, Column 0)              -->
+            <!-- ============================================ -->
+            <Border Grid.Row="3" Grid.RowSpan="2" Grid.Column="0"
+                    Background="#161B22"
+                    BorderBrush="#21262D"
+                    BorderThickness="0,0,1,0"
+                    Width="48">
+                <StackPanel>
+                    <!-- Explorer -->
+                    <Border Name="navExplorer" 
+                            Background="Transparent"
+                            BorderBrush="#58A6FF"
+                            BorderThickness="2,0,0,0"
+                            Padding="10,12">
+                        <TextBlock Text="📁" 
+                                   FontSize="20" 
+                                   HorizontalAlignment="Center"/>
+                    </Border>
+
+                    <!-- Search -->
+                    <Border Name="navSearch" 
+                            Background="Transparent"
+                            Padding="10,12">
+                        <TextBlock Text="🔍" 
+                                   FontSize="20" 
+                                   HorizontalAlignment="Center"
+                                   Foreground="#8B949E"/>
+                    </Border>
+
+                    <!-- Git -->
+                    <Border Name="navGit" 
+                            Background="Transparent"
+                            Padding="10,12">
+                        <StackPanel>
+                            <TextBlock Text="🔀" 
+                                       FontSize="20" 
+                                       HorizontalAlignment="Center"
+                                       Foreground="#8B949E"/>
+                            <Badge Text="3" Background="#58A6FF" Margin="20,-15,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Extensions -->
+                    <Border Name="navExtensions" 
+                            Background="Transparent"
+                            Padding="10,12">
+                        <TextBlock Text="🧩" 
+                                   FontSize="20" 
+                                   HorizontalAlignment="Center"
+                                   Foreground="#8B949E"/>
+                    </Border>
+
+                    <!-- Spacer -->
+                    <Border Height="1" Background="#21262D" Margin="8,10"/>
+
+                    <!-- Recent Files -->
+                    <Border Name="navRecent" 
+                            Background="Transparent"
+                            Padding="10,12">
+                        <TextBlock Text="🕐" 
+                                   FontSize="20" 
+                                   HorizontalAlignment="Center"
+                                   Foreground="#8B949E"/>
+                    </Border>
+
+                    <!-- Snippets -->
+                    <Border Name="navSnippets" 
+                            Background="Transparent"
+                            Padding="10,12">
+                        <TextBlock Text="✨" 
+                                   FontSize="20" 
+                                   HorizontalAlignment="Center"
+                                   Foreground="#8B949E"/>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <!-- ============================================ -->
+            <!-- 5. MAIN EDITOR AREA (Row 3, Column 1)       -->
+            <!-- ============================================ -->
+            <Grid Grid.Row="3" Grid.Column="1">
+                <Grid.ColumnDefinitions>Auto, *, Auto</Grid.ColumnDefinitions>
+
+                <!-- Line Numbers -->
+                <Border Grid.Column="0"
+                        Name="lineNumbersPanel"
+                        Background="#0D1117"
+                        BorderBrush="#21262D"
+                        BorderThickness="0,0,1,0"
+                        Width="60"
+                        Padding="0">
+                    <ScrollViewer Name="lineScroll"
+                                  VerticalScrollBarVisibility="Hidden"
+                                  HorizontalScrollBarVisibility="Hidden">
+                        <TextBlock Name="lblLineNumbers"
+                                   Text="1"
+                                   FontSize="14"
+                                   FontFamily="Consolas"
+                                   Foreground="#484F58"
+                                   Padding="0,10,12,10"
+                                   TextAlignment="Right"
+                                   LineHeight="21"/>
+                    </ScrollViewer>
+                </Border>
+
+                <!-- Main Text Editor -->
+                <Border Grid.Column="1" Background="#0D1117">
+                    <TextBox Name="txtEditor"
+                             Background="#0D1117"
+                             Foreground="#E6EDF3"
+                             FontSize="14"
+                             FontFamily="Consolas"
+                             BorderThickness="0"
+                             Padding="12,10"
+                             AcceptsReturn="True"
+                             AcceptsTab="True"
+                             TextWrapping="NoWrap"
+                             Multiline="True"
+                             VerticalScrollBarVisibility="Auto"
+                             HorizontalScrollBarVisibility="Auto"
+                             CaretBrush="#58A6FF"
+                             SelectionBrush="#264F78"
+                             onChange="OnTextChanged"
+                             onEnter="OnEditorEnter"/>
+                </Border>
+
+                <!-- Minimap (Right Side) -->
+                <Border Grid.Column="2"
+                        Name="minimapPanel"
+                        Background="#0D1117"
+                        BorderBrush="#21262D"
+                        BorderThickness="1,0,0,0"
+                        Width="100"
+                        Visibility="Visible">
+                    <Grid>
+                        <TextBlock Name="txtMinimap"
+                                   Text=""
+                                   FontSize="2"
+                                   FontFamily="Consolas"
+                                   Foreground="#484F58"
+                                   Padding="4"
+                                   IsHitTestVisible="False"/>
+                        
+                        <!-- Viewport Indicator -->
+                        <Border Name="minimapViewport"
+                                Background="#58A6FF20"
+                                BorderBrush="#58A6FF40"
+                                BorderThickness="1"
+                                Height="50"
+                                VerticalAlignment="Top"
+                                Margin="2,0"/>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- ============================================ -->
+            <!-- 6. STATUS BAR (Row 4, Column 1)             -->
+            <!-- ============================================ -->
+            <Border Grid.Row="4" Grid.Column="1"
+                    Background="#1F6FEB"
+                    Padding="0">
+                <Grid>
+                    <Grid.ColumnDefinitions>Auto, Auto, *, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto</Grid.ColumnDefinitions>
+
+                    <!-- Git Branch -->
+                    <Border Grid.Column="0" 
+                            Background="#1158C7" 
+                            Padding="10,5">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔀" FontSize="11" Margin="0,0,4,0"/>
+                            <TextBlock Name="lblBranch" 
+                                       Text="main" 
+                                       FontSize="11" 
+                                       Foreground="White"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Sync Status -->
+                    <Border Grid.Column="1" 
+                            Background="#1158C7" 
+                            Padding="8,5">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="↑0 ↓0" 
+                                       FontSize="11" 
+                                       Foreground="White"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- File Status -->
+                    <StackPanel Grid.Column="2" 
+                                Orientation="Horizontal" 
+                                Margin="12,0"
+                                VerticalAlignment="Center">
+                        <TextBlock Name="lblFileStatus"
+                                   Text="✓ Ready"
+                                   FontSize="11"
+                                   Foreground="White"/>
+                    </StackPanel>
+
+                    <!-- Spacer -->
+                    <TextBlock Grid.Column="3"/>
+
+                    <!-- Errors & Warnings -->
+                    <Border Grid.Column="4" 
+                            Background="Transparent" 
+                            Padding="8,5">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="⊗" 
+                                       FontSize="11" 
+                                       Foreground="White" 
+                                       Margin="0,0,2,0"/>
+                            <TextBlock Name="lblErrors" 
+                                       Text="0" 
+                                       FontSize="11" 
+                                       Foreground="White"
+                                       Margin="0,0,10,0"/>
+                            <TextBlock Text="⚠" 
+                                       FontSize="11" 
+                                       Foreground="White" 
+                                       Margin="0,0,2,0"/>
+                            <TextBlock Name="lblWarnings" 
+                                       Text="0" 
+                                       FontSize="11" 
+                                       Foreground="White"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Separator -->
+                    <Border Grid.Column="5" Width="1" Background="#3B82F6" Margin="0,5"/>
+
+                    <!-- Line:Column -->
+                    <Border Grid.Column="6" 
+                            Background="Transparent" 
+                            Padding="10,5">
+                        <TextBlock Name="lblPosition"
+                                   Text="Ln 1, Col 1"
+                                   FontSize="11"
+                                   Foreground="White"/>
+                    </Border>
+
+                    <!-- Selection -->
+                    <Border Grid.Column="7" 
+                            Background="Transparent" 
+                            Padding="8,5">
+                        <TextBlock Name="lblSelection"
+                                   Text=""
+                                   FontSize="11"
+                                   Foreground="White"/>
+                    </Border>
+
+                    <!-- Character Count -->
+                    <Border Grid.Column="8" 
+                            Background="Transparent" 
+                            Padding="8,5">
+                        <TextBlock Name="lblCharCount"
+                                   Text="0 chars"
+                                   FontSize="11"
+                                   Foreground="White"/>
+                    </Border>
+
+                    <!-- Encoding -->
+                    <Border Grid.Column="9" 
+                            Background="Transparent" 
+                            Padding="10,5">
+                        <TextBlock Name="lblEncoding"
+                                   Text="UTF-8"
+                                   FontSize="11"
+                                   Foreground="White"/>
+                    </Border>
+
+                    <!-- Line Ending -->
+                    <Border Grid.Column="10" 
+                            Background="Transparent" 
+                            Padding="10,5">
+                        <TextBlock Name="lblLineEnding"
+                                   Text="CRLF"
+                                   FontSize="11"
+                                   Foreground="White"/>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- ============================================ -->
+        <!-- 7. MODALS & OVERLAYS                        -->
+        <!-- ============================================ -->
+
+        <!-- Settings Modal -->
+        <Modal Name="SettingsModal" 
+               Title="⚙️ Settings" 
+               Width="600" 
+               Height="500" 
+               Background="#161B22" 
+               Overlay="true" 
+               Animation="Scale">
+            <Content>
+                <Grid Margin="0">
+                    <Grid.ColumnDefinitions>180, *</Grid.ColumnDefinitions>
+
+                    <!-- Settings Sidebar -->
+                    <Border Grid.Column="0" 
+                            Background="#0D1117" 
+                            BorderBrush="#21262D"
+                            BorderThickness="0,0,1,0"
+                            Padding="8">
+                        <StackPanel>
+                            <NavItem Name="setGeneral" Icon="⚙️" Label="General" Active="true" AccentColor="#58A6FF"/>
+                            <NavItem Name="setEditor" Icon="📝" Label="Editor" AccentColor="#58A6FF"/>
+                            <NavItem Name="setTheme" Icon="🎨" Label="Appearance" AccentColor="#58A6FF"/>
+                            <NavItem Name="setKeys" Icon="⌨️" Label="Keybindings" AccentColor="#58A6FF"/>
+                            <NavItem Name="setPlugins" Icon="🧩" Label="Extensions" AccentColor="#58A6FF"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Settings Content -->
+                    <ScrollViewer Grid.Column="1" Padding="20">
+                        <StackPanel>
+                            <TextBlock Text="General Settings" 
+                                       FontSize="18" 
+                                       FontWeight="Bold" 
+                                       Foreground="#E6EDF3"
+                                       Margin="0,0,0,20"/>
+
+                            <!-- Font Size -->
+                            <Border Background="#21262D" CornerRadius="8" Padding="16" Margin="0,0,0,12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>*, Auto</Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Font Size" 
+                                                   FontSize="14" 
+                                                   Foreground="#E6EDF3"/>
+                                        <TextBlock Text="Editor text size in pixels" 
+                                                   FontSize="11" 
+                                                   Foreground="#8B949E"/>
+                                    </StackPanel>
+                                    <Border Grid.Column="1" 
+                                            Background="#30363D" 
+                                            CornerRadius="6" 
+                                            Padding="8,4">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="-" 
+                                                    Background="Transparent" 
+                                                    Foreground="White"
+                                                    Padding="8,2"
+                                                    onClick="FontSizeDown"/>
+                                            <TextBlock Name="lblSettingsFontSize" 
+                                                       Text="14" 
+                                                       FontSize="13" 
+                                                       Foreground="White"
+                                                       Margin="10,0"
+                                                       VerticalAlignment="Center"/>
+                                            <Button Content="+" 
+                                                    Background="Transparent" 
+                                                    Foreground="White"
+                                                    Padding="8,2"
+                                                    onClick="FontSizeUp"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                            <!-- Word Wrap -->
+                            <Border Background="#21262D" CornerRadius="8" Padding="16" Margin="0,0,0,12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>*, Auto</Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Word Wrap" 
+                                                   FontSize="14" 
+                                                   Foreground="#E6EDF3"/>
+                                        <TextBlock Text="Wrap long lines in editor" 
+                                                   FontSize="11" 
+                                                   Foreground="#8B949E"/>
+                                    </StackPanel>
+                                    <Button Name="btnSettingsWrap"
+                                            Grid.Column="1" 
+                                            Content="OFF"
+                                            Background="#30363D"
+                                            Foreground="#8B949E"
+                                            Padding="20,8"
+                                            CornerRadius="6"
+                                            onClick="ToggleWordWrap"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Auto Save -->
+                            <Border Background="#21262D" CornerRadius="8" Padding="16" Margin="0,0,0,12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>*, Auto</Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Auto Save" 
+                                                   FontSize="14" 
+                                                   Foreground="#E6EDF3"/>
+                                        <TextBlock Text="Automatically save files after delay" 
+                                                   FontSize="11" 
+                                                   Foreground="#8B949E"/>
+                                    </StackPanel>
+                                    <Button Name="btnAutoSave"
+                                            Grid.Column="1" 
+                                            Content="OFF"
+                                            Background="#30363D"
+                                            Foreground="#8B949E"
+                                            Padding="20,8"
+                                            CornerRadius="6"
+                                            onClick="ToggleAutoSave"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Minimap -->
+                            <Border Background="#21262D" CornerRadius="8" Padding="16" Margin="0,0,0,12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>*, Auto</Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Minimap" 
+                                                   FontSize="14" 
+                                                   Foreground="#E6EDF3"/>
+                                        <TextBlock Text="Show code overview on the right" 
+                                                   FontSize="11" 
+                                                   Foreground="#8B949E"/>
+                                    </StackPanel>
+                                    <Button Name="btnMinimap"
+                                            Grid.Column="1" 
+                                            Content="ON"
+                                            Background="#238636"
+                                            Foreground="White"
+                                            Padding="20,8"
+                                            CornerRadius="6"
+                                            onClick="ToggleMinimap"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Line Numbers -->
+                            <Border Background="#21262D" CornerRadius="8" Padding="16">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>*, Auto</Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Line Numbers" 
+                                                   FontSize="14" 
+                                                   Foreground="#E6EDF3"/>
+                                        <TextBlock Text="Show line numbers in gutter" 
+                                                   FontSize="11" 
+                                                   Foreground="#8B949E"/>
+                                    </StackPanel>
+                                    <Button Name="btnLineNumbers"
+                                            Grid.Column="1" 
+                                            Content="ON"
+                                            Background="#238636"
+                                            Foreground="White"
+                                            Padding="20,8"
+                                            CornerRadius="6"
+                                            onClick="ToggleLineNumbers"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Content>
+        </Modal>
+
+        <!-- About Modal -->
+        <Modal Name="AboutModal" 
+               Title="" 
+               Width="450" 
+               Height="Auto" 
+               Background="#161B22" 
+               Overlay="true" 
+               Animation="Scale">
+            <Content>
+                <StackPanel Padding="30">
+                    <!-- Logo -->
+                    <Border Background="#21262D" 
+                            CornerRadius="16" 
+                            Width="80" 
+                            Height="80" 
+                            HorizontalAlignment="Center"
+                            Margin="0,0,0,20">
+                        <TextBlock Text="📝" 
+                                   FontSize="40" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"/>
+                    </Border>
+
+                    <!-- Title -->
+                    <TextBlock Text="Nimbus Notepad Pro" 
+                               FontSize="24" 
+                               FontWeight="Bold" 
+                               Foreground="#E6EDF3"
+                               TextAlignment="Center"/>
+                               
+                    <TextBlock Text="Version 2.0.0" 
+                               FontSize="12" 
+                               Foreground="#8B949E"
+                               TextAlignment="Center"
+                               Margin="0,4,0,20"/>
+
+                    <!-- Stats Cards -->
+                    <Grid Margin="0,0,0,20">
+                        <Grid.ColumnDefinitions>*, *, *</Grid.ColumnDefinitions>
+                        
+                        <Border Grid.Column="0" 
+                                Background="#21262D" 
+                                CornerRadius="8" 
+                                Padding="12" 
+                                Margin="0,0,6,0">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Name="lblAboutLines" 
+                                           Text="0" 
+                                           FontSize="20" 
+                                           FontWeight="Bold"
+                                           Foreground="#58A6FF"
+                                           TextAlignment="Center"/>
+                                <TextBlock Text="Lines" 
+                                           FontSize="10" 
+                                           Foreground="#8B949E"
+                                           TextAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <Border Grid.Column="1" 
+                                Background="#21262D" 
+                                CornerRadius="8" 
+                                Padding="12" 
+                                Margin="3,0">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Name="lblAboutWords" 
+                                           Text="0" 
+                                           FontSize="20" 
+                                           FontWeight="Bold"
+                                           Foreground="#3FB950"
+                                           TextAlignment="Center"/>
+                                <TextBlock Text="Words" 
+                                           FontSize="10" 
+                                           Foreground="#8B949E"
+                                           TextAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <Border Grid.Column="2" 
+                                Background="#21262D" 
+                                CornerRadius="8" 
+                                Padding="12" 
+                                Margin="6,0,0,0">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Name="lblAboutChars" 
+                                           Text="0" 
+                                           FontSize="20" 
+                                           FontWeight="Bold"
+                                           Foreground="#A371F7"
+                                           TextAlignment="Center"/>
+                                <TextBlock Text="Chars" 
+                                           FontSize="10" 
+                                           Foreground="#8B949E"
+                                           TextAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <!-- Info -->
+                    <Border Background="#21262D" CornerRadius="8" Padding="16" Margin="0,0,0,20">
+                        <StackPanel>
+                            <TextBlock Text="Powered by Nimbus Engine v3.0" 
+                                       FontSize="12" 
+                                       Foreground="#E6EDF3"
+                                       TextAlignment="Center"/>
+                            <TextBlock Text="Modern text editor for developers" 
+                                       FontSize="11" 
+                                       Foreground="#8B949E"
+                                       TextAlignment="Center"
+                                       Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Plugins -->
+                    <TextBlock Text="Active Plugins" 
+                               FontSize="11" 
+                               Foreground="#8B949E"
+                               Margin="0,0,0,8"/>
+                               
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Border Background="#238636" CornerRadius="4" Padding="8,4" Margin="2">
+                            <TextBlock Text="StringPlugin" FontSize="10" Foreground="White"/>
+                        </Border>
+                        <Border Background="#1F6FEB" CornerRadius="4" Padding="8,4" Margin="2">
+                            <TextBlock Text="FilePlugin" FontSize="10" Foreground="White"/>
+                        </Border>
+                        <Border Background="#A371F7" CornerRadius="4" Padding="8,4" Margin="2">
+                            <TextBlock Text="DatePlugin" FontSize="10" Foreground="White"/>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Close Button -->
+                    <Win11Button Name="btnCloseAbout"
+                                 Text="Close"
+                                 Background="#30363D"
+                                 Foreground="White"
+                                 Margin="0,24,0,0"
+                                 onClick="CloseAboutModal"/>
+                </StackPanel>
+            </Content>
+        </Modal>
+
+        <!-- Welcome Screen (shown when editor is empty) -->
+        <Border Name="welcomeScreen"
+                Grid.Row="3" Grid.Column="1"
+                Background="#0D1117"
+                Visibility="Visible"
+                Padding="40">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <!-- Logo -->
+                <TextBlock Text="📝" FontSize="64" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                
+                <TextBlock Text="Nimbus Notepad Pro" 
+                           FontSize="32" 
+                           FontWeight="Bold" 
+                           Foreground="#E6EDF3"
+                           TextAlignment="Center"/>
+                           
+                <TextBlock Text="A modern text editor powered by Nimbus Engine" 
+                           FontSize="14" 
+                           Foreground="#8B949E"
+                           TextAlignment="Center"
+                           Margin="0,8,0,40"/>
+
+                <!-- Quick Actions -->
+                <Grid HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>Auto, Auto</Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>Auto, Auto, Auto</Grid.RowDefinitions>
+
+                    <ActionCard Grid.Row="0" Grid.Column="0"
+                                Name="actNew"
+                                Icon="📄"
+                                Title="New File"
+                                Subtitle="Ctrl+N"
+                                AccentColor="#58A6FF"
+                                Margin="0,0,10,10"
+                                onClick="NewFile"/>
+                                
+                    <ActionCard Grid.Row="0" Grid.Column="1"
+                                Name="actOpen"
+                                Icon="📂"
+                                Title="Open File"
+                                Subtitle="Ctrl+O"
+                                AccentColor="#3FB950"
+                                Margin="10,0,0,10"
+                                onClick="OpenFileDialog"/>
+                                
+                    <ActionCard Grid.Row="1" Grid.Column="0"
+                                Name="actRecent"
+                                Icon="🕐"
+                                Title="Recent Files"
+                                Subtitle="View history"
+                                AccentColor="#D29922"
+                                Margin="0,10,10,10"
+                                onClick="ShowRecentFiles"/>
+                                
+                    <ActionCard Grid.Row="1" Grid.Column="1"
+                                Name="actSettings"
+                                Icon="⚙️"
+                                Title="Settings"
+                                Subtitle="Ctrl+,"
+                                AccentColor="#A371F7"
+                                Margin="10,10,0,10"
+                                onClick="ShowSettings"/>
+                </Grid>
+
+                <!-- Keyboard Shortcuts -->
+                <Border Background="#161B22" 
+                        CornerRadius="8" 
+                        Padding="20" 
+                        Margin="0,30,0,0"
+                        MaxWidth="400">
+                    <StackPanel>
+                        <TextBlock Text="Keyboard Shortcuts" 
+                                   FontSize="13" 
+                                   FontWeight="SemiBold"
+                                   Foreground="#E6EDF3"
+                                   Margin="0,0,0,12"/>
+                                   
+                        <Grid>
+                            <Grid.ColumnDefinitions>*, Auto</Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>Auto, Auto, Auto, Auto</Grid.RowDefinitions>
+                            
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="New File" Foreground="#8B949E" FontSize="12" Margin="0,4"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="Ctrl+N" Foreground="#58A6FF" FontSize="12" Margin="0,4"/>
+                            
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Open File" Foreground="#8B949E" FontSize="12" Margin="0,4"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="Ctrl+O" Foreground="#58A6FF" FontSize="12" Margin="0,4"/>
+                            
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Save" Foreground="#8B949E" FontSize="12" Margin="0,4"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="Ctrl+S" Foreground="#58A6FF" FontSize="12" Margin="0,4"/>
+                            
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Find" Foreground="#8B949E" FontSize="12" Margin="0,4"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="Ctrl+F" Foreground="#58A6FF" FontSize="12" Margin="0,4"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+    </UI>
+
+    <!-- ============================================ -->
+    <!-- LOGIC                                        -->
+    <!-- ============================================ -->
+    <Logic>
+        <!-- ========== STATE VARIABLES ========== -->
+        <Var Name="currentFilePath" Value="" Type="string"/>
+        <Var Name="currentFileName" Value="Untitled" Type="string"/>
+        <Var Name="isModified" Value="false" Type="bool"/>
+        <Var Name="fontSize" Value="14" Type="int"/>
+        <Var Name="wordWrap" Value="false" Type="bool"/>
+        <Var Name="lastSavedContent" Value="" Type="string"/>
+        <Var Name="lineCount" Value="1" Type="int"/>
+        <Var Name="charCount" Value="0" Type="int"/>
+        <Var Name="wordCount" Value="0" Type="int"/>
+        <Var Name="searchText" Value="" Type="string"/>
+        <Var Name="undoText" Value="" Type="string"/>
+        <Var Name="redoText" Value="" Type="string"/>
+        <Var Name="showMinimap" Value="true" Type="bool"/>
+        <Var Name="showLineNumbers" Value="true" Type="bool"/>
+        <Var Name="replaceMode" Value="false" Type="bool"/>
+        <Var Name="autoSave" Value="false" Type="bool"/>
+        <Var Name="isDarkTheme" Value="true" Type="bool"/>
+
+        <!-- ========== PLUGINS ========== -->
+        <Plugin Name="StringPlugin"/>
+        <Plugin Name="FilePlugin"/>
+        <Plugin Name="DatePlugin"/>
+
+        <!-- ========== MANUAL C# ========== -->
+        <ManualC id="NotepadHelper">
+using System;
+using System.Text;
+
+public static int CountLines(string text)
+{
+    if (string.IsNullOrEmpty(text)) return 1;
+    int count = 1;
+    for (int i = 0; i &lt; text.Length; i++)
+    {
+        if (text[i] == '\n') count++;
+    }
+    return count;
+}
+
+public static string GenerateLineNumbers(int count)
+{
+    StringBuilder sb = new StringBuilder();
+    for (int i = 1; i &lt;= count; i++)
+    {
+        if (i > 1) sb.Append("\n");
+        sb.Append(i.ToString());
+    }
+    return sb.ToString();
+}
+
+public static int CountWords(string text)
+{
+    if (string.IsNullOrEmpty(text)) return 0;
+    int count = 0;
+    bool inWord = false;
+    for (int i = 0; i &lt; text.Length; i++)
+    {
+        if (char.IsLetterOrDigit(text[i]))
+        {
+            if (!inWord) { count++; inWord = true; }
+        }
+        else
+        {
+            inWord = false;
+        }
+    }
+    return count;
+}
+
+public static string GetMinimapText(string text, int maxLines)
+{
+    if (string.IsNullOrEmpty(text)) return "";
+    string[] lines = text.Split('\n');
+    StringBuilder sb = new StringBuilder();
+    int limit = Math.Min(lines.Length, maxLines);
+    for (int i = 0; i &lt; limit; i++)
+    {
+        if (i > 0) sb.Append("\n");
+        sb.Append(lines[i].Length > 80 ? lines[i].Substring(0, 80) : lines[i]);
+    }
+    return sb.ToString();
+}
+        </ManualC>
+
+        <!-- ========== INITIALIZATION ========== -->
+        <Handler Name="OnAppLoad">
+            <Set Target="txtEditor" Property="Text" Value=""/>
+            <Set Target="lblLineNumbers" Property="Text" Value="1"/>
+            <Set Target="lblFileStatus" Property="Text" Value="✓ Ready"/>
+            <Set Target="lblPosition" Property="Text" Value="Ln 1, Col 1"/>
+            <Set Target="lblCharCount" Property="Text" Value="0 chars"/>
+            <Set Target="welcomeScreen" Property="Visibility" Value="Visible"/>
+            <Log Message="Nimbus Notepad Pro initialized" Level="INFO"/>
+            <Toast Message="Welcome to Nimbus Notepad Pro!" Type="Info" Position="BottomRight" Duration="3000"/>
+        </Handler>
+
+        <!-- ========== TEXT CHANGED ========== -->
+        <Handler Name="OnTextChanged">
+            <!-- Hide welcome screen -->
+            <Hide Control="welcomeScreen" Animate="true" Duration="200"/>
+
+            <!-- Get current text -->
+            <Get Control="txtEditor" Property="Text" ToState="editorText"/>
+
+            <!-- Store for undo -->
+            <If Condition="{undoText} == ">
+                <Set Var="undoText" Value="{editorText}"/>
+            </If>
+
+            <!-- Count characters -->
+            <Plugin Name="StringPlugin" Method="length">
+                <Params>{editorText}</Params>
+                <ToState>charCount</ToState>
+            </Plugin>
+            <Set Target="lblCharCount" Property="Text" Value="{charCount} chars"/>
+
+            <!-- Count lines -->
+            <CallManualC id="NotepadHelper" Method="CountLines">
+                <Param Value="{editorText}" Type="string"/>
+                <ToState>lineCount</ToState>
+            </CallManualC>
+
+            <!-- Update line numbers -->
+            <CallManualC id="NotepadHelper" Method="GenerateLineNumbers">
+                <Param Value="{lineCount}" Type="int"/>
+                <ToState>lineNumbersText</ToState>
+            </CallManualC>
+            <Set Target="lblLineNumbers" Property="Text" Value="{lineNumbersText}"/>
+
+            <!-- Count words -->
+            <CallManualC id="NotepadHelper" Method="CountWords">
+                <Param Value="{editorText}" Type="string"/>
+                <ToState>wordCount</ToState>
+            </CallManualC>
+
+            <!-- Update minimap -->
+            <CallManualC id="NotepadHelper" Method="GetMinimapText">
+                <Param Value="{editorText}" Type="string"/>
+                <Param Value="200" Type="int"/>
+                <ToState>minimapText</ToState>
+            </CallManualC>
+            <Set Target="txtMinimap" Property="Text" Value="{minimapText}"/>
+
+            <!-- Mark as modified -->
+            <If Condition="{isModified} == false">
+                <Set Var="isModified" Value="true"/>
+                <Set Target="lblModified" Property="Text" Value="●"/>
+                <Set Target="lblTabName" Property="Text" Value="{currentFileName}"/>
+                <Set Target="lblFileStatus" Property="Text" Value="● Modified"/>
+            </If>
+        </Handler>
+
+        <!-- ========== SEARCH ========== -->
+        <Handler Name="OnSearchChanged">
+            <Get Control="txtCommandPalette" Property="Text" ToState="searchText"/>
+            <If Condition="{searchText} != ">
+                <Set Target="lblFileStatus" Property="Text" Value="🔍 Searching: {searchText}"/>
+            </If>
+            <If Condition="{searchText} == ">
+                <Set Target="lblFileStatus" Property="Text" Value="✓ Ready"/>
+            </If>
+        </Handler>
+
+        <!-- ========== NEW FILE ========== -->
+        <Handler Name="NewFile">
+            <If Condition="{isModified} == true">
+                <Confirm Message="Do you want to save changes to {currentFileName}?" 
+                         Title="Save Changes"
+                         Custom="true"
+                         Icon="💾"
+                         YesText="Save"
+                         NoText="Don't Save"
+                         YesBackground="#238636">
+                    <Yes>
+                        <Call Handler="SaveFile"/>
+                    </Yes>
+                </Confirm>
+            </If>
+
+            <Set Target="txtEditor" Property="Text" Value=""/>
+            <Set Var="currentFilePath" Value=""/>
+            <Set Var="currentFileName" Value="Untitled"/>
+            <Set Var="isModified" Value="false"/>
+            <Set Var="undoText" Value=""/>
+            <Set Var="redoText" Value=""/>
+
+            <Set Target="lblTabName" Property="Text" Value="Untitled"/>
+            <Set Target="lblModified" Property="Text" Value=""/>
+            <Set Target="lblFileStatus" Property="Text" Value="✓ New file created"/>
+            <Set Target="lblLineNumbers" Property="Text" Value="1"/>
+            <Set Target="lblCharCount" Property="Text" Value="0 chars"/>
+            <Set Target="lblPosition" Property="Text" Value="Ln 1, Col 1"/>
+            <Set Target="txtMinimap" Property="Text" Value=""/>
+
+            <Show Control="welcomeScreen" Animate="true" Duration="200"/>
+            <Focus Control="txtEditor"/>
+            
+            <Toast Message="New file created" Type="Success" Position="BottomRight" Duration="2000"/>
+        </Handler>
+
+        <!-- ========== OPEN FILE ========== -->
+        <Handler Name="OpenFileDialog">
+            <If Condition="{isModified} == true">
+                <Confirm Message="Save changes before opening?" 
+                         Title="Unsaved Changes"
+                         Custom="true"
+                         Icon="⚠️"
+                         YesText="Save"
+                         NoText="Discard">
+                    <Yes>
+                        <Call Handler="SaveFile"/>
+                    </Yes>
+                </Confirm>
+            </If>
+
+            <OpenFile ToControl="txtEditor"
+                      ToState="openedContent"
+                      Filter="All Files|*.*|Text Files|*.txt|C#|*.cs|XML|*.xml|JSON|*.json|JavaScript|*.js|Python|*.py|HTML|*.html|CSS|*.css|Markdown|*.md"/>
+
+            <If Condition="{openedContent} != ">
+                <Hide Control="welcomeScreen" Animate="true" Duration="200"/>
+                
+                <Set Var="isModified" Value="false"/>
+                <Set Var="lastSavedContent" Value="{openedContent}"/>
+                <Set Var="currentFileName" Value="Opened File"/>
+
+                <Set Target="lblTabName" Property="Text" Value="{currentFileName}"/>
+                <Set Target="lblModified" Property="Text" Value=""/>
+                <Set Target="lblFileStatus" Property="Text" Value="✓ File opened"/>
+
+                <!-- Update counts -->
+                <CallManualC id="NotepadHelper" Method="CountLines">
+                    <Param Value="{openedContent}" Type="string"/>
+                    <ToState>lineCount</ToState>
+                </CallManualC>
+
+                <CallManualC id="NotepadHelper" Method="GenerateLineNumbers">
+                    <Param Value="{lineCount}" Type="int"/>
+                    <ToState>lineNumbersText</ToState>
+                </CallManualC>
+                <Set Target="lblLineNumbers" Property="Text" Value="{lineNumbersText}"/>
+
+                <Plugin Name="StringPlugin" Method="length">
+                    <Params>{openedContent}</Params>
+                    <ToState>charCount</ToState>
+                </Plugin>
+                <Set Target="lblCharCount" Property="Text" Value="{charCount} chars"/>
+
+                <Focus Control="txtEditor"/>
+                <Toast Message="File opened successfully" Type="Success" Position="BottomRight" Duration="2000"/>
+            </If>
+        </Handler>
+
+        <!-- ========== SAVE FILE ========== -->
+        <Handler Name="SaveFile">
+            <If Condition="{currentFilePath} == ">
+                <Call Handler="SaveFileAs"/>
+            </If>
+
+            <If Condition="{currentFilePath} != ">
+                <Get Control="txtEditor" Property="Text" ToState="saveContent"/>
+                <SaveFile Content="{saveContent}"/>
+
+                <Set Var="isModified" Value="false"/>
+                <Set Var="lastSavedContent" Value="{saveContent}"/>
+                <Set Target="lblModified" Property="Text" Value=""/>
+
+                <Plugin Name="DatePlugin" Method="now">
+                    <Params>HH:mm:ss</Params>
+                    <ToState>saveTime</ToState>
+                </Plugin>
+
+                <Set Target="lblFileStatus" Property="Text" Value="✓ Saved at {saveTime}"/>
+                <Toast Message="File saved!" Type="Success" Position="BottomRight" Duration="2000"/>
+            </If>
+        </Handler>
+
+        <!-- ========== SAVE AS ========== -->
+        <Handler Name="SaveFileAs">
+            <Get Control="txtEditor" Property="Text" ToState="saveContent"/>
+            <SaveFile Content="{saveContent}"/>
+
+            <Set Var="isModified" Value="false"/>
+            <Set Target="lblModified" Property="Text" Value=""/>
+
+            <Plugin Name="DatePlugin" Method="now">
+                <Params>HH:mm:ss</Params>
+                <ToState>saveTime</ToState>
+            </Plugin>
+
+            <Set Target="lblFileStatus" Property="Text" Value="✓ Saved at {saveTime}"/>
+            <Toast Message="File saved successfully!" Type="Success" Position="BottomRight" Duration="2000"/>
+        </Handler>
+
+        <!-- ========== UNDO / REDO ========== -->
+        <Handler Name="UndoAction">
+            <If Condition="{undoText} != ">
+                <Get Control="txtEditor" Property="Text" ToState="redoText"/>
+                <Set Target="txtEditor" Property="Text" Value="{undoText}"/>
+                <Toast Message="Undo" Type="Info" Position="BottomRight" Duration="1500"/>
+            </If>
+            <If Condition="{undoText} == ">
+                <Toast Message="Nothing to undo" Type="Warning" Position="BottomRight" Duration="1500"/>
+            </If>
+        </Handler>
+
+        <Handler Name="RedoAction">
+            <If Condition="{redoText} != ">
+                <Get Control="txtEditor" Property="Text" ToState="undoText"/>
+                <Set Target="txtEditor" Property="Text" Value="{redoText}"/>
+                <Toast Message="Redo" Type="Info" Position="BottomRight" Duration="1500"/>
+            </If>
+            <If Condition="{redoText} == ">
+                <Toast Message="Nothing to redo" Type="Warning" Position="BottomRight" Duration="1500"/>
+            </If>
+        </Handler>
+
+        <!-- ========== CLIPBOARD ========== -->
+        <Handler Name="CutText">
+            <Get Control="txtEditor" Property="Text" ToState="undoText"/>
+            <Copy FromControl="txtEditor"/>
+            <Set Target="txtEditor" Property="Text" Value=""/>
+            <Toast Message="Cut to clipboard" Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="CopyText">
+            <Copy FromControl="txtEditor"/>
+            <Toast Message="Copied to clipboard" Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="PasteText">
+            <Get Control="txtEditor" Property="Text" ToState="undoText"/>
+            <Paste ToControl="txtEditor"/>
+            <Toast Message="Pasted" Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <!-- ========== FIND / REPLACE ========== -->
+        <Handler Name="ShowFindPanel">
+            <Set Var="replaceMode" Value="false"/>
+            <Set Target="replaceInputWrapper" Property="Visibility" Value="Collapsed"/>
+            <Set Target="replaceButtons" Property="Visibility" Value="Collapsed"/>
+            <Show Control="findPanel" Animate="true" Duration="200"/>
+            <Focus Control="txtFind"/>
+        </Handler>
+
+        <Handler Name="ShowReplacePanel">
+            <Set Var="replaceMode" Value="true"/>
+            <Set Target="replaceInputWrapper" Property="Visibility" Value="Visible"/>
+            <Set Target="replaceButtons" Property="Visibility" Value="Visible"/>
+            <Show Control="findPanel" Animate="true" Duration="200"/>
+            <Focus Control="txtFind"/>
+        </Handler>
+
+        <Handler Name="HideFindPanel">
+            <Hide Control="findPanel" Animate="true" Duration="200"/>
+            <Focus Control="txtEditor"/>
+        </Handler>
+
+        <Handler Name="ToggleReplaceMode">
+            <If Condition="{replaceMode} == false">
+                <Set Var="replaceMode" Value="true"/>
+                <Set Target="replaceInputWrapper" Property="Visibility" Value="Visible"/>
+                <Set Target="replaceButtons" Property="Visibility" Value="Visible"/>
+            </If>
+            <Else>
+                <Set Var="replaceMode" Value="false"/>
+                <Set Target="replaceInputWrapper" Property="Visibility" Value="Collapsed"/>
+                <Set Target="replaceButtons" Property="Visibility" Value="Collapsed"/>
+            </Else>
+        </Handler>
+
+        <Handler Name="OnFindTextChanged">
+            <Get Control="txtFind" Property="Text" ToState="findQuery"/>
+            <If Condition="{findQuery} != ">
+                <Set Target="lblFindCount" Property="Text" Value="..."/>
+            </If>
+            <If Condition="{findQuery} == ">
+                <Set Target="lblFindCount" Property="Text" Value="0/0"/>
+            </If>
+        </Handler>
+
+        <Handler Name="FindNext">
+            <Toast Message="Find Next" Type="Info" Position="BottomRight" Duration="1000"/>
+        </Handler>
+
+        <Handler Name="FindPrevious">
+            <Toast Message="Find Previous" Type="Info" Position="BottomRight" Duration="1000"/>
+        </Handler>
+
+        <Handler Name="ReplaceOne">
+            <Toast Message="Replaced" Type="Success" Position="BottomRight" Duration="1000"/>
+        </Handler>
+
+        <Handler Name="ReplaceAll">
+            <Toast Message="All occurrences replaced" Type="Success" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <!-- ========== VIEW OPTIONS ========== -->
+        <Handler Name="ToggleWordWrap">
+            <If Condition="{wordWrap} == false">
+                <Set Var="wordWrap" Value="true"/>
+                <Set Target="txtEditor" Property="TextWrapping" Value="Wrap"/>
+                <Set Target="toolWordWrap" Property="Foreground" Value="#58A6FF"/>
+                <Set Target="btnSettingsWrap" Property="Content" Value="ON"/>
+                <Set Target="btnSettingsWrap" Property="Background" Value="#238636"/>
+                <Toast Message="Word wrap enabled" Type="Info" Position="BottomRight" Duration="1500"/>
+            </If>
+            <Else>
+                <Set Var="wordWrap" Value="false"/>
+                <Set Target="txtEditor" Property="TextWrapping" Value="NoWrap"/>
+                <Set Target="toolWordWrap" Property="Foreground" Value="#8B949E"/>
+                <Set Target="btnSettingsWrap" Property="Content" Value="OFF"/>
+                <Set Target="btnSettingsWrap" Property="Background" Value="#30363D"/>
+                <Toast Message="Word wrap disabled" Type="Info" Position="BottomRight" Duration="1500"/>
+            </Else>
+        </Handler>
+
+        <Handler Name="FontSizeUp">
+            <If Condition="{fontSize} lt 48">
+                <Increment Var="fontSize" By="2"/>
+                <Set Target="txtEditor" Property="FontSize" Value="{fontSize}"/>
+                <Set Target="lblLineNumbers" Property="FontSize" Value="{fontSize}"/>
+                <Set Target="lblFontSize" Property="Text" Value="{fontSize}"/>
+                <Set Target="lblSettingsFontSize" Property="Text" Value="{fontSize}"/>
+                <Toast Message="Font size: {fontSize}px" Type="Info" Position="BottomRight" Duration="1000"/>
+            </If>
+        </Handler>
+
+        <Handler Name="FontSizeDown">
+            <If Condition="{fontSize} gt 8">
+                <Decrement Var="fontSize" By="2"/>
+                <Set Target="txtEditor" Property="FontSize" Value="{fontSize}"/>
+                <Set Target="lblLineNumbers" Property="FontSize" Value="{fontSize}"/>
+                <Set Target="lblFontSize" Property="Text" Value="{fontSize}"/>
+                <Set Target="lblSettingsFontSize" Property="Text" Value="{fontSize}"/>
+                <Toast Message="Font size: {fontSize}px" Type="Info" Position="BottomRight" Duration="1000"/>
+            </If>
+        </Handler>
+
+        <Handler Name="ToggleMinimap">
+            <If Condition="{showMinimap} == true">
+                <Set Var="showMinimap" Value="false"/>
+                <Set Target="minimapPanel" Property="Visibility" Value="Collapsed"/>
+                <Set Target="btnMinimap" Property="Content" Value="OFF"/>
+                <Set Target="btnMinimap" Property="Background" Value="#30363D"/>
+                <Toast Message="Minimap hidden" Type="Info" Position="BottomRight" Duration="1500"/>
+            </If>
+            <Else>
+                <Set Var="showMinimap" Value="true"/>
+                <Set Target="minimapPanel" Property="Visibility" Value="Visible"/>
+                <Set Target="btnMinimap" Property="Content" Value="ON"/>
+                <Set Target="btnMinimap" Property="Background" Value="#238636"/>
+                <Toast Message="Minimap shown" Type="Info" Position="BottomRight" Duration="1500"/>
+            </Else>
+        </Handler>
+
+        <Handler Name="ToggleLineNumbers">
+            <If Condition="{showLineNumbers} == true">
+                <Set Var="showLineNumbers" Value="false"/>
+                <Set Target="lineNumbersPanel" Property="Visibility" Value="Collapsed"/>
+                <Set Target="btnLineNumbers" Property="Content" Value="OFF"/>
+                <Set Target="btnLineNumbers" Property="Background" Value="#30363D"/>
+            </If>
+            <Else>
+                <Set Var="showLineNumbers" Value="true"/>
+                <Set Target="lineNumbersPanel" Property="Visibility" Value="Visible"/>
+                <Set Target="btnLineNumbers" Property="Content" Value="ON"/>
+                <Set Target="btnLineNumbers" Property="Background" Value="#238636"/>
+            </Else>
+        </Handler>
+
+        <Handler Name="ToggleAutoSave">
+            <If Condition="{autoSave} == false">
+                <Set Var="autoSave" Value="true"/>
+                <Set Target="btnAutoSave" Property="Content" Value="ON"/>
+                <Set Target="btnAutoSave" Property="Background" Value="#238636"/>
+                <Toast Message="Auto-save enabled" Type="Success" Position="BottomRight" Duration="1500"/>
+            </If>
+            <Else>
+                <Set Var="autoSave" Value="false"/>
+                <Set Target="btnAutoSave" Property="Content" Value="OFF"/>
+                <Set Target="btnAutoSave" Property="Background" Value="#30363D"/>
+                <Toast Message="Auto-save disabled" Type="Info" Position="BottomRight" Duration="1500"/>
+            </Else>
+        </Handler>
+
+        <!-- ========== SETTINGS ========== -->
+        <Handler Name="ShowSettings">
+            <Show Control="SettingsModal" Animate="true" Duration="300"/>
+        </Handler>
+
+        <Handler Name="ToggleTheme">
+            <If Condition="{isDarkTheme} == true">
+                <Set Var="isDarkTheme" Value="false"/>
+                <Set Target="btnTheme" Property="Content" Value="☀️"/>
+                <Toast Message="Light theme (coming soon)" Type="Info" Position="BottomRight" Duration="1500"/>
+            </If>
+            <Else>
+                <Set Var="isDarkTheme" Value="true"/>
+                <Set Target="btnTheme" Property="Content" Value="🌙"/>
+                <Toast Message="Dark theme" Type="Info" Position="BottomRight" Duration="1500"/>
+            </Else>
+        </Handler>
+
+        <!-- ========== ABOUT ========== -->
+        <Handler Name="ShowAbout">
+            <Get Control="txtEditor" Property="Text" ToState="currentText"/>
+
+            <CallManualC id="NotepadHelper" Method="CountLines">
+                <Param Value="{currentText}" Type="string"/>
+                <ToState>totalLines</ToState>
+            </CallManualC>
+
+            <CallManualC id="NotepadHelper" Method="CountWords">
+                <Param Value="{currentText}" Type="string"/>
+                <ToState>totalWords</ToState>
+            </CallManualC>
+
+            <Plugin Name="StringPlugin" Method="length">
+                <Params>{currentText}</Params>
+                <ToState>totalChars</ToState>
+            </Plugin>
+
+            <Set Target="lblAboutLines" Property="Text" Value="{totalLines}"/>
+            <Set Target="lblAboutWords" Property="Text" Value="{totalWords}"/>
+            <Set Target="lblAboutChars" Property="Text" Value="{totalChars}"/>
+
+            <Show Control="AboutModal" Animate="true" Duration="300"/>
+        </Handler>
+
+        <Handler Name="CloseAboutModal">
+            <CloseModal Name="AboutModal"/>
+        </Handler>
+
+        <Handler Name="ShowMoreOptions">
+            <ContextMenu Position="Mouse" Sender="toolMore">
+                <Item Text="📊 Statistics" Icon="" onClick="ShowAbout"/>
+                <Item Text="⌨️ Keyboard Shortcuts" Icon="" onClick="ShowShortcuts"/>
+                <Separator/>
+                <Item Text="📖 Documentation" Icon="" onClick="OpenDocs"/>
+                <Item Text="🐛 Report Bug" Icon="" onClick="ReportBug"/>
+                <Separator/>
+                <Item Text="ℹ️ About" Icon="" onClick="ShowAbout"/>
+            </ContextMenu>
+        </Handler>
+
+        <Handler Name="ShowNotifications">
+            <Toast Message="No new notifications" Type="Info" Position="TopRight" Duration="2000"/>
+        </Handler>
+
+        <Handler Name="ShowRecentFiles">
+            <Toast Message="Recent files (coming soon)" Type="Info" Position="BottomRight" Duration="2000"/>
+        </Handler>
+
+        <Handler Name="RunCode">
+            <Toast Message="Run feature coming soon!" Type="Warning" Position="BottomRight" Duration="2000"/>
+        </Handler>
+
+        <Handler Name="ShowShortcuts">
+            <Alert Message="Keyboard Shortcuts:
+
+Ctrl+N — New File
+Ctrl+O — Open File  
+Ctrl+S — Save
+Ctrl+Shift+S — Save As
+Ctrl+F — Find
+Ctrl+H — Find &amp; Replace
+Ctrl+Z — Undo
+Ctrl+Y — Redo
+Ctrl++ — Increase Font
+Ctrl+- — Decrease Font" 
+                   Title="⌨️ Keyboard Shortcuts"
+                   Custom="true"
+                   Icon=""
+                   Background="#161B22"/>
+        </Handler>
+
+        <Handler Name="OpenDocs">
+            <Toast Message="Opening documentation..." Type="Info" Position="BottomRight" Duration="2000"/>
+        </Handler>
+
+        <Handler Name="ReportBug">
+            <Toast Message="Bug reporting coming soon" Type="Info" Position="BottomRight" Duration="2000"/>
+        </Handler>
+
+        <!-- ========== WINDOW CONTROLS ========== -->
+        <Handler Name="MinimizeWindow">
+            <Log Message="Minimize window" Level="INFO"/>
+        </Handler>
+
+        <Handler Name="MaximizeWindow">
+            <Log Message="Maximize window" Level="INFO"/>
+        </Handler>
+
+        <Handler Name="CloseWindow">
+            <If Condition="{isModified} == true">
+                <Confirm Message="You have unsaved changes. Save before closing?" 
+                         Title="Unsaved Changes"
+                         Custom="true"
+                         Icon="⚠️"
+                         YesText="Save &amp; Exit"
+                         NoText="Exit Without Saving"
+                         YesBackground="#238636">
+                    <Yes>
+                        <Call Handler="SaveFile"/>
+                        <Exit/>
+                    </Yes>
+                    <No>
+                        <Exit/>
+                    </No>
+                </Confirm>
+            </If>
+            <If Condition="{isModified} == false">
+                <Exit/>
+            </If>
+        </Handler>
+    </Logic>
+</App>

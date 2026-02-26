@@ -1,0 +1,1169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="Photos"
+     Width="420"
+     Height="780"
+     Theme="Light"
+     DarkMode="false"
+     DevMode="true"
+     OnLoad="OnAppLoad"
+     Icon="photos.ico">
+
+    <Plugins>
+        <Plugin Name="FilePlugin"/>
+    </Plugins>
+
+    <UI>
+        <Grid Name="rootContainer" Background="#F2F2F7">
+
+            <!-- MAIN LAYER -->
+            <Grid Name="mainLayer">
+                <Grid.RowDefinitions>Auto, *, Auto</Grid.RowDefinitions>
+
+                <!-- ════════════════════════════════════════════════ -->
+                <!--                    HEADER                        -->
+                <!-- ════════════════════════════════════════════════ -->
+                <Border Grid.Row="0" Name="headerBar" Background="#F2F2F7" 
+                        Padding="0,12,0,12"
+                        BorderBrush="#D1D1D6" BorderThickness="0,0,0,0.5">
+                    <Grid Height="44">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- LEFT: Back Button -->
+                        <Border Grid.Column="0" Name="btnBack" 
+                                Cursor="Hand" Visibility="Collapsed"
+                                HorizontalAlignment="Left" Margin="8,0,0,0"
+                                onClick="GoBack">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="‹" FontSize="28" Foreground="#007AFF"
+                                           Margin="0,-4,2,0" FontWeight="Light"/>
+                                <TextBlock Name="btnBackText" Text="Albums" FontSize="17" 
+                                           Foreground="#007AFF" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- CENTER: Title -->
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center">
+                            <TextBlock Name="lblTitle" Text="Library"
+                                       FontSize="17" FontWeight="SemiBold"
+                                       Foreground="#000000" TextAlignment="Center"/>
+                            <TextBlock Name="lblSubtitle" Text=""
+                                       FontSize="11" Foreground="#8E8E93"
+                                       TextAlignment="Center" Visibility="Collapsed"/>
+                        </StackPanel>
+
+                        <!-- RIGHT: Select/Cancel Button -->
+                        <Border Grid.Column="2" Name="btnSelectArea"
+                                Cursor="Hand" HorizontalAlignment="Right"
+                                Margin="0,0,16,0" onClick="ToggleSelect">
+                            <TextBlock Name="btnSelectText" Text="Select"
+                                       FontSize="17" Foreground="#007AFF"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- ════════════════════════════════════════════════ -->
+                <!--                 MAIN CONTENT                     -->
+                <!-- ════════════════════════════════════════════════ -->
+                <Grid Grid.Row="1">
+
+                    <!-- PHOTOS VIEW -->
+                    <ScrollViewer Name="photosView"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel Name="photosContainer">
+
+                            <!-- Section Header -->
+                            <Grid Margin="16,16,16,12">
+                                <Grid.ColumnDefinitions>*, Auto</Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Name="lblSectionTitle" Text="All Photos"
+                                               FontSize="22" FontWeight="Bold"
+                                               Foreground="#000000"/>
+                                    <TextBlock Name="lblSectionSubtitle" Text=""
+                                               FontSize="13" Foreground="#8E8E93"
+                                               Margin="0,2,0,0"/>
+                                </StackPanel>
+                                <TextBlock Name="lblSelectedCount" Grid.Column="1"
+                                           Text="" FontSize="17" Foreground="#007AFF"
+                                           VerticalAlignment="Bottom" Margin="0,0,0,2"/>
+                            </Grid>
+
+                            <!-- Photo Grid -->
+                            <WrapPanel Name="photoGrid" Margin="2,0,2,0"/>
+
+                            <!-- Photo Count Footer -->
+                            <TextBlock Name="lblCount" Text=""
+                                       FontSize="13" Foreground="#8E8E93"
+                                       TextAlignment="Center" Margin="0,24,0,100"/>
+
+                            <!-- Empty State -->
+                            <Border Name="emptyState" Margin="40,60,40,40" Visibility="Collapsed">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <Border Width="80" Height="80" CornerRadius="40"
+                                            Background="#E5E5EA" Margin="0,0,0,20">
+                                        <TextBlock Text="◻" FontSize="36" Foreground="#8E8E93"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <TextBlock Text="No Photos" FontSize="20"
+                                               FontWeight="SemiBold" Foreground="#000000"
+                                               TextAlignment="Center"/>
+                                    <TextBlock Text="Photos you take will appear here."
+                                               FontSize="15" Foreground="#8E8E93"
+                                               TextAlignment="Center" Margin="0,8,0,24"
+                                               TextWrapping="Wrap"/>
+                                    <Border Name="btnImport" Background="#007AFF" 
+                                            CornerRadius="22" Padding="28,14" Cursor="Hand"
+                                            HorizontalAlignment="Center"
+                                            onClick="OpenPicturesFolder">
+                                        <TextBlock Text="Import Photos" FontSize="17"
+                                                   FontWeight="SemiBold" Foreground="White"/>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- ALBUMS VIEW -->
+                    <ScrollViewer Name="albumsView" Visibility="Collapsed"
+                                  VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="16,0,16,100">
+
+                            <!-- My Albums Section -->
+                            <TextBlock Text="My Albums" FontSize="22" FontWeight="Bold"
+                                       Foreground="#000000" Margin="0,16,0,16"/>
+
+                            <Grid Margin="0,0,0,20">
+                                <Grid.ColumnDefinitions>*, 12, *</Grid.ColumnDefinitions>
+
+                                <!-- Recents -->
+                                <Border Grid.Column="0" Name="albumRecents" 
+                                        Cursor="Hand" onClick="OpenRecents">
+                                    <StackPanel>
+                                        <Border Background="#E5E5EA" Height="170" 
+                                                CornerRadius="12">
+                                            <Grid>
+                                                <Image Name="albumThumb" Stretch="UniformToFill"/>
+                                                <Border Background="#00000020" CornerRadius="12"/>
+                                            </Grid>
+                                        </Border>
+                                        <TextBlock Text="Recents" FontSize="15"
+                                                   Foreground="#000000" Margin="0,10,0,2"/>
+                                        <TextBlock Name="lblRecentsCount" Text="0"
+                                                   FontSize="13" Foreground="#8E8E93"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Favorites -->
+                                <Border Grid.Column="2" Name="albumFavorites" 
+                                        Cursor="Hand" onClick="OpenFavorites">
+                                    <StackPanel>
+                                        <Border Background="#FFF0F0" Height="170" 
+                                                CornerRadius="12">
+                                            <TextBlock Text="♥" FontSize="48"
+                                                       Foreground="#FF6B6B"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Border>
+                                        <TextBlock Text="Favorites" FontSize="15"
+                                                   Foreground="#000000" Margin="0,10,0,2"/>
+                                        <TextBlock Name="lblFavCount" Text="0"
+                                                   FontSize="13" Foreground="#8E8E93"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <!-- Utilities Section -->
+                            <TextBlock Text="Utilities" FontSize="22" FontWeight="Bold"
+                                       Foreground="#000000" Margin="0,20,0,16"/>
+
+                            <!-- Settings Card -->
+                            <Border Background="#FFFFFF" CornerRadius="12" 
+                                    Margin="0,0,0,12" Padding="0">
+                                
+                                <!-- Dark Mode Toggle -->
+                                <Border Name="darkModeRow" Padding="16,14" Cursor="Hand"
+                                        onClick="ToggleDarkMode">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="36"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Border Width="32" Height="32" CornerRadius="8"
+                                                Background="#1C1C1E">
+                                            <TextBlock Text="◐" FontSize="18" Foreground="White"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <TextBlock Grid.Column="1" Text="Dark Mode"
+                                                   FontSize="17" Foreground="#000000"
+                                                   VerticalAlignment="Center" Margin="12,0,0,0"/>
+
+                                        <!-- Toggle Switch -->
+                                        <Border Grid.Column="2" Name="darkModeSwitch"
+                                                Width="51" Height="31" CornerRadius="16"
+                                                Background="#E9E9EB">
+                                            <Border Name="darkModeKnob" Width="27" Height="27"
+                                                    CornerRadius="14" Background="White"
+                                                    HorizontalAlignment="Left" Margin="2,0,0,0">
+                                                <Border.Effect>
+                                                    <DropShadowEffect Color="#000000" BlurRadius="4"
+                                                                      ShadowDepth="1" Opacity="0.15"/>
+                                                </Border.Effect>
+                                            </Border>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Border>
+
+                            <!-- Storage Info -->
+                            <Border Background="#FFFFFF" CornerRadius="12" 
+                                    Margin="0,0,0,12" Padding="16,14">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="36"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Width="32" Height="32" CornerRadius="8"
+                                            Background="#34C759">
+                                        <TextBlock Text="◉" FontSize="16" Foreground="White"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0">
+                                        <TextBlock Text="Photos Storage"
+                                                   FontSize="17" Foreground="#000000"/>
+                                        <TextBlock Name="lblStorageInfo" Text="Calculating..."
+                                                   FontSize="13" Foreground="#8E8E93"/>
+                                    </StackPanel>
+
+                                    <TextBlock Grid.Column="2" Text="›" FontSize="22"
+                                               Foreground="#C7C7CC" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- SEARCH VIEW -->
+                    <ScrollViewer Name="searchView" Visibility="Collapsed"
+                                  VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="16">
+                            <!-- Search Bar -->
+                            <Border Background="#E5E5EA" CornerRadius="10" 
+                                    Padding="12,10" Margin="0,8,0,20">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="⌕" FontSize="16" Foreground="#8E8E93"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBox Grid.Column="1" Name="searchInput"
+                                             Background="Transparent" BorderThickness="0"
+                                             Foreground="#000000" FontSize="17"
+                                             VerticalAlignment="Center"
+                                             Placeholder="Search"/>
+                                </Grid>
+                            </Border>
+
+                            <TextBlock Text="Recent Searches" FontSize="22" FontWeight="Bold"
+                                       Foreground="#000000" Margin="0,0,0,12"/>
+                            <TextBlock Text="No recent searches"
+                                       FontSize="15" Foreground="#8E8E93"/>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- SELECT MODE TOOLBAR -->
+                    <Border Name="selectToolbar" Background="#F2F2F7F0"
+                            VerticalAlignment="Bottom" Visibility="Collapsed"
+                            Padding="0,12,0,30"
+                            BorderBrush="#D1D1D6" BorderThickness="0,0.5,0,0">
+                        <Grid Margin="24,0">
+                            <Grid.ColumnDefinitions>*, Auto, 32, Auto, *</Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="1" Name="btnShareSelected" 
+                                    Cursor="Hand" onClick="ShareSelected">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="↗" FontSize="24" Foreground="#007AFF"
+                                               TextAlignment="Center"/>
+                                    <TextBlock Text="Share" FontSize="11" Foreground="#007AFF"
+                                               TextAlignment="Center" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="3" Name="btnDeleteSelected" 
+                                    Cursor="Hand" onClick="DeleteSelected">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="⌫" FontSize="24" Foreground="#FF3B30"
+                                               TextAlignment="Center"/>
+                                    <TextBlock Text="Delete" FontSize="11" Foreground="#FF3B30"
+                                               TextAlignment="Center" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                </Grid>
+
+                <!-- ════════════════════════════════════════════════ -->
+                <!--                   TAB BAR                        -->
+                <!-- ════════════════════════════════════════════════ -->
+                <Border Grid.Row="2" Name="tabBar" Background="#F9F9F9F8"
+                        BorderBrush="#D1D1D6" BorderThickness="0,0.5,0,0"
+                        Padding="0,8,0,28">
+                    <Grid>
+                        <Grid.ColumnDefinitions>*, *, *, *</Grid.ColumnDefinitions>
+
+                        <!-- Library -->
+                        <Border Grid.Column="0" Name="tabLibrary" Cursor="Hand" 
+                                onClick="ShowLibrary">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Name="iconLib" Text="◫" FontSize="26"
+                                           Foreground="#007AFF" TextAlignment="Center"/>
+                                <TextBlock Name="txtLib" Text="Library" FontSize="10"
+                                           Foreground="#007AFF" TextAlignment="Center"
+                                           Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- For You -->
+                        <Border Grid.Column="1" Name="tabForYou" Cursor="Hand" 
+                                onClick="ShowForYou">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Name="iconFor" Text="♡" FontSize="26"
+                                           Foreground="#8E8E93" TextAlignment="Center"/>
+                                <TextBlock Name="txtFor" Text="For You" FontSize="10"
+                                           Foreground="#8E8E93" TextAlignment="Center"
+                                           Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Albums -->
+                        <Border Grid.Column="2" Name="tabAlbums" Cursor="Hand" 
+                                onClick="ShowAlbums">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Name="iconAlb" Text="▣" FontSize="26"
+                                           Foreground="#8E8E93" TextAlignment="Center"/>
+                                <TextBlock Name="txtAlb" Text="Albums" FontSize="10"
+                                           Foreground="#8E8E93" TextAlignment="Center"
+                                           Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Search -->
+                        <Border Grid.Column="3" Name="tabSearch" Cursor="Hand" 
+                                onClick="ShowSearch">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Name="iconSrc" Text="⌕" FontSize="26"
+                                           Foreground="#8E8E93" TextAlignment="Center"/>
+                                <TextBlock Name="txtSrc" Text="Search" FontSize="10"
+                                           Foreground="#8E8E93" TextAlignment="Center"
+                                           Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- ════════════════════════════════════════════════════ -->
+            <!--              IMAGE VIEWER (Full Screen)               -->
+            <!-- ════════════════════════════════════════════════════ -->
+            <Border Name="imageViewer" Background="#000000" Visibility="Collapsed">
+                <Grid>
+                    <Grid.RowDefinitions>Auto, *, Auto</Grid.RowDefinitions>
+
+                    <!-- Viewer Header -->
+                    <Border Grid.Row="0" Name="viewerHeader" Background="#000000E0" 
+                            Padding="8,12,8,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Close -->
+                            <Border Grid.Column="0" Name="btnCloseViewer" Cursor="Hand"
+                                    HorizontalAlignment="Left" onClick="CloseViewer">
+                                <TextBlock Text="×" FontSize="32" Foreground="White"
+                                           FontWeight="Light" Padding="12,0"/>
+                            </Border>
+
+                            <!-- Info -->
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                <TextBlock Name="lblViewerDate" Text=""
+                                           FontSize="14" FontWeight="SemiBold"
+                                           Foreground="White" TextAlignment="Center"/>
+                                <TextBlock Name="lblViewerTime" Text=""
+                                           FontSize="12" Foreground="#FFFFFFB0"
+                                           TextAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- More -->
+                            <Border Grid.Column="2" Name="btnViewerMore" Cursor="Hand"
+                                    HorizontalAlignment="Right" onClick="ShowMoreOptions">
+                                <TextBlock Text="⋯" FontSize="24" Foreground="White"
+                                           Padding="12,4"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- Image Container (with zoom) -->
+                    <Border Grid.Row="1" Name="imageContainer" Background="#000000"
+                            ClipToBounds="True">
+                        <Grid Name="zoomContainer">
+                            <Image Name="fullImage" Stretch="Uniform"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   RenderTransformOrigin="0.5,0.5">
+                                <Image.RenderTransform>
+                                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                </Image.RenderTransform>
+                            </Image>
+                        </Grid>
+                    </Border>
+
+                    <!-- Zoom Controls -->
+                    <StackPanel Grid.Row="1" Orientation="Horizontal"
+                                HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                Margin="0,0,16,16">
+                        <Border Name="btnZoomOut" Width="44" Height="44" CornerRadius="22"
+                                Background="#00000080" Margin="0,0,8,0" Cursor="Hand"
+                                onClick="ZoomOut">
+                            <TextBlock Text="−" FontSize="28" Foreground="White"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Margin="0,-4,0,0"/>
+                        </Border>
+                        <Border Name="btnZoomIn" Width="44" Height="44" CornerRadius="22"
+                                Background="#00000080" Cursor="Hand"
+                                onClick="ZoomIn">
+                            <TextBlock Text="+" FontSize="28" Foreground="White"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Margin="0,-4,0,0"/>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Viewer Actions -->
+                    <Border Grid.Row="2" Name="viewerActions" Background="#000000E0" 
+                            Padding="0,12,0,32">
+                        <Grid Margin="20,0">
+                            <Grid.ColumnDefinitions>*, *, *, *, *</Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Name="actionShare" Cursor="Hand" 
+                                    onClick="SharePhoto">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="↗" FontSize="26" Foreground="White"
+                                               TextAlignment="Center"/>
+                                    <TextBlock Text="Share" FontSize="10" Foreground="#FFFFFFB0"
+                                               TextAlignment="Center" Margin="0,4,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="1" Name="actionFav" Cursor="Hand" 
+                                    onClick="ToggleFav">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Name="favIcon" Text="♡" FontSize="26"
+                                               Foreground="White" TextAlignment="Center"/>
+                                    <TextBlock Text="Favorite" FontSize="10" Foreground="#FFFFFFB0"
+                                               TextAlignment="Center" Margin="0,4,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="2" Name="actionInfo" Cursor="Hand" 
+                                    onClick="ShowInfo">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="ⓘ" FontSize="26" Foreground="White"
+                                               TextAlignment="Center"/>
+                                    <TextBlock Text="Info" FontSize="10" Foreground="#FFFFFFB0"
+                                               TextAlignment="Center" Margin="0,4,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="3" Name="actionCopy" Cursor="Hand" 
+                                    onClick="CopyPhoto">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="⎘" FontSize="26" Foreground="White"
+                                               TextAlignment="Center"/>
+                                    <TextBlock Text="Copy" FontSize="10" Foreground="#FFFFFFB0"
+                                               TextAlignment="Center" Margin="0,4,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="4" Name="actionDelete" Cursor="Hand" 
+                                    onClick="DeletePhoto">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="⌫" FontSize="26" Foreground="White"
+                                               TextAlignment="Center"/>
+                                    <TextBlock Text="Delete" FontSize="10" Foreground="#FFFFFFB0"
+                                               TextAlignment="Center" Margin="0,4,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+
+        </Grid>
+    </UI>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!--                          LOGIC                                -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <Logic>
+        <!-- State Variables -->
+        <Var Name="currentTab" Value="library" Type="string"/>
+        <Var Name="photoCount" Value="0" Type="int"/>
+        <Var Name="selectedIndex" Value="0" Type="int"/>
+        <Var Name="isFavorite" Value="false" Type="bool"/>
+        <Var Name="selectMode" Value="false" Type="bool"/>
+        <Var Name="selectedCount" Value="0" Type="int"/>
+        <Var Name="darkMode" Value="false" Type="bool"/>
+        <Var Name="zoomLevel" Value="1" Type="double"/>
+        <Var Name="imagePath" Value="" Type="string"/>
+        <Var Name="imageName" Value="" Type="string"/>
+        <Var Name="imageDate" Value="" Type="string"/>
+        <Var Name="imageTime" Value="" Type="string"/>
+        <Var Name="fileSize" Value="" Type="string"/>
+
+        <Plugin Name="FilePlugin"/>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--                   GALLERY HELPER                         -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <ManualC id="GalleryHelper">
+using System;
+using System.IO;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Media.Effects;
+using System.Collections.Generic;
+using System.Linq;
+
+public static string[] imageFiles;
+public static int count = 0;
+public static HashSet&lt;int&gt; selectedIndices = new HashSet&lt;int&gt;();
+public static HashSet&lt;int&gt; favoriteIndices = new HashSet&lt;int&gt;();
+public static string picturesPath = "";
+
+public static int LoadPictures()
+{
+    picturesPath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+    string[] extensions = { "*.jpg", "*.jpeg", "*.png", "*.gif", "*.bmp", "*.webp" };
+    List&lt;string&gt; files = new List&lt;string&gt;();
+    
+    foreach (string ext in extensions)
+    {
+        try { files.AddRange(Directory.GetFiles(picturesPath, ext, SearchOption.TopDirectoryOnly)); }
+        catch { }
+    }
+    
+    // Sort by date (newest first)
+    files = files.OrderByDescending(f =&gt; File.GetLastWriteTime(f)).ToList();
+    
+    imageFiles = files.ToArray();
+    count = imageFiles.Length;
+    selectedIndices.Clear();
+    return count;
+}
+
+public static string GetImagePath(int index)
+{
+    if (imageFiles == null || index &lt; 0 || index &gt;= imageFiles.Length) return "";
+    return imageFiles[index];
+}
+
+public static string GetFileName(int index)
+{
+    if (imageFiles == null || index &lt; 0 || index &gt;= imageFiles.Length) return "";
+    return Path.GetFileName(imageFiles[index]);
+}
+
+public static string GetFileDate(int index)
+{
+    if (imageFiles == null || index &lt; 0 || index &gt;= imageFiles.Length) return "";
+    try { return File.GetLastWriteTime(imageFiles[index]).ToString("MMMM d, yyyy"); }
+    catch { return ""; }
+}
+
+public static string GetFileTime(int index)
+{
+    if (imageFiles == null || index &lt; 0 || index &gt;= imageFiles.Length) return "";
+    try { return File.GetLastWriteTime(imageFiles[index]).ToString("h:mm tt"); }
+    catch { return ""; }
+}
+
+public static string GetFileSize(int index)
+{
+    if (imageFiles == null || index &lt; 0 || index &gt;= imageFiles.Length) return "";
+    try {
+        long bytes = new FileInfo(imageFiles[index]).Length;
+        if (bytes &lt; 1024) return bytes + " B";
+        if (bytes &lt; 1048576) return (bytes / 1024.0).ToString("F1") + " KB";
+        return (bytes / 1048576.0).ToString("F1") + " MB";
+    } catch { return ""; }
+}
+
+public static string GetStorageInfo()
+{
+    if (imageFiles == null || imageFiles.Length == 0) return "No photos";
+    try {
+        long totalBytes = 0;
+        foreach (string file in imageFiles)
+        {
+            try { totalBytes += new FileInfo(file).Length; } catch { }
+        }
+        if (totalBytes &lt; 1048576) return (totalBytes / 1024.0).ToString("F1") + " KB used";
+        if (totalBytes &lt; 1073741824) return (totalBytes / 1048576.0).ToString("F1") + " MB used";
+        return (totalBytes / 1073741824.0).ToString("F2") + " GB used";
+    } catch { return ""; }
+}
+
+public static string GetPicturesPath()
+{
+    return Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+}
+
+public static BitmapImage CreateThumbnail(string path)
+{
+    if (string.IsNullOrEmpty(path) || !File.Exists(path)) return null;
+    try {
+        BitmapImage bmp = new BitmapImage();
+        bmp.BeginInit();
+        bmp.UriSource = new Uri(path, UriKind.Absolute);
+        bmp.CacheOption = BitmapCacheOption.OnLoad;
+        bmp.DecodePixelWidth = 200;
+        bmp.EndInit();
+        bmp.Freeze();
+        return bmp;
+    } catch { return null; }
+}
+
+public static BitmapImage CreateFullImage(string path)
+{
+    if (string.IsNullOrEmpty(path) || !File.Exists(path)) return null;
+    try {
+        BitmapImage bmp = new BitmapImage();
+        bmp.BeginInit();
+        bmp.UriSource = new Uri(path, UriKind.Absolute);
+        bmp.CacheOption = BitmapCacheOption.OnLoad;
+        bmp.EndInit();
+        bmp.Freeze();
+        return bmp;
+    } catch { return null; }
+}
+
+public static UIElement CreatePhotoCell(string path, int index, double cellSize)
+{
+    Border border = new Border();
+    border.Width = cellSize;
+    border.Height = cellSize;
+    border.Margin = new Thickness(0.5);
+    border.Background = new SolidColorBrush(Color.FromRgb(240, 240, 240));
+    border.Cursor = System.Windows.Input.Cursors.Hand;
+    border.Tag = index;
+    border.ClipToBounds = true;
+
+    try {
+        BitmapImage bmp = new BitmapImage();
+        bmp.BeginInit();
+        bmp.UriSource = new Uri(path, UriKind.Absolute);
+        bmp.CacheOption = BitmapCacheOption.OnLoad;
+        bmp.DecodePixelWidth = (int)(cellSize * 2);
+        bmp.EndInit();
+        bmp.Freeze();
+        
+        Image img = new Image();
+        img.Source = bmp;
+        img.Stretch = Stretch.UniformToFill;
+        border.Child = img;
+    } catch { }
+
+    return border;
+}
+
+public static bool ToggleSelection(int index)
+{
+    if (selectedIndices.Contains(index))
+    {
+        selectedIndices.Remove(index);
+        return false;
+    }
+    else
+    {
+        selectedIndices.Add(index);
+        return true;
+    }
+}
+
+public static int GetSelectedCount()
+{
+    return selectedIndices.Count;
+}
+
+public static void ClearSelection()
+{
+    selectedIndices.Clear();
+}
+
+public static bool IsSelected(int index)
+{
+    return selectedIndices.Contains(index);
+}
+
+public static bool ToggleFavorite(int index)
+{
+    if (favoriteIndices.Contains(index))
+    {
+        favoriteIndices.Remove(index);
+        return false;
+    }
+    else
+    {
+        favoriteIndices.Add(index);
+        return true;
+    }
+}
+
+public static bool IsFavorite(int index)
+{
+    return favoriteIndices.Contains(index);
+}
+
+public static int GetFavoriteCount()
+{
+    return favoriteIndices.Count;
+}
+
+public static bool DeleteFile(string path)
+{
+    try {
+        if (File.Exists(path)) { 
+            File.Delete(path); 
+            return true; 
+        }
+    } catch { }
+    return false;
+}
+
+public static bool CopyToClipboard(string path)
+{
+    try {
+        if (File.Exists(path)) {
+            System.Collections.Specialized.StringCollection files = 
+                new System.Collections.Specialized.StringCollection();
+            files.Add(path);
+            Clipboard.SetFileDropList(files);
+            return true;
+        }
+    } catch { }
+    return false;
+}
+
+public static string OpenInExplorer(string path)
+{
+    try {
+        if (File.Exists(path))
+            System.Diagnostics.Process.Start("explorer.exe", "/select,\"" + path + "\"");
+        else if (Directory.Exists(path))
+            System.Diagnostics.Process.Start("explorer.exe", path);
+        return "ok";
+    } catch { return "error"; }
+}
+        </ManualC>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--                    INITIALIZATION                        -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="OnAppLoad">
+            <CallManualC id="GalleryHelper" Method="LoadPictures" ToState="photoCount"/>
+            
+            <Set Target="lblRecentsCount" Property="Text" Value="{photoCount}"/>
+            <CallManualC id="GalleryHelper" Method="GetStorageInfo" ToState="storageInfo"/>
+            <Set Target="lblStorageInfo" Property="Text" Value="{storageInfo}"/>
+            
+            <If Condition="{photoCount} == 0">
+                <Show Control="emptyState"/>
+                <Set Target="lblCount" Property="Text" Value=""/>
+            </If>
+            <If Condition="{photoCount} > 0">
+                <Hide Control="emptyState"/>
+                <Call Handler="BuildPhotoGrid"/>
+                <Set Target="lblCount" Property="Text" Value="{photoCount} Photos"/>
+                <Set Target="lblSectionSubtitle" Property="Text" Value="{photoCount} items"/>
+            </If>
+        </Handler>
+
+        <Handler Name="BuildPhotoGrid">
+            <ClearItems Container="photoGrid"/>
+            <ForEach Count="{photoCount}" Var="i" IndexVar="idx">
+                <CallManualC id="GalleryHelper" Method="GetImagePath" Params="{idx}" ToState="cellPath"/>
+                <CallManualC id="GalleryHelper" Method="CreatePhotoCell" Params="{cellPath},{idx},103" ToControl="photoGrid"/>
+            </ForEach>
+            <If Condition="{photoCount} > 0">
+                <CallManualC id="GalleryHelper" Method="GetImagePath" Params="0" ToState="firstPath"/>
+                <CallManualC id="GalleryHelper" Method="CreateThumbnail" Params="{firstPath}" ToControl="albumThumb" Property="Source"/>
+            </If>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--                   TAB NAVIGATION                         -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="ShowLibrary">
+            <Set Var="currentTab" Value="library"/>
+            <Set Target="lblTitle" Property="Text" Value="Library"/>
+            <Show Control="photosView"/>
+            <Hide Control="albumsView"/>
+            <Hide Control="searchView"/>
+            <Show Control="btnSelectArea"/>
+            <!-- Active -->
+            <Set Target="iconLib" Property="Foreground" Value="#007AFF"/>
+            <Set Target="txtLib" Property="Foreground" Value="#007AFF"/>
+            <!-- Inactive -->
+            <Set Target="iconFor" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="txtFor" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="iconAlb" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="txtAlb" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="iconSrc" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="txtSrc" Property="Foreground" Value="#8E8E93"/>
+        </Handler>
+
+        <Handler Name="ShowForYou">
+            <Set Var="currentTab" Value="foryou"/>
+            <Set Target="lblTitle" Property="Text" Value="For You"/>
+            <Hide Control="btnSelectArea"/>
+            <!-- Active -->
+            <Set Target="iconFor" Property="Foreground" Value="#007AFF"/>
+            <Set Target="txtFor" Property="Foreground" Value="#007AFF"/>
+            <!-- Inactive -->
+            <Set Target="iconLib" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="txtLib" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="iconAlb" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="txtAlb" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="iconSrc" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="txtSrc" Property="Foreground" Value="#8E8E93"/>
+            <Toast Message="For You - Coming soon" Type="Info" Position="BottomCenter" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="ShowAlbums">
+            <Set Var="currentTab" Value="albums"/>
+            <Set Target="lblTitle" Property="Text" Value="Albums"/>
+            <Hide Control="photosView"/>
+            <Show Control="albumsView"/>
+            <Hide Control="searchView"/>
+            <Hide Control="btnSelectArea"/>
+            <CallManualC id="GalleryHelper" Method="GetFavoriteCount" ToState="favCount"/>
+            <Set Target="lblFavCount" Property="Text" Value="{favCount}"/>
+            <!-- Active -->
+            <Set Target="iconAlb" Property="Foreground" Value="#007AFF"/>
+            <Set Target="txtAlb" Property="Foreground" Value="#007AFF"/>
+            <!-- Inactive -->
+            <Set Target="iconLib" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="txtLib" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="iconFor" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="txtFor" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="iconSrc" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="txtSrc" Property="Foreground" Value="#8E8E93"/>
+        </Handler>
+
+        <Handler Name="ShowSearch">
+            <Set Var="currentTab" Value="search"/>
+            <Set Target="lblTitle" Property="Text" Value="Search"/>
+            <Hide Control="photosView"/>
+            <Hide Control="albumsView"/>
+            <Show Control="searchView"/>
+            <Hide Control="btnSelectArea"/>
+            <!-- Active -->
+            <Set Target="iconSrc" Property="Foreground" Value="#007AFF"/>
+            <Set Target="txtSrc" Property="Foreground" Value="#007AFF"/>
+            <!-- Inactive -->
+            <Set Target="iconLib" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="txtLib" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="iconFor" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="txtFor" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="iconAlb" Property="Foreground" Value="#8E8E93"/>
+            <Set Target="txtAlb" Property="Foreground" Value="#8E8E93"/>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--                    IMAGE VIEWER                          -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="ShowViewer">
+            <CallManualC id="GalleryHelper" Method="GetImagePath" Params="{selectedIndex}" ToState="imagePath"/>
+            <CallManualC id="GalleryHelper" Method="GetFileName" Params="{selectedIndex}" ToState="imageName"/>
+            <CallManualC id="GalleryHelper" Method="GetFileDate" Params="{selectedIndex}" ToState="imageDate"/>
+            <CallManualC id="GalleryHelper" Method="GetFileTime" Params="{selectedIndex}" ToState="imageTime"/>
+            <CallManualC id="GalleryHelper" Method="IsFavorite" Params="{selectedIndex}" ToState="isFavorite"/>
+            
+            <If Condition="{imagePath} != ">
+                <CallManualC id="GalleryHelper" Method="CreateFullImage" Params="{imagePath}" ToControl="fullImage" Property="Source"/>
+                <Set Target="lblViewerDate" Property="Text" Value="{imageDate}"/>
+                <Set Target="lblViewerTime" Property="Text" Value="{imageTime}"/>
+                <Set Var="zoomLevel" Value="1"/>
+                
+                <If Condition="{isFavorite} == true">
+                    <Set Target="favIcon" Property="Text" Value="♥"/>
+                    <Set Target="favIcon" Property="Foreground" Value="#FF6B6B"/>
+                </If>
+                <If Condition="{isFavorite} == false">
+                    <Set Target="favIcon" Property="Text" Value="♡"/>
+                    <Set Target="favIcon" Property="Foreground" Value="White"/>
+                </If>
+                
+                <Show Control="imageViewer" Animate="true" Duration="250" Effect="zoomIn"/>
+            </If>
+        </Handler>
+
+        <Handler Name="CloseViewer">
+            <Hide Control="imageViewer" Animate="true" Duration="200" Effect="zoomOut"/>
+            <Set Var="zoomLevel" Value="1"/>
+        </Handler>
+
+        <!-- ZOOM -->
+        <Handler Name="ZoomIn">
+            <If Condition="{zoomLevel} &lt; 3">
+                <Increment Var="zoomLevel" By="0.5"/>
+                <Animate Control="fullImage" Property="Scale" To="{zoomLevel}" Duration="200" Easing="CubicEaseOut"/>
+            </If>
+        </Handler>
+
+        <Handler Name="ZoomOut">
+            <If Condition="{zoomLevel} > 1">
+                <Decrement Var="zoomLevel" By="0.5"/>
+                <Animate Control="fullImage" Property="Scale" To="{zoomLevel}" Duration="200" Easing="CubicEaseOut"/>
+            </If>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--                    SELECT MODE                           -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="ToggleSelect">
+            <If Condition="{selectMode} == false">
+                <Set Var="selectMode" Value="true"/>
+                <Set Var="selectedCount" Value="0"/>
+                <Set Target="btnSelectText" Property="Text" Value="Cancel"/>
+                <Set Target="lblSelectedCount" Property="Text" Value="Select Items"/>
+                <Set Target="lblTitle" Property="Text" Value="Select Photos"/>
+                <Show Control="selectToolbar"/>
+                <CallManualC id="GalleryHelper" Method="ClearSelection"/>
+            </If>
+            <If Condition="{selectMode} == true">
+                <Set Var="selectMode" Value="false"/>
+                <Set Target="btnSelectText" Property="Text" Value="Select"/>
+                <Set Target="lblSelectedCount" Property="Text" Value=""/>
+                <Set Target="lblTitle" Property="Text" Value="Library"/>
+                <Hide Control="selectToolbar"/>
+                <CallManualC id="GalleryHelper" Method="ClearSelection"/>
+                <Call Handler="BuildPhotoGrid"/>
+            </If>
+        </Handler>
+
+        <Handler Name="OnPhotoSelected">
+            <CallManualC id="GalleryHelper" Method="GetSelectedCount" ToState="selectedCount"/>
+            <If Condition="{selectedCount} == 1">
+                <Set Target="lblSelectedCount" Property="Text" Value="1 Photo Selected"/>
+            </If>
+            <If Condition="{selectedCount} > 1">
+                <Set Target="lblSelectedCount" Property="Text" Value="{selectedCount} Photos Selected"/>
+            </If>
+            <If Condition="{selectedCount} == 0">
+                <Set Target="lblSelectedCount" Property="Text" Value="Select Items"/>
+            </If>
+        </Handler>
+
+        <Handler Name="OnPhotoDeselected">
+            <Call Handler="OnPhotoSelected"/>
+        </Handler>
+
+        <Handler Name="ShareSelected">
+            <If Condition="{selectedCount} > 0">
+                <Toast Message="Share {selectedCount} photos" Type="Info" Position="BottomCenter" Duration="1500"/>
+            </If>
+        </Handler>
+
+        <Handler Name="DeleteSelected">
+            <If Condition="{selectedCount} > 0">
+                <Confirm Message="Delete {selectedCount} selected photos?" Title="Delete Photos"
+                         Custom="true" Icon="⌫" YesText="Delete" NoText="Cancel"
+                         YesBackground="#FF3B30">
+                    <Yes>
+                        <Toast Message="{selectedCount} photos deleted" Type="Success" Position="BottomCenter" Duration="1500"/>
+                        <Call Handler="ToggleSelect"/>
+                        <CallManualC id="GalleryHelper" Method="LoadPictures" ToState="photoCount"/>
+                        <Call Handler="BuildPhotoGrid"/>
+                    </Yes>
+                </Confirm>
+            </If>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--                    VIEWER ACTIONS                        -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="ToggleFav">
+            <CallManualC id="GalleryHelper" Method="ToggleFavorite" Params="{selectedIndex}" ToState="isFavorite"/>
+            <If Condition="{isFavorite} == true">
+                <Set Target="favIcon" Property="Text" Value="♥"/>
+                <Set Target="favIcon" Property="Foreground" Value="#FF6B6B"/>
+                <Toast Message="Added to Favorites" Type="Success" Position="BottomCenter" Duration="1500"/>
+            </If>
+            <If Condition="{isFavorite} == false">
+                <Set Target="favIcon" Property="Text" Value="♡"/>
+                <Set Target="favIcon" Property="Foreground" Value="White"/>
+                <Toast Message="Removed from Favorites" Type="Info" Position="BottomCenter" Duration="1500"/>
+            </If>
+        </Handler>
+
+        <Handler Name="SharePhoto">
+            <CallManualC id="GalleryHelper" Method="OpenInExplorer" Params="{imagePath}"/>
+            <Toast Message="Opened in Explorer" Type="Success" Position="BottomCenter" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="CopyPhoto">
+            <CallManualC id="GalleryHelper" Method="CopyToClipboard" Params="{imagePath}"/>
+            <Toast Message="Copied to clipboard" Type="Success" Position="BottomCenter" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="ShowInfo">
+            <CallManualC id="GalleryHelper" Method="GetFileSize" Params="{selectedIndex}" ToState="fileSize"/>
+            <Alert Message="{imageName}\n\nDate: {imageDate}\nTime: {imageTime}\nSize: {fileSize}"
+                   Title="Photo Details" Custom="true" Icon="ⓘ"/>
+        </Handler>
+
+        <Handler Name="ShowMoreOptions">
+            <ContextMenu Position="bottom" Style="ios">
+                <Item Text="Copy Photo" Icon="⎘" onClick="CopyPhoto"/>
+                <Item Text="Show in Finder" Icon="↗" onClick="SharePhoto"/>
+                <Item Text="Add to Album" Icon="▣" onClick="AddToAlbum"/>
+                <Separator/>
+                <Item Text="Delete Photo" Icon="⌫" Danger="true" onClick="DeletePhoto"/>
+            </ContextMenu>
+        </Handler>
+
+        <Handler Name="AddToAlbum">
+            <Toast Message="Add to Album - Coming soon" Type="Info" Position="BottomCenter" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="DeletePhoto">
+            <Confirm Message="This photo will be deleted." Title="Delete Photo"
+                     Custom="true" Icon="⌫" YesText="Delete" NoText="Cancel"
+                     YesBackground="#FF3B30">
+                <Yes>
+                    <CallManualC id="GalleryHelper" Method="DeleteFile" Params="{imagePath}"/>
+                    <Call Handler="CloseViewer"/>
+                    <CallManualC id="GalleryHelper" Method="LoadPictures" ToState="photoCount"/>
+                    <Set Target="lblCount" Property="Text" Value="{photoCount} Photos"/>
+                    <Set Target="lblRecentsCount" Property="Text" Value="{photoCount}"/>
+                    <Call Handler="BuildPhotoGrid"/>
+                    <Toast Message="Photo deleted" Type="Success" Position="BottomCenter" Duration="1500"/>
+                </Yes>
+            </Confirm>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--                       ALBUMS                             -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="OpenRecents">
+            <Set Target="lblTitle" Property="Text" Value="Recents"/>
+            <Set Target="btnBackText" Property="Text" Value="Albums"/>
+            <Show Control="btnBack"/>
+            <Show Control="photosView"/>
+            <Hide Control="albumsView"/>
+            <Show Control="btnSelectArea"/>
+        </Handler>
+
+        <Handler Name="OpenFavorites">
+            <Set Target="lblTitle" Property="Text" Value="Favorites"/>
+            <Set Target="btnBackText" Property="Text" Value="Albums"/>
+            <Show Control="btnBack"/>
+            <Toast Message="Favorites - Coming soon" Type="Info" Position="BottomCenter" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="GoBack">
+            <Hide Control="btnBack"/>
+            <Call Handler="ShowAlbums"/>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--                    DARK MODE                             -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="ToggleDarkMode">
+            <If Condition="{darkMode} == false">
+                <Set Var="darkMode" Value="true"/>
+                <!-- Switch ON state -->
+                <Set Target="darkModeSwitch" Property="Background" Value="#34C759"/>
+                <Set Target="darkModeKnob" Property="HorizontalAlignment" Value="Right"/>
+                <Set Target="darkModeKnob" Property="Margin" Value="0,0,2,0"/>
+                <!-- Dark theme -->
+                <Set Target="rootContainer" Property="Background" Value="#000000"/>
+                <Set Target="headerBar" Property="Background" Value="#1C1C1E"/>
+                <Set Target="tabBar" Property="Background" Value="#1C1C1EF8"/>
+                <Set Target="lblTitle" Property="Foreground" Value="#FFFFFF"/>
+                <Toast Message="Dark Mode enabled" Type="Success" Position="BottomCenter" Duration="1500"/>
+            </If>
+            <If Condition="{darkMode} == true">
+                <Set Var="darkMode" Value="false"/>
+                <!-- Switch OFF state -->
+                <Set Target="darkModeSwitch" Property="Background" Value="#E9E9EB"/>
+                <Set Target="darkModeKnob" Property="HorizontalAlignment" Value="Left"/>
+                <Set Target="darkModeKnob" Property="Margin" Value="2,0,0,0"/>
+                <!-- Light theme -->
+                <Set Target="rootContainer" Property="Background" Value="#F2F2F7"/>
+                <Set Target="headerBar" Property="Background" Value="#F2F2F7"/>
+                <Set Target="tabBar" Property="Background" Value="#F9F9F9F8"/>
+                <Set Target="lblTitle" Property="Foreground" Value="#000000"/>
+                <Toast Message="Light Mode enabled" Type="Info" Position="BottomCenter" Duration="1500"/>
+            </If>
+        </Handler>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!--                      OTHER                               -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <Handler Name="OpenPicturesFolder">
+            <CallManualC id="GalleryHelper" Method="GetPicturesPath" ToState="folderPath"/>
+            <CallManualC id="GalleryHelper" Method="OpenInExplorer" Params="{folderPath}"/>
+        </Handler>
+
+        <!-- Context menu handlers for grid photos -->
+        <Handler Name="CopyPhotoAction">
+            <CallManualC id="GalleryHelper" Method="CopyToClipboard" Params="{imagePath}"/>
+            <Toast Message="Copied to clipboard" Type="Success" Position="BottomCenter" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="AddToFavAction">
+            <CallManualC id="GalleryHelper" Method="ToggleFavorite" Params="{selectedIndex}"/>
+            <Toast Message="Added to Favorites" Type="Success" Position="BottomCenter" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="DeletePhotoFromGrid">
+            <Confirm Message="This photo will be deleted." Title="Delete Photo"
+                     Custom="true" Icon="⌫" YesText="Delete" NoText="Cancel"
+                     YesBackground="#FF3B30">
+                <Yes>
+                    <CallManualC id="GalleryHelper" Method="DeleteFile" Params="{imagePath}"/>
+                    <CallManualC id="GalleryHelper" Method="LoadPictures" ToState="photoCount"/>
+                    <Set Target="lblCount" Property="Text" Value="{photoCount} Photos"/>
+                    <Set Target="lblRecentsCount" Property="Text" Value="{photoCount}"/>
+                    <Call Handler="BuildPhotoGrid"/>
+                    <Toast Message="Photo deleted" Type="Success" Position="BottomCenter" Duration="1500"/>
+                </Yes>
+            </Confirm>
+        </Handler>
+
+    </Logic>
+</App>

@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<NimbusApp Name="Nimbus-App (Hello world)" Theme="Dark" Width="400" Height="700">
+    
+    <UI>
+        
+        <ScrollViewer Name="scrollView" VerticalScrollBarVisibility="Auto" Padding="0">
+
+        <StackPanel Name="Body" Background="white" >
+
+            <TextBlock Name="myHead"
+                Text="Hi, Nimbus Dev" 
+                       FontSize="50" 
+                       Foreground="#888888" 
+                       HorizontalAlignment="Center"
+                       Margin="0,50,0,20"
+                       onClick="SayHello"
+                       />
+            
+            <TextBlock Name="myText1"
+                       Text="This is Hello world app from Nimbus Engine" 
+                       FontSize="16" 
+                       Foreground="#888888" 
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,30"/>
+            
+            <Button Name="btnClick" 
+                    Content="Show Alert" 
+                    Width="150" 
+                    Height="40"
+                    Background="#007ACC"
+                    Foreground="White"
+                    HorizontalAlignment="Center"
+                    onClick="SayHello"
+                    HoverColor="Black"/>
+            <TextBlock Name="myText4"
+                       Text="Alert will be appeared when clicked this button" 
+                       FontSize="10" 
+                       Foreground="#888888" 
+                       HorizontalAlignment="Center"
+                       Margin="0,3,0,30"/>
+            <Button Name="btnClick1" 
+                    Content="Change Text" 
+                    Width="150" 
+                    Height="40"
+                    Background="#007ACC"
+                    Foreground="White"
+                    HorizontalAlignment="Center"
+                    onClick="SetText"/>
+            <TextBlock Name="myText2"
+                       Text="Text Changes which top of the app when clicked" 
+                       FontSize="10" 
+                       Foreground="#888888" 
+                       HorizontalAlignment="Center"
+                       Margin="0,3,0,30"/>
+
+            <Button Name="btnClick3" 
+                    Content="Restore Text" 
+                    Width="150" 
+                    Height="40"
+                    Background="#007ACC"
+                    Foreground="White"
+                    HorizontalAlignment="Center"
+                    onClick="ReText"/>
+            <TextBlock Name="myText5"
+                       Text="Text will be restored which top of the app when clicked" 
+                       FontSize="10" 
+                       Foreground="#888888" 
+                       HorizontalAlignment="Center"
+                       Margin="0,3,0,30"/>
+            <TextBlock Name="myText3"
+                       Text="" 
+                       FontSize="16" 
+                       Foreground="#888888" 
+                       HorizontalAlignment="Center"
+                       Margin="0,30,0,30"/>
+            <Button Name="btnClick0" 
+                    Content="DarkMode" 
+                    Width="150" 
+                    Height="40"
+                    Background="#007ACC"
+                    Foreground="White"
+                    HorizontalAlignment="Center"
+                    onClick="SwitchToDark"/>
+            <Button Name="btnClick00" 
+                    Content="LightMode" 
+                    Width="150" 
+                    Height="40"
+                    Background="#007ACC"
+                    Foreground="White"
+                    HorizontalAlignment="Center"
+                    onClick="SwitchToLight"/>
+
+        </StackPanel>
+    </ScrollViewer>
+        <Animate Control="sayHello" Property="Opacity" From="0" To="1" Duration="300" Easing="QuadraticEase"/>
+    </UI>
+    
+    <Logic>
+        <Handler Name="SayHello">
+            <Alert Message="Nimbus is working very well!" Title="Congratulations bro!"/>
+            
+        </Handler>
+        <Handler Name="SetText">
+            <Set Control="myHead" Property="Text" Value="Salom!"/>
+        </Handler>
+        <Handler Name="ReText">
+            <Set Control="myHead" Property="Text" Value="Hi, Nimbus Dev"/>
+        </Handler>
+        <Handler Name="SwitchToDark">
+            <Set Control="Body" Property="Background" Value="Black"/>
+        </Handler>
+        <Handler Name="SwitchToLight">
+            <Set Control="Body" Property="Background" Value="White"/>
+        </Handler>
+    </Logic>
+    
+</NimbusApp>

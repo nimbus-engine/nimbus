@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="JSON Test" Width="400" Height="300" OnLoad="InitApp">
+
+    <UI>
+        <StackPanel Margin="20">
+            <TextBlock Text="JSON Plugin Test" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+            
+            <TextBlock Text="Input JSON:" Foreground="Gray"/>
+            
+            <!-- Default qiymatni bo'sh qoldiramiz (XAML xatosini oldini olish uchun) -->
+            <TextBox Name="txtJson" Text="" Margin="0,5,0,10"/>
+            
+            <TextBlock Text="Result (Name):" Foreground="Gray"/>
+            <TextBlock Name="lblName" Text="--" FontSize="18" FontWeight="Bold" Margin="0,5,0,10"/>
+            
+            <TextBlock Text="Result (City):" Foreground="Gray"/>
+            <TextBlock Name="lblCity" Text="--" FontSize="18" FontWeight="Bold" Margin="0,5,0,20"/>
+            
+            <Button Name="pas" Content="Parse Again" onClick="TestJson"/>
+        </StackPanel>
+    </UI>
+
+    <Logic>
+        <Plugin Name="JsonPlugin"/>
+
+        <!-- Variables -->
+        <!-- JSON ni bu yerda saqlaymiz, XAML da emas -->
+        <Var Name="defaultJson" Value='{"name":"Ali","age":25,"city":"Tashkent"}' Type="string"/>
+        <Var Name="rawData" Value="" Type="string"/>
+        
+        <Handler Name="InitApp">
+            <!-- Dastur ochilganda JSON ni TextBox ga yozamiz -->
+            <Set Target="txtJson" Property="Text" Value="{defaultJson}"/>
+            
+            <!-- Birinchi testni bajaramiz -->
+            <Call Handler="TestJson"/>
+        </Handler>
+
+        <Handler Name="TestJson">
+            <Get Control="txtJson" Property="Text" ToState="rawData"/>
+
+            <!-- Parsing -->
+            <Set Target="lblName" Property="Text" Value="{json.get:{rawData},name}"/>
+            <Set Target="lblCity" Property="Text" Value="{json.get:{rawData},city}"/>
+        </Handler>
+    </Logic>
+</App>

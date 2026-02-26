@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="Nimbus UI Hub" 
+     Width="1200" Height="850" 
+     Theme="Dark" 
+     DarkMode="true" 
+     DevMode="true"
+     OnLoad="OnAppLoad">
+
+    <!-- <Styles>
+        <Style Name="PanelStyle" TargetType="Border">
+            <Setter Property="Background" Value="#1E1E2E"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="BorderBrush" Value="#2A2A3A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+        <Style Name="InputStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="#252530"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+        <Style Name="LabelStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#888899"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,10,0,5"/>
+        </Style>
+    </Styles> -->
+
+    <UI>
+        <Grid Background="#121218">
+            <Grid.RowDefinitions>Auto, *</Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>260, *, 320</Grid.ColumnDefinitions>
+
+            <!-- Header -->
+            <Border Grid.Row="0" Grid.ColumnSpan="3" Background="#181820" Padding="20,15" BorderBrush="#2A2A35" BorderThickness="0,0,0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>Auto, *, Auto</Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <TextBlock Text="🎨" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock Text="NIMBUS UI HUB" FontSize="20" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <Border Background="#2A2A35" CornerRadius="6" Padding="10,5" Margin="0,0,10,0">
+                            <TextBlock Name="lblDimensions" Text="0x0 px" Foreground="#00FF88" FontSize="12" FontFamily="Consolas"/>
+                        </Border>
+                        <Border Background="#6C63FF" CornerRadius="4" Padding="8,4">
+                            <TextBlock Text="DESIGNER" Foreground="White" FontSize="11" FontWeight="Bold"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Sidebar -->
+            <Border Grid.Row="1" Grid.Column="0" Background="#15151A" Padding="15" BorderBrush="#2A2A35" BorderThickness="0,0,1,0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock Text="COMPONENTS" FontSize="12" FontWeight="Bold" Foreground="#6C63FF" Margin="0,0,0,15"/>
+                        
+                        <Button Name="btnSelBtn" Content="🔘 Button" Background="#20202A" Foreground="#CCCCCC" Padding="15,10" Margin="0,0,0,8" HorizontalContentAlignment="Left" BorderThickness="0" onClick="SelectButton"/>
+                        <Button Name="btnSelTxt" Content="📝 TextBox" Background="#20202A" Foreground="#CCCCCC" Padding="15,10" Margin="0,0,0,8" HorizontalContentAlignment="Left" BorderThickness="0" onClick="SelectTextBox"/>
+                        <Button Name="btnSelChk" Content="✅ CheckBox" Background="#20202A" Foreground="#CCCCCC" Padding="15,10" Margin="0,0,0,8" HorizontalContentAlignment="Left" BorderThickness="0" onClick="SelectCheckBox"/>
+                        <Button Name="btnSelRad" Content="◉ RadioButton" Background="#20202A" Foreground="#CCCCCC" Padding="15,10" Margin="0,0,0,8" HorizontalContentAlignment="Left" BorderThickness="0" onClick="SelectRadio"/>
+                        <Button Name="btnSelSld" Content="🎚 Slider" Background="#20202A" Foreground="#CCCCCC" Padding="15,10" Margin="0,0,0,8" HorizontalContentAlignment="Left" BorderThickness="0" onClick="SelectSlider"/>
+                        <Button Name="btnSelPrg" Content="📊 ProgressBar" Background="#20202A" Foreground="#CCCCCC" Padding="15,10" Margin="0,0,0,8" HorizontalContentAlignment="Left" BorderThickness="0" onClick="SelectProgress"/>
+                        <Button Name="btnSelBrd" Content="🔲 Border (Card)" Background="#20202A" Foreground="#CCCCCC" Padding="15,10" Margin="0,0,0,8" HorizontalContentAlignment="Left" BorderThickness="0" onClick="SelectBorder"/>
+                        
+                        <TextBlock Text="BUILDER" FontSize="12" FontWeight="Bold" Foreground="#6C63FF" Margin="0,20,0,15"/>
+                        <Button Name="btnSelCrd" Content="🃏 Card Builder" Background="#20202A" Foreground="#CCCCCC" Padding="15,10" Margin="0,0,0,8" HorizontalContentAlignment="Left" BorderThickness="0" onClick="SelectCardBuilder"/>
+                        
+                        <TextBlock Text="AI STYLES" FontSize="12" FontWeight="Bold" Foreground="#6C63FF" Margin="0,20,0,15"/>
+                        <Button Name="btnAiGlass" Content="🧊 Glassmorphism" Background="#20202A" Foreground="#CCCCCC" Padding="15,10" Margin="0,0,0,8" HorizontalContentAlignment="Left" BorderThickness="0" onClick="ApplyGlass"/>
+                        <Button Name="btnAiNeo" Content="🌑 Neumorphism" Background="#20202A" Foreground="#CCCCCC" Padding="15,10" Margin="0,0,0,8" HorizontalContentAlignment="Left" BorderThickness="0" onClick="ApplyNeo"/>
+                        <Button Name="btnAiCyber" Content="🤖 Cyberpunk" Background="#20202A" Foreground="#CCCCCC" Padding="15,10" Margin="0,0,0,8" HorizontalContentAlignment="Left" BorderThickness="0" onClick="ApplyCyber"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!-- Main Preview Area -->
+            <Grid Grid.Row="1" Grid.Column="1" Background="#1E1E24">
+                <Grid.RowDefinitions>*, Auto</Grid.RowDefinitions>
+                
+                <!-- Live Preview -->
+                <Border Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Grid>
+                        <!-- Button -->
+                        <Button Name="previewButton" Content="Button Text" Width="150" Height="45" Background="#6C63FF" Foreground="White" FontSize="14" Visibility="Visible"/>
+
+                        <!-- TextBox -->
+                        <TextBox Name="previewTextBox" Text="" Width="200" Height="40" Background="#252530" Foreground="White" Padding="10,8" FontSize="14" Visibility="Collapsed"/>
+
+                        <!-- CheckBox -->
+                        <CheckBox Name="previewCheckBox" Content="Option Label" Foreground="White" FontSize="14" Visibility="Collapsed" IsChecked="True"/>
+
+                        <!-- RadioButton -->
+                        <StackPanel Name="previewRadioGroup" Visibility="Collapsed">
+                            <RadioButton Name="previewRadio1" Content="Option 1" Foreground="White" FontSize="14" Margin="0,0,0,5" IsChecked="True"/>
+                            <RadioButton Name="previewRadio2" Content="Option 2" Foreground="White" FontSize="14"/>
+                        </StackPanel>
+
+                        <!-- Slider -->
+                        <StackPanel Name="previewSliderGroup" Visibility="Collapsed">
+                            <Slider Name="previewSlider" Width="200" Value="50" Minimum="0" Maximum="100" onValueChanged="OnSliderChanged"/>
+                            <TextBlock Name="lblSliderVal" Text="50" Foreground="White" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                        </StackPanel>
+
+                        <!-- ProgressBar -->
+                        <ProgressBar Name="previewProgress" Width="200" Height="20" Value="65" Foreground="#6C63FF" Background="#252530" Visibility="Collapsed"/>
+
+                        <!-- Border (Simple) -->
+                        <Border Name="previewBorder" Width="150" Height="100" Background="#252530" CornerRadius="10" BorderBrush="#6C63FF" BorderThickness="2" Visibility="Collapsed">
+                            <TextBlock Text="Content" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+
+                        <!-- Card Builder Preview -->
+                        <Border Name="previewCard" Width="300" Background="#252530" CornerRadius="12" Padding="20" Visibility="Collapsed">
+                            <StackPanel>
+                                <Border Width="50" Height="50" CornerRadius="25" Background="#6C63FF" Margin="0,0,0,15" HorizontalAlignment="Left">
+                                    <TextBlock Text="🚀" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Name="cardTitle" Text="Card Title" FontSize="18" FontWeight="Bold" Foreground="White" Margin="0,0,0,5"/>
+                                <TextBlock Name="cardDesc" Text="This is a description text for the card component." FontSize="14" Foreground="#AAAAAA" TextWrapping="Wrap" Margin="0,0,0,20"/>
+                                <Button Name="cardBtn" Content="ACTION" Background="#6C63FF" Foreground="White" Padding="0,10"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Code View -->
+                <Border Grid.Row="1" Background="#121218" Padding="20" BorderBrush="#2A2A35" BorderThickness="0,1,0,0">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>*, Auto</Grid.ColumnDefinitions>
+                            <TextBlock Text="GENERATED XML" FontSize="12" FontWeight="Bold" Foreground="#6C63FF" Margin="0,0,0,10"/>
+                            <Button Name="sd" Content="COPY CODE" Background="#2A2A35" Foreground="#AAAAAA" Padding="10,4" FontSize="11" onClick="OnCopyCode" BorderThickness="0"/>
+                        </Grid>
+                        <TextBox Name="txtCode" Text="" Height="100" 
+                                 Background="#0A0A10" Foreground="#00FF88" 
+                                 FontFamily="Consolas" FontSize="12" BorderThickness="0" 
+                                 Padding="10" TextWrapping="Wrap" IsReadOnly="True" AcceptsReturn="True"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Properties Panel -->
+            <Border Grid.Row="1" Grid.Column="2" Background="#181820" Padding="20" BorderBrush="#2A2A35" BorderThickness="1,0,0,0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock Text="PROPERTIES" FontSize="14" FontWeight="Bold" Foreground="White" Margin="0,0,0,20"/>
+
+                        <!-- Common Props -->
+                        <TextBlock Text="Content / Text" Style="{StaticResource LabelStyle}"/>
+                        <TextBox Name="propText" Text="Button Text" Style="{StaticResource InputStyle}" onTextChanged="UpdatePreview"/>
+
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>*, 10, *</Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Width" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Name="propWidth" Text="150" Style="{StaticResource InputStyle}" onTextChanged="UpdatePreview"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Height" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Name="propHeight" Text="45" Style="{StaticResource InputStyle}" onTextChanged="UpdatePreview"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Text="Background (Hex)" Style="{StaticResource LabelStyle}"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>*, 40</Grid.ColumnDefinitions>
+                            <TextBox Name="propBg" Text="#6C63FF" Style="{StaticResource InputStyle}" onTextChanged="UpdatePreview"/>
+                            <Border Grid.Column="1" Name="previewColorBg" Background="#6C63FF" Margin="5,0,0,0" CornerRadius="4"/>
+                        </Grid>
+
+                        <TextBlock Text="Hover Color (Hex)" Style="{StaticResource LabelStyle}"/>
+                        <TextBox Name="propHover" Text="#5A52E0" Style="{StaticResource InputStyle}" onTextChanged="UpdatePreview"/>
+
+                        <TextBlock Text="Foreground (Hex)" Style="{StaticResource LabelStyle}"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>*, 40</Grid.ColumnDefinitions>
+                            <TextBox Name="propFg" Text="#FFFFFF" Style="{StaticResource InputStyle}" onTextChanged="UpdatePreview"/>
+                            <Border Grid.Column="1" Name="previewColorFg" Background="#FFFFFF" Margin="5,0,0,0" CornerRadius="4"/>
+                        </Grid>
+
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>*, 10, *</Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="FontSize" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Name="propSize" Text="14" Style="{StaticResource InputStyle}" onTextChanged="UpdatePreview"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Radius" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Name="propRadius" Text="0" Style="{StaticResource InputStyle}" onTextChanged="UpdatePreview"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Text="Padding (L,T,R,B)" Style="{StaticResource LabelStyle}"/>
+                        <TextBox Name="propPadding" Text="0,0,0,0" Style="{StaticResource InputStyle}" onTextChanged="UpdatePreview"/>
+
+                        <TextBlock Text="Border Color" Style="{StaticResource LabelStyle}"/>
+                        <TextBox Name="propBorder" Text="Transparent" Style="{StaticResource InputStyle}" onTextChanged="UpdatePreview"/>
+
+                        <TextBlock Text="Thickness" Style="{StaticResource LabelStyle}"/>
+                        <TextBox Name="propThickness" Text="0" Style="{StaticResource InputStyle}" onTextChanged="UpdatePreview"/>
+
+                        <TextBlock Text="ANIMATIONS" FontSize="14" FontWeight="Bold" Foreground="White" Margin="0,30,0,10"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>*, 10, *</Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Content="Fade In" Background="#2A2A35" Foreground="#AAAAAA" Padding="10" BorderThickness="0" onClick="AnimFadeIn"/>
+                            <Button Grid.Column="2" Content="Slide Up" Background="#2A2A35" Foreground="#AAAAAA" Padding="10" BorderThickness="0" onClick="AnimSlideUp"/>
+                        </Grid>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </UI>
+
+    <Logic>
+        <Var Name="activeComponent" Value="Button" Type="string"/>
+        <Var Name="code" Value="" Type="string"/>
+        
+        <!-- Props -->
+        <Var Name="pText" Value="Button Text" Type="string"/>
+        <Var Name="pW" Value="150" Type="string"/>
+        <Var Name="pH" Value="45" Type="string"/>
+        <Var Name="pBg" Value="#6C63FF" Type="string"/>
+        <Var Name="pHover" Value="#5A52E0" Type="string"/>
+        <Var Name="pFg" Value="#FFFFFF" Type="string"/>
+        <Var Name="pSize" Value="14" Type="int"/>
+        <Var Name="pRad" Value="0" Type="string"/>
+        <Var Name="pPad" Value="0" Type="string"/>
+        <Var Name="pBorder" Value="Transparent" Type="string"/>
+        <Var Name="pThick" Value="0" Type="string"/>
+
+        <!-- Slider Value -->
+        <Var Name="sliderVal" Value="50" Type="int"/>
+
+        <Handler Name="OnAppLoad">
+            <Call Handler="SelectButton"/>
+        </Handler>
+
+        <Handler Name="UpdatePreview">
+            <!-- Gather inputs -->
+            <Get Control="propText" Property="Text" ToState="pText"/>
+            <Get Control="propWidth" Property="Text" ToState="pW"/>
+            <Get Control="propHeight" Property="Text" ToState="pH"/>
+            <Get Control="propBg" Property="Text" ToState="pBg"/>
+            <Get Control="propHover" Property="Text" ToState="pHover"/>
+            <Get Control="propFg" Property="Text" ToState="pFg"/>
+            <Get Control="propSize" Property="Text" ToState="pSize"/>
+            <Get Control="propRadius" Property="Text" ToState="pRad"/>
+            <Get Control="propPadding" Property="Text" ToState="pPad"/>
+            <Get Control="propBorder" Property="Text" ToState="pBorder"/>
+            <Get Control="propThickness" Property="Text" ToState="pThick"/>
+
+            <Set Control="previewColorBg" Property="Background" Value="{pBg}"/>
+            <Set Control="previewColorFg" Property="Background" Value="{pFg}"/>
+
+            <!-- Update Dimensions Label -->
+            <Set Target="lblDimensions" Property="Text" Value="{pW}x{pH} px"/>
+
+            <!-- Apply based on active component -->
+            <If Condition="{activeComponent} == Button">
+                <Set Control="previewButton" Property="Content" Value="{pText}"/>
+                <Set Control="previewButton" Property="Width" Value="{pW}"/>
+                <Set Control="previewButton" Property="Height" Value="{pH}"/>
+                <Set Control="previewButton" Property="Background" Value="{pBg}"/>
+                <Set Control="previewButton" Property="Foreground" Value="{pFg}"/>
+                <Set Control="previewButton" Property="FontSize" Value="{pSize}"/>
+                <Set Var="code" Value="&lt;Button Content=&quot;{pText}&quot; Width=&quot;{pW}&quot; Height=&quot;{pH}&quot; Background=&quot;{pBg}&quot; Foreground=&quot;{pFg}&quot; FontSize=&quot;{pSize}&quot; HoverColor=&quot;{pHover}&quot;/&gt;"/>
+            </If>
+
+            <If Condition="{activeComponent} == TextBox">
+                <Set Control="previewTextBox" Property="Text" Value="{pText}"/>
+                <Set Control="previewTextBox" Property="Width" Value="{pW}"/>
+                <Set Control="previewTextBox" Property="Height" Value="{pH}"/>
+                <Set Control="previewTextBox" Property="Background" Value="{pBg}"/>
+                <Set Control="previewTextBox" Property="Foreground" Value="{pFg}"/>
+                <Set Var="code" Value="&lt;TextBox Text=&quot;&quot; Placeholder=&quot;{pText}&quot; Width=&quot;{pW}&quot; Height=&quot;{pH}&quot; Background=&quot;{pBg}&quot; Foreground=&quot;{pFg}&quot; Padding=&quot;{pPad}&quot;/&gt;"/>
+            </If>
+
+            <If Condition="{activeComponent} == CardBuilder">
+                <Set Control="previewCard" Property="Width" Value="{pW}"/>
+                <Set Control="previewCard" Property="Background" Value="{pBg}"/>
+                <Set Control="previewCard" Property="CornerRadius" Value="{pRad}"/>
+                <Set Control="cardTitle" Property="Text" Value="{pText}"/>
+                <Set Var="code" Value="&lt;Border Width=&quot;{pW}&quot; Background=&quot;{pBg}&quot; CornerRadius=&quot;{pRad}&quot; Padding=&quot;20&quot;&gt;&#x0A;    &lt;StackPanel&gt;&#x0A;        &lt;TextBlock Text=&quot;{pText}&quot; FontSize=&quot;18&quot; FontWeight=&quot;Bold&quot; Foreground=&quot;White&quot;/&gt;&#x0A;        &lt;TextBlock Text=&quot;Description...&quot; FontSize=&quot;14&quot; Foreground=&quot;#AAAAAA&quot;/&gt;&#x0A;        &lt;Button Content=&quot;ACTION&quot; Background=&quot;#6C63FF&quot; Foreground=&quot;White&quot; Margin=&quot;0,15,0,0&quot;/&gt;&#x0A;    &lt;/StackPanel&gt;&#x0A;&lt;/Border&gt;"/>
+            </If>
+
+            <If Condition="{activeComponent} == Border">
+                <Set Control="previewBorder" Property="Width" Value="{pW}"/>
+                <Set Control="previewBorder" Property="Height" Value="{pH}"/>
+                <Set Control="previewBorder" Property="Background" Value="{pBg}"/>
+                <Set Control="previewBorder" Property="CornerRadius" Value="{pRad}"/>
+                <Set Control="previewBorder" Property="Padding" Value="{pPad}"/>
+                <Set Control="previewBorder" Property="Margin" Value="{pMar}"/>
+                <Set Control="previewBorder" Property="BorderBrush" Value="{pBorder}"/>
+                <Set Control="previewBorder" Property="BorderThickness" Value="{pThick}"/>
+                <Set Var="code" Value="&lt;Border Width=&quot;{pW}&quot; Height=&quot;{pH}&quot; Background=&quot;{pBg}&quot; CornerRadius=&quot;{pRad}&quot; Padding=&quot;{pPad}&quot; Margin=&quot;{pMar}&quot; BorderBrush=&quot;{pBorder}&quot; BorderThickness=&quot;{pThick}&quot;&gt;&#x0A;    &lt;!-- Content --&gt;&#x0A;&lt;/Border&gt;"/>
+            </If>
+
+            <If Condition="{activeComponent} == Label">
+                <Set Control="previewLabel" Property="Text" Value="{pText}"/>
+                <Set Control="previewLabel" Property="Foreground" Value="{pFg}"/>
+                <Set Control="previewLabel" Property="FontSize" Value="{pSize}"/>
+                <Set Control="previewLabel" Property="Margin" Value="{pMar}"/>
+                <Set Var="code" Value="&lt;TextBlock Text=&quot;{pText}&quot; Foreground=&quot;{pFg}&quot; FontSize=&quot;{pSize}&quot; Margin=&quot;{pMar}&quot;/&gt;"/>
+            </If>
+
+            <Set Target="txtCode" Property="Text" Value="{code}"/>
+        </Handler>
+
+        <Handler Name="OnCopyCode">
+            <Copy Text="{code}"/>
+        </Handler>
+
+        <Handler Name="OnSliderChanged">
+            <Get Control="previewSlider" Property="Value" ToState="sliderVal"/>
+            <Set Target="lblSliderVal" Property="Text" Value="{sliderVal}"/>
+        </Handler>
+
+        <!-- Animations -->
+        <Handler Name="AnimFadeIn">
+            <Animate Control="previewButton" Property="Opacity" From="0" To="1" Duration="500"/>
+            <Animate Control="previewCard" Property="Opacity" From="0" To="1" Duration="500"/>
+        </Handler>
+
+        <Handler Name="AnimSlideUp">
+            <Animate Control="previewButton" Property="TranslateY" From="50" To="0" Duration="500"/>
+            <Animate Control="previewCard" Property="TranslateY" From="50" To="0" Duration="500"/>
+        </Handler>
+
+        <!-- AI Styles -->
+        <Handler Name="ApplyGlass">
+            <Set Target="propBg" Property="Text" Value="#33FFFFFF"/>
+            <Set Target="propBorder" Property="Text" Value="#55FFFFFF"/>
+            <Set Target="propRadius" Property="Text" Value="15"/>
+            <Call Handler="UpdatePreview"/>
+        </Handler>
+
+        <Handler Name="ApplyNeo">
+            <Set Target="propBg" Property="Text" Value="#E0E0E0"/>
+            <Set Target="propFg" Property="Text" Value="#333333"/>
+            <Set Target="propRadius" Property="Text" Value="20"/>
+            <Call Handler="UpdatePreview"/>
+        </Handler>
+
+        <Handler Name="ApplyCyber">
+            <Set Target="propBg" Property="Text" Value="#FCEE0A"/>
+            <Set Target="propFg" Property="Text" Value="#000000"/>
+            <Set Target="propBorder" Property="Text" Value="#00F0FF"/>
+            <Set Target="propThickness" Property="Text" Value="2"/>
+            <Set Target="propRadius" Property="Text" Value="0"/>
+            <Call Handler="UpdatePreview"/>
+        </Handler>
+
+        <!-- Selection Handlers -->
+        <Handler Name="HideAll">
+            <Hide Control="previewButton"/>
+            <Hide Control="previewTextBox"/>
+            <Hide Control="previewCheckBox"/>
+            <Hide Control="previewRadioGroup"/>
+            <Hide Control="previewSliderGroup"/>
+            <Hide Control="previewProgress"/>
+            <Hide Control="previewBorder"/>
+            <Hide Control="previewCard"/>
+        </Handler>
+
+        <Handler Name="SelectButton">
+            <Call Handler="HideAll"/>
+            <Show Control="previewButton"/>
+            <Set Var="activeComponent" Value="Button"/>
+            <Set Target="propText" Property="Text" Value="Button Text"/>
+            <Set Target="propBg" Property="Text" Value="#6C63FF"/>
+            <Set Target="propFg" Property="Text" Value="#FFFFFF"/>
+            <Call Handler="UpdatePreview"/>
+        </Handler>
+
+        <Handler Name="SelectTextBox">
+            <Call Handler="HideAll"/>
+            <Show Control="previewTextBox"/>
+            <Set Var="activeComponent" Value="TextBox"/>
+            <Set Target="propText" Property="Text" Value="Input text..."/>
+            <Set Target="propBg" Property="Text" Value="#252530"/>
+            <Set Target="propFg" Property="Text" Value="#FFFFFF"/>
+            <Call Handler="UpdatePreview"/>
+        </Handler>
+
+        <Handler Name="SelectBorder">
+            <Call Handler="HideAll"/>
+            <Show Control="previewBorder"/>
+            <Set Var="activeComponent" Value="Border"/>
+            <Set Target="propBg" Property="Text" Value="#252530"/>
+            <Set Target="propBorder" Property="Text" Value="#6C63FF"/>
+            <Set Target="propThickness" Property="Text" Value="2"/>
+            <Set Target="propRadius" Property="Text" Value="10"/>
+            <Call Handler="UpdatePreview"/>
+        </Handler>
+
+        <Handler Name="SelectLabel">
+            <Call Handler="HideAll"/>
+            <Show Control="previewLabel"/>
+            <Set Var="activeComponent" Value="Label"/>
+            <Set Target="propText" Property="Text" Value="Label Text"/>
+            <Set Target="propFg" Property="Text" Value="#FFFFFF"/>
+            <Set Target="propSize" Property="Text" Value="24"/>
+            <Call Handler="UpdatePreview"/>
+        </Handler>
+
+        <Handler Name="SelectCardBuilder">
+            <Call Handler="HideAll"/>
+            <Show Control="previewCard"/>
+            <Set Var="activeComponent" Value="CardBuilder"/>
+            <Set Target="propText" Property="Text" Value="Card Title"/>
+            <Set Target="propW" Property="Text" Value="300"/>
+            <Set Target="propH" Property="Text" Value="Auto"/>
+            <Set Target="propBg" Property="Text" Value="#252530"/>
+            <Set Target="propRadius" Property="Text" Value="12"/>
+            <Call Handler="UpdatePreview"/>
+        </Handler>
+
+        <!-- Placeholder handlers for other components -->
+        <Handler Name="SelectPassword"><Call Handler="SelectTextBox"/></Handler>
+        <Handler Name="SelectCheckBox"><Call Handler="HideAll"/><Show Control="previewCheckBox"/><Set Var="activeComponent" Value="CheckBox"/><Set Var="code" Value="&lt;CheckBox Content=&quot;Option&quot; IsChecked=&quot;True&quot; Foreground=&quot;White&quot;/&gt;"/><Set Target="txtCode" Property="Text" Value="{code}"/></Handler>
+        <Handler Name="SelectRadio"><Call Handler="HideAll"/><Show Control="previewRadioGroup"/><Set Var="activeComponent" Value="Radio"/><Set Var="code" Value="&lt;StackPanel&gt;&#x0A;    &lt;RadioButton Content=&quot;Option 1&quot; IsChecked=&quot;True&quot;/&gt;&#x0A;    &lt;RadioButton Content=&quot;Option 2&quot;/&gt;&#x0A;&lt;/StackPanel&gt;"/><Set Target="txtCode" Property="Text" Value="{code}"/></Handler>
+        <Handler Name="SelectSlider"><Call Handler="HideAll"/><Show Control="previewSliderGroup"/><Set Var="activeComponent" Value="Slider"/><Set Var="code" Value="&lt;Slider Minimum=&quot;0&quot; Maximum=&quot;100&quot; Value=&quot;50&quot; Width=&quot;200&quot;/&gt;"/><Set Target="txtCode" Property="Text" Value="{code}"/></Handler>
+        <Handler Name="SelectProgress"><Call Handler="HideAll"/><Show Control="previewProgress"/><Set Var="activeComponent" Value="Progress"/><Set Var="code" Value="&lt;ProgressBar Value=&quot;65&quot; Width=&quot;200&quot; Height=&quot;20&quot; Foreground=&quot;#6C63FF&quot; Background=&quot;#252530&quot;/&gt;"/><Set Target="txtCode" Property="Text" Value="{code}"/></Handler>
+
+    </Logic>
+</App>

@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="Nimbus Dictionary" 
+     Width="900" Height="750" 
+     Theme="Dark" 
+     DarkMode="true" 
+     DevMode="true"
+     OnLoad="OnAppLoad">
+
+    <Styles>
+        <Style Name="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="#1E1E2E"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="BorderBrush" Value="#2A2A3A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+    </Styles>
+
+    <UI>
+        <Grid Background="#0F0F12">
+            <Grid.RowDefinitions>Auto, Auto, *, Auto</Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Border Grid.Row="0" Background="#1E1E2E" Padding="30,25" BorderBrush="#2A2A3A" BorderThickness="0,0,0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>Auto, *, Auto</Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <TextBlock Text="📚" FontSize="32" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="NIMBUS DICTIONARY" FontSize="22" FontWeight="Bold" Foreground="#FFFFFF" FontFamily="Segoe UI"/>
+                            <TextBlock Text="Powered by DictionaryAPI" FontSize="12" Foreground="#8888AA"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Background="#2A2A3A" CornerRadius="20" Padding="15,6">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="SEARCHES: " Foreground="#8888AA" FontSize="11" FontWeight="Bold"/>
+                                <TextBlock Name="lblCount" Text="0" Foreground="#00FF88" FontSize="11" FontWeight="Bold"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Search Area -->
+            <Border Grid.Row="1" Background="#141419" Padding="30,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>*, Auto</Grid.ColumnDefinitions>
+                    
+                    <!-- Search Input -->
+                    <Border Grid.Column="0" Background="#1E1E2E" CornerRadius="10" Padding="15,12" BorderBrush="#2A2A3A" BorderThickness="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>Auto, *</Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="🔍" FontSize="16" Foreground="#666688" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBox Grid.Column="1" Name="txtSearch" 
+                                     Text="" 
+                                     Background="Transparent" 
+                                     Foreground="White" 
+                                     BorderThickness="0" 
+                                     FontSize="16" 
+                                     VerticalAlignment="Center"
+                                     onEnter="OnSearch"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Search Button -->
+                    <Border Grid.Column="1" CornerRadius="10" Background="#6C63FF" Margin="15,0,0,0">
+                        <Button Name="btrn111" Content="SEARCH" 
+                                Background="Transparent" Foreground="White" 
+                                FontSize="14" FontWeight="Bold"
+                                Padding="25,12" BorderThickness="0"
+                                onClick="OnSearch"/>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- Content Area -->
+            <ScrollViewer Grid.Row="2" Name="scrollContent" VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="30,20">
+
+                    <!-- Welcome Screen -->
+                    <StackPanel Name="welcomePanel">
+                        <Border Background="#1E1E2E" CornerRadius="12" Padding="40" HorizontalAlignment="Center" Margin="0,40" BorderBrush="#2A2A3A" BorderThickness="1">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="👋" FontSize="60" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                                <TextBlock Text="Welcome!" FontSize="28" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Enter a word above to see definitions, synonyms and more." 
+                                           FontSize="15" Foreground="#888899" HorizontalAlignment="Center" Margin="0,10,0,30"/>
+                                
+                                <TextBlock Text="Quick Examples:" FontSize="13" Foreground="#666688" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Border CornerRadius="8" Background="#2A2A3A" Margin="5">
+                                        <Button Content="Hello" Background="Transparent" Foreground="#6C63FF" Padding="15,8" BorderThickness="0" onClick="OnQuickHello"/>
+                                    </Border>
+                                    <Border CornerRadius="8" Background="#2A2A3A" Margin="5">
+                                        <Button Content="Code" Background="Transparent" Foreground="#6C63FF" Padding="15,8" BorderThickness="0" onClick="OnQuickCode"/>
+                                    </Border>
+                                    <Border CornerRadius="8" Background="#2A2A3A" Margin="5">
+                                        <Button Content="Love" Background="Transparent" Foreground="#6C63FF" Padding="15,8" BorderThickness="0" onClick="OnQuickLove"/>
+                                    </Border>
+                                    <Border CornerRadius="8" Background="#2A2A3A" Margin="5">
+                                        <Button Content="Dream" Background="Transparent" Foreground="#6C63FF" Padding="15,8" BorderThickness="0" onClick="OnQuickDream"/>
+                                    </Border>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                        
+                        <!-- JSON Table Demo -->
+                        <Border Background="#1E1E2E" CornerRadius="12" Padding="20" BorderBrush="#2A2A3A" BorderThickness="1" Margin="0,0,0,15">
+                            <StackPanel>
+                                <TextBlock Text="JSON to Table Demo" FontSize="16" FontWeight="Bold" Foreground="White" Margin="0,0,0,10"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>*, 10, *</Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Input JSON:" Foreground="#888899" FontSize="12" Margin="0,0,0,5"/>
+                                        <TextBox Name="txtJsonInput" Height="100" AcceptsReturn="True" 
+                                                 Background="#0A0A10" Foreground="#00FF88" FontFamily="Consolas" BorderThickness="0" Padding="5"
+                                                 Text="[{&quot;id&quot;:1,&quot;name&quot;:&quot;Admin&quot;,&quot;role&quot;:&quot;Super&quot;},{&quot;id&quot;:2,&quot;name&quot;:&quot;User&quot;,&quot;role&quot;:&quot;Basic&quot;}]"/>
+                                        <Border CornerRadius="6" Background="#6C63FF" Margin="0,10,0,0" HorizontalAlignment="Left">
+                                            <Button Name="cnv11" Content="Convert to Table" Background="Transparent" Foreground="White" Padding="15,8" BorderThickness="0" onClick="OnJsonToTable"/>
+                                        </Border>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Table View:" Foreground="#888899" FontSize="12" Margin="0,0,0,5"/>
+                                        <Grid Name="gridTable" Background="#0A0A10" Height="100"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Loading -->
+                    <StackPanel Name="loadingPanel" Visibility="Collapsed" HorizontalAlignment="Center" Margin="0,50">
+                        <TextBlock Text="🔄" FontSize="40" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                        <TextBlock Text="Searching..." FontSize="18" Foreground="#6C63FF" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Name="lblLoading" Text="Please wait" FontSize="13" Foreground="#666688" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                    </StackPanel>
+
+                    <!-- Error -->
+                    <StackPanel Name="errorPanel" Visibility="Collapsed">
+                        <Border Background="#2D1B22" BorderBrush="#FF4444" BorderThickness="1" CornerRadius="12" Padding="20">
+                            <StackPanel>
+                                <TextBlock Text="😕 Word Not Found" FontSize="20" FontWeight="Bold" Foreground="#FF4444"/>
+                                <TextBlock Name="lblErrorMsg" Text="Could not find definitions." FontSize="14" Foreground="#FF8888" Margin="0,5,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Result Panel -->
+                    <StackPanel Name="resultPanel" Visibility="Collapsed">
+                        
+                        <!-- Word Header -->
+                        <Border Background="#1E1E2E" CornerRadius="12" Padding="20" BorderBrush="#2A2A3A" BorderThickness="1" Margin="0,0,0,15">
+                            <Grid>
+                                <Grid.ColumnDefinitions>*, Auto</Grid.ColumnDefinitions>
+                                
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Name="lblWord" Text="Word" FontSize="48" FontWeight="Bold" Foreground="White" FontFamily="Times New Roman"/>
+                                    <TextBlock Name="lblPhonetic" Text="/.../" FontSize="20" Foreground="#6C63FF" Margin="0,5,0,0" FontFamily="Consolas"/>
+                                </StackPanel>
+
+                                <Button Grid.Column="1" Content="🔊" FontSize="24" Background="Transparent" Foreground="#6C63FF" 
+                                        BorderThickness="0" VerticalAlignment="Center" onClick="OnPlayAudio"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Meaning 1 -->
+                        <Border Name="meaning1" Background="#1E1E2E" CornerRadius="12" Padding="20" BorderBrush="#2A2A3A" BorderThickness="1" Margin="0,0,0,15" Visibility="Collapsed">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <Border Background="#26A69A" CornerRadius="6" Padding="10,4">
+                                        <TextBlock Name="lblPos1" Text="noun" Foreground="White" FontSize="12" FontWeight="Bold"/>
+                                    </Border>
+                                </StackPanel>
+                                <TextBlock Name="lblDef1" Text="Definition here..." FontSize="16" Foreground="#DDDDDD" TextWrapping="Wrap" LineHeight="24"/>
+                                <TextBlock Name="lblEx1" Text="" FontSize="14" Foreground="#888899" FontStyle="Italic" Margin="0,8,0,0" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Meaning 2 -->
+                        <Border Name="meaning2" Background="#1E1E2E" CornerRadius="12" Padding="20" BorderBrush="#2A2A3A" BorderThickness="1" Margin="0,0,0,15" Visibility="Collapsed">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <Border Background="#AB47BC" CornerRadius="6" Padding="10,4">
+                                        <TextBlock Name="lblPos2" Text="verb" Foreground="White" FontSize="12" FontWeight="Bold"/>
+                                    </Border>
+                                </StackPanel>
+                                <TextBlock Name="lblDef2" Text="Definition here..." FontSize="16" Foreground="#DDDDDD" TextWrapping="Wrap" LineHeight="24"/>
+                                <TextBlock Name="lblEx2" Text="" FontSize="14" Foreground="#888899" FontStyle="Italic" Margin="0,8,0,0" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Meaning 3 -->
+                        <Border Name="meaning3" Background="#1E1E2E" CornerRadius="12" Padding="20" BorderBrush="#2A2A3A" BorderThickness="1" Margin="0,0,0,15" Visibility="Collapsed">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <Border Background="#FFA726" CornerRadius="6" Padding="10,4">
+                                        <TextBlock Name="lblPos3" Text="adj" Foreground="White" FontSize="12" FontWeight="Bold"/>
+                                    </Border>
+                                </StackPanel>
+                                <TextBlock Name="lblDef3" Text="Definition here..." FontSize="16" Foreground="#DDDDDD" TextWrapping="Wrap" LineHeight="24"/>
+                                <TextBlock Name="lblEx3" Text="" FontSize="14" Foreground="#888899" FontStyle="Italic" Margin="0,8,0,0" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- JSON Tools -->
+                        <Border Background="#15151A" CornerRadius="12" Padding="20" BorderBrush="#2A2A3A" BorderThickness="1" Margin="0,0,0,15">
+                            <StackPanel>
+                                <TextBlock Text="🛠 Developer Tools" FontSize="14" FontWeight="Bold" Foreground="#666688" Margin="0,0,0,10"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>*, *, *</Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" CornerRadius="6" Background="#2A2A3A" Margin="0,0,5,0">
+                                        <Button Content="Copy JSON" Background="Transparent" Foreground="#AAAAAA" BorderThickness="0" onClick="OnCopyJson"/>
+                                    </Border>
+                                    <Border Grid.Column="1" CornerRadius="6" Background="#2A2A3A" Margin="5,0,5,0">
+                                        <Button Content="View Raw" Background="Transparent" Foreground="#AAAAAA" BorderThickness="0" onClick="OnViewRaw"/>
+                                    </Border>
+                                    <Border Grid.Column="2" CornerRadius="6" Background="#2A2A3A" Margin="5,0,0,0">
+                                        <Button Content="Format" Background="Transparent" Foreground="#AAAAAA" BorderThickness="0" onClick="OnFormatJson"/>
+                                    </Border>
+                                </Grid>
+                                <TextBox Name="txtRawJson" Text="" Height="100" Margin="0,10,0,0" 
+                                         Background="#0A0A10" Foreground="#00FF88" FontFamily="Consolas" FontSize="11" 
+                                         AcceptsReturn="True" VerticalScrollBarVisibility="Auto" BorderThickness="0" IsReadOnly="True" Visibility="Collapsed"/>
+                            </StackPanel>
+                        </Border>
+
+                    </StackPanel>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Footer -->
+            <Border Grid.Row="3" Background="#0F0F12" Padding="15,8">
+                <Grid>
+                    <Grid.ColumnDefinitions>Auto, *</Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Name="lblStatus" Text="Ready" FontSize="11" Foreground="#444455"/>
+                    <TextBlock Grid.Column="1" Text="Nimbus Engine v3.0" FontSize="11" Foreground="#333344" HorizontalAlignment="Right"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </UI>
+
+    <Logic>
+        <!-- Logic qismi o'zgarishsiz qoldi -->
+        <Var Name="search" Value="" Type="string"/>
+        <Var Name="apiResult" Value="" Type="string"/>
+        <Var Name="count" Value="0" Type="int"/>
+        <Var Name="word" Value="" Type="string"/>
+        <Var Name="phonetic" Value="" Type="string"/>
+        <Var Name="audio" Value="" Type="string"/>
+        <Var Name="pos1" Value="" Type="string"/>
+        <Var Name="def1" Value="" Type="string"/>
+        <Var Name="ex1" Value="" Type="string"/>
+        <Var Name="pos2" Value="" Type="string"/>
+        <Var Name="def2" Value="" Type="string"/>
+        <Var Name="ex2" Value="" Type="string"/>
+        <Var Name="pos3" Value="" Type="string"/>
+        <Var Name="def3" Value="" Type="string"/>
+        <Var Name="ex3" Value="" Type="string"/>
+        <Var Name="jsonInput" Value="" Type="string"/>
+
+        <!-- On Load -->
+        <Handler Name="OnAppLoad">
+            <Set Target="lblStatus" Property="Text" Value="Ready to search"/>
+            <Focus Control="txtSearch"/>
+        </Handler>
+
+        <!-- Search -->
+        <Handler Name="OnSearch">
+            <Get Control="txtSearch" Property="Text" ToState="search"/>
+            <If Condition="{search} is empty">
+                <Alert Message="Please enter a word" Title="Error"/>
+            </If>
+            <If Condition="{search} is not empty">
+                <Call Handler="PerformSearch"/>
+            </If>
+        </Handler>
+
+        <Handler Name="PerformSearch">
+            <Hide Control="welcomePanel"/>
+            <Hide Control="resultPanel"/>
+            <Hide Control="errorPanel"/>
+            <Show Control="loadingPanel"/>
+            <Set Target="lblLoading" Property="Text" Value="Looking up '{search}'..."/>
+            
+            <Set Var="word" Value=""/>
+            <Set Var="phonetic" Value=""/>
+            <Set Var="def1" Value=""/>
+            <Set Var="def2" Value=""/>
+            <Set Var="def3" Value=""/>
+            <Set Var="ex1" Value=""/>
+            <Set Var="ex2" Value=""/>
+            <Set Var="ex3" Value=""/>
+
+            <HttpRequest Method="GET" Url="https://api.dictionaryapi.dev/api/v2/entries/en/{search}" ToState="apiResult"/>
+
+            <Hide Control="loadingPanel"/>
+            <Increment Var="count" By="1"/>
+            <Set Target="lblCount" Property="Text" Value="{count}"/>
+
+            <Call Handler="ProcessResult"/>
+        </Handler>
+
+        <Handler Name="ProcessResult">
+            <If Condition="{apiResult} is empty">
+                <Call Handler="ShowError"/>
+            </If>
+            <If Condition="{apiResult} is not empty">
+                <JsonArray Source="{apiResult}" Path="[0].word" ToState="word"/>
+                <If Condition="{word} is empty">
+                    <Call Handler="ShowError"/>
+                </If>
+                <If Condition="{word} is not empty">
+                    <Call Handler="ExtractData"/>
+                </If>
+            </If>
+        </Handler>
+
+        <Handler Name="ExtractData">
+            <JsonArray Source="{apiResult}" Path="[0].phonetic" ToState="phonetic"/>
+            <JsonArray Source="{apiResult}" Path="[0].phonetics[0].audio" ToState="audio"/>
+            <JsonArray Source="{apiResult}" Path="[0].meanings[0].partOfSpeech" ToState="pos1"/>
+            <JsonArray Source="{apiResult}" Path="[0].meanings[0].definitions[0].definition" ToState="def1"/>
+            <JsonArray Source="{apiResult}" Path="[0].meanings[0].definitions[0].example" ToState="ex1"/>
+            <JsonArray Source="{apiResult}" Path="[0].meanings[1].partOfSpeech" ToState="pos2"/>
+            <JsonArray Source="{apiResult}" Path="[0].meanings[1].definitions[0].definition" ToState="def2"/>
+            <JsonArray Source="{apiResult}" Path="[0].meanings[1].definitions[0].example" ToState="ex2"/>
+            <JsonArray Source="{apiResult}" Path="[0].meanings[2].partOfSpeech" ToState="pos3"/>
+            <JsonArray Source="{apiResult}" Path="[0].meanings[2].definitions[0].definition" ToState="def3"/>
+            <JsonArray Source="{apiResult}" Path="[0].meanings[2].definitions[0].example" ToState="ex3"/>
+            <Call Handler="ShowResult"/>
+        </Handler>
+
+        <Handler Name="ShowResult">
+            <Set Target="lblWord" Property="Text" Value="{word}"/>
+            
+            <If Condition="{phonetic} is not empty">
+                <Set Target="lblPhonetic" Property="Text" Value="{phonetic}"/>
+            </If>
+            <If Condition="{phonetic} is empty">
+                <Set Target="lblPhonetic" Property="Text" Value=""/>
+            </If>
+
+            <If Condition="{def1} is not empty">
+                <Show Control="meaning1"/>
+                <Set Target="lblPos1" Property="Text" Value="{pos1}"/>
+                <Set Target="lblDef1" Property="Text" Value="{def1}"/>
+                <If Condition="{ex1} is not empty">
+                    <Set Target="lblEx1" Property="Text" Value="Example: {ex1}"/>
+                    <Show Control="lblEx1"/>
+                </If>
+                <If Condition="{ex1} is empty">
+                    <Hide Control="lblEx1"/>
+                </If>
+            </If>
+            <If Condition="{def1} is empty">
+                <Hide Control="meaning1"/>
+            </If>
+
+            <If Condition="{def2} is not empty">
+                <Show Control="meaning2"/>
+                <Set Target="lblPos2" Property="Text" Value="{pos2}"/>
+                <Set Target="lblDef2" Property="Text" Value="{def2}"/>
+                <If Condition="{ex2} is not empty">
+                    <Set Target="lblEx2" Property="Text" Value="Example: {ex2}"/>
+                    <Show Control="lblEx2"/>
+                </If>
+                <If Condition="{ex2} is empty">
+                    <Hide Control="lblEx2"/>
+                </If>
+            </If>
+            <If Condition="{def2} is empty">
+                <Hide Control="meaning2"/>
+            </If>
+
+            <If Condition="{def3} is not empty">
+                <Show Control="meaning3"/>
+                <Set Target="lblPos3" Property="Text" Value="{pos3}"/>
+                <Set Target="lblDef3" Property="Text" Value="{def3}"/>
+                <If Condition="{ex3} is not empty">
+                    <Set Target="lblEx3" Property="Text" Value="Example: {ex3}"/>
+                    <Show Control="lblEx3"/>
+                </If>
+                <If Condition="{ex3} is empty">
+                    <Hide Control="lblEx3"/>
+                </If>
+            </If>
+            <If Condition="{def3} is empty">
+                <Hide Control="meaning3"/>
+            </If>
+
+            <Hide Control="txtRawJson"/>
+            <Show Control="resultPanel"/>
+            <Set Target="lblStatus" Property="Text" Value="Found: {word}"/>
+        </Handler>
+
+        <Handler Name="ShowError">
+            <Show Control="errorPanel"/>
+            <Set Target="lblErrorMsg" Property="Text" Value="Could not find definitions for '{search}'"/>
+            <Set Target="lblStatus" Property="Text" Value="Not found"/>
+        </Handler>
+
+        <Handler Name="OnQuickHello">
+            <Set Target="txtSearch" Property="Text" Value="hello"/>
+            <Set Var="search" Value="hello"/>
+            <Call Handler="PerformSearch"/>
+        </Handler>
+        <Handler Name="OnQuickCode">
+            <Set Target="txtSearch" Property="Text" Value="code"/>
+            <Set Var="search" Value="code"/>
+            <Call Handler="PerformSearch"/>
+        </Handler>
+        <Handler Name="OnQuickLove">
+            <Set Target="txtSearch" Property="Text" Value="love"/>
+            <Set Var="search" Value="love"/>
+            <Call Handler="PerformSearch"/>
+        </Handler>
+        <Handler Name="OnQuickDream">
+            <Set Target="txtSearch" Property="Text" Value="dream"/>
+            <Set Var="search" Value="dream"/>
+            <Call Handler="PerformSearch"/>
+        </Handler>
+
+        <Handler Name="OnCopyJson">
+            <Copy Text="{apiResult}"/>
+            <Set Target="lblStatus" Property="Text" Value="JSON copied to clipboard"/>
+        </Handler>
+
+        <Handler Name="OnViewRaw">
+            <Set Target="txtRawJson" Property="Text" Value="{apiResult}"/>
+            <Toggle Control="txtRawJson"/>
+        </Handler>
+
+        <Handler Name="OnFormatJson">
+            <JsonFormat Source="{apiResult}" ToState="apiResult"/>
+            <Set Target="txtRawJson" Property="Text" Value="{apiResult}"/>
+            <Show Control="txtRawJson"/>
+        </Handler>
+
+        <Handler Name="OnPlayAudio">
+            <If Condition="{audio} is not empty">
+                <OpenUrl Url="{audio}"/>
+            </If>
+            <If Condition="{audio} is empty">
+                <Alert Message="No audio available" Title="Audio"/>
+            </If>
+        </Handler>
+
+        <Handler Name="OnJsonToTable">
+            <Get Control="txtJsonInput" Property="Text" ToState="jsonInput"/>
+            <JsonTable Source="{jsonInput}" Container="gridTable"/>
+        </Handler>
+    </Logic>
+</App>

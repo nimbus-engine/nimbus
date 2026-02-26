@@ -1,0 +1,781 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="Nimbus Animation Studio"
+     Width="900"
+     Height="650"
+     Theme="Dark"
+     DarkMode="true"
+     DevMode="true"
+     OnLoad="OnAppLoad">
+
+    <UI>
+        <Grid Background="#0A0A0F">
+            <Grid.ColumnDefinitions>280, *</Grid.ColumnDefinitions>
+
+            <!-- ═══════════════════════════════════════ -->
+            <!--              LEFT SIDEBAR               -->
+            <!-- ═══════════════════════════════════════ -->
+            <Border Grid.Column="0" Background="#12121A"
+                    BorderBrush="#1E1E2E" BorderThickness="0,0,1,0">
+                <Grid>
+                    <Grid.RowDefinitions>Auto, *, Auto</Grid.RowDefinitions>
+
+                    <!-- Header -->
+                    <Border Grid.Row="0" Padding="20,24,20,20"
+                            BorderBrush="#1E1E2E" BorderThickness="0,0,0,1">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="🎬" FontSize="28" Margin="0,0,12,0"/>
+                                <TextBlock Text="Animation" FontSize="22" 
+                                           FontWeight="Bold" Foreground="#FFFFFF"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Text="Interactive Demo" FontSize="12" 
+                                       Foreground="#6B7280" Margin="42,4,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Animation Controls -->
+                    <ScrollViewer Grid.Row="1" Padding="16,16,16,0">
+                        <StackPanel>
+                            
+                            <!-- Section: Basic -->
+                            <TextBlock Text="BASIC ANIMATIONS" FontSize="10" 
+                                       FontWeight="Bold" Foreground="#6B7280"
+                                       Margin="4,0,0,12"/>
+
+                            <!-- Fade In/Out -->
+                            <Border Background="#1A1A24" CornerRadius="12" 
+                                    Padding="16" Margin="0,0,0,8" Cursor="Hand"
+                                    Name="btnFade" onClick="AnimateFade">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto, *</Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" CornerRadius="10"
+                                            Background="#8B5CF620">
+                                        <TextBlock Text="👻" FontSize="18"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="Fade In/Out" FontSize="14"
+                                                   FontWeight="SemiBold" Foreground="#FFFFFF"/>
+                                        <TextBlock Text="Opacity animation" FontSize="11"
+                                                   Foreground="#6B7280"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <!-- Scale -->
+                            <Border Background="#1A1A24" CornerRadius="12" 
+                                    Padding="16" Margin="0,0,0,8" Cursor="Hand"
+                                    Name="btnScale" onClick="AnimateScale">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto, *</Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" CornerRadius="10"
+                                            Background="#3B82F620">
+                                        <TextBlock Text="🔍" FontSize="18"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="Scale / Zoom" FontSize="14"
+                                                   FontWeight="SemiBold" Foreground="#FFFFFF"/>
+                                        <TextBlock Text="Size animation" FontSize="11"
+                                                   Foreground="#6B7280"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <!-- Rotate -->
+                            <Border Background="#1A1A24" CornerRadius="12" 
+                                    Padding="16" Margin="0,0,0,8" Cursor="Hand"
+                                    Name="btnRotate" onClick="AnimateRotate">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto, *</Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" CornerRadius="10"
+                                            Background="#10B98120">
+                                        <TextBlock Text="🔄" FontSize="18"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="Rotate" FontSize="14"
+                                                   FontWeight="SemiBold" Foreground="#FFFFFF"/>
+                                        <TextBlock Text="Rotation animation" FontSize="11"
+                                                   Foreground="#6B7280"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <!-- Section: Movement -->
+                            <TextBlock Text="MOVEMENT" FontSize="10" 
+                                       FontWeight="Bold" Foreground="#6B7280"
+                                       Margin="4,20,0,12"/>
+
+                            <!-- Slide -->
+                            <Border Background="#1A1A24" CornerRadius="12" 
+                                    Padding="16" Margin="0,0,0,8" Cursor="Hand"
+                                    Name="btnSlide" onClick="AnimateSlide">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto, *</Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" CornerRadius="10"
+                                            Background="#F59E0B20">
+                                        <TextBlock Text="➡️" FontSize="18"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="Slide" FontSize="14"
+                                                   FontWeight="SemiBold" Foreground="#FFFFFF"/>
+                                        <TextBlock Text="Position animation" FontSize="11"
+                                                   Foreground="#6B7280"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <!-- Bounce -->
+                            <Border Background="#1A1A24" CornerRadius="12" 
+                                    Padding="16" Margin="0,0,0,8" Cursor="Hand"
+                                    Name="btnBounce" onClick="AnimateBounce">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto, *</Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" CornerRadius="10"
+                                            Background="#EF444420">
+                                        <TextBlock Text="⚽" FontSize="18"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="Bounce" FontSize="14"
+                                                   FontWeight="SemiBold" Foreground="#FFFFFF"/>
+                                        <TextBlock Text="Elastic effect" FontSize="11"
+                                                   Foreground="#6B7280"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <!-- Section: Colors -->
+                            <TextBlock Text="COLOR  EFFECTS" FontSize="10" 
+                                       FontWeight="Bold" Foreground="#6B7280"
+                                       Margin="4,20,0,12"/>
+
+                            <!-- Color Change -->
+                            <Border Background="#1A1A24" CornerRadius="12" 
+                                    Padding="16" Margin="0,0,0,8" Cursor="Hand"
+                                    Name="btnColor" onClick="AnimateColor">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto, *</Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" CornerRadius="10"
+                                            Background="#EC489920">
+                                        <TextBlock Text="🎨" FontSize="18"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="Color Change" FontSize="14"
+                                                   FontWeight="SemiBold" Foreground="#FFFFFF"/>
+                                        <TextBlock Text="Background animation" FontSize="11"
+                                                   Foreground="#6B7280"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <!-- Pulse -->
+                            <Border Background="#1A1A24" CornerRadius="12" 
+                                    Padding="16" Margin="0,0,0,8" Cursor="Hand"
+                                    Name="btnPulse" onClick="AnimatePulse">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto, *</Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" CornerRadius="10"
+                                            Background="#06B6D420">
+                                        <TextBlock Text="💓" FontSize="18"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="Pulse" FontSize="14"
+                                                   FontWeight="SemiBold" Foreground="#FFFFFF"/>
+                                        <TextBlock Text="Heartbeat effect" FontSize="11"
+                                                   Foreground="#6B7280"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <!-- Shake -->
+                            <Border Background="#1A1A24" CornerRadius="12" 
+                                    Padding="16" Margin="0,0,0,8" Cursor="Hand"
+                                    Name="btnShake" onClick="AnimateShake">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto, *</Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" CornerRadius="10"
+                                            Background="#F97316">
+                                        <TextBlock Text="📳" FontSize="18"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="Shake" FontSize="14"
+                                                   FontWeight="SemiBold" Foreground="#FFFFFF"/>
+                                        <TextBlock Text="Vibration effect" FontSize="11"
+                                                   Foreground="#6B7280"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- Reset Button -->
+                    <Border Grid.Row="2" Padding="16">
+                        <Button Name="btnReset" Content="🔄 Reset All"
+                                Background="#EF4444" Foreground="White"
+                                CornerRadius="10" Padding="0,14"
+                                FontSize="14" FontWeight="SemiBold"
+                                HoverColor="#DC2626"
+                                onClick="ResetAll"/>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- ═══════════════════════════════════════ -->
+            <!--              MAIN CANVAS                -->
+            <!-- ═══════════════════════════════════════ -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>Auto, *, Auto</Grid.RowDefinitions>
+
+                <!-- Header -->
+                <Border Grid.Row="0" Background="#0F0F15" Padding="24,16"
+                        BorderBrush="#1E1E2E" BorderThickness="0,0,0,1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>*, Auto</Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <TextBlock Name="lblAnimTitle" Text="Welcome!"
+                                       FontSize="20" FontWeight="Bold" 
+                                       Foreground="#FFFFFF"/>
+                            <TextBlock Name="lblAnimDesc" 
+                                       Text="Select an animation from the sidebar"
+                                       FontSize="13" Foreground="#6B7280"/>
+                        </StackPanel>
+
+                        <!-- Speed Controls -->
+                        <Border Grid.Column="1" Background="#1A1A24" 
+                                CornerRadius="8" Padding="4">
+                            <StackPanel Orientation="Horizontal">
+                                <Button Name="btnSlow" Content="0.5x"
+                                        Background="Transparent" Foreground="#6B7280"
+                                        Padding="12,8" FontSize="12"
+                                        onClick="SetSpeedSlow"/>
+                                <Button Name="btnNormal" Content="1x"
+                                        Background="#8B5CF6" Foreground="White"
+                                        Padding="12,8" FontSize="12" CornerRadius="6"
+                                        onClick="SetSpeedNormal"/>
+                                <Button Name="btnFast" Content="2x"
+                                        Background="Transparent" Foreground="#6B7280"
+                                        Padding="12,8" FontSize="12"
+                                        onClick="SetSpeedFast"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Animation Stage -->
+                <Border Grid.Row="1" Background="#0A0A0F" Padding="40">
+                    <Grid>
+                        <!-- Grid Pattern Background -->
+                        <Border Background="#0F0F18" CornerRadius="20" 
+                                BorderBrush="#1E1E2E" BorderThickness="1">
+                            
+                            <!-- Center Content -->
+                            <Grid>
+                                <!-- Main Animated Object -->
+                                <Border Name="animBox" 
+                                        Width="150" Height="150"
+                                        CornerRadius="20"
+                                        Background="#8B5CF6"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                    <StackPanel VerticalAlignment="Center"
+                                                HorizontalAlignment="Center">
+                                        <TextBlock Name="animEmoji" Text="✨" 
+                                                   FontSize="48"
+                                                   HorizontalAlignment="Center"/>
+                                        <TextBlock Name="animLabel" Text="Nimbus"
+                                                   FontSize="16" FontWeight="Bold"
+                                                   Foreground="White"
+                                                   TextAlignment="Center"
+                                                   Margin="0,8,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Floating Elements (for complex animations) -->
+                                <Border Name="floatBall1" Width="30" Height="30"
+                                        CornerRadius="15" Background="#3B82F6"
+                                        HorizontalAlignment="Left" VerticalAlignment="Top"
+                                        Margin="80,100,0,0" Opacity="0.6"/>
+
+                                <Border Name="floatBall2" Width="20" Height="20"
+                                        CornerRadius="10" Background="#10B981"
+                                        HorizontalAlignment="Right" VerticalAlignment="Top"
+                                        Margin="0,120,100,0" Opacity="0.6"/>
+
+                                <Border Name="floatBall3" Width="25" Height="25"
+                                        CornerRadius="12" Background="#F59E0B"
+                                        HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                        Margin="120,0,0,80" Opacity="0.6"/>
+
+                                <Border Name="floatBall4" Width="18" Height="18"
+                                        CornerRadius="9" Background="#EC4899"
+                                        HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                        Margin="0,0,80,120" Opacity="0.6"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Animation Status -->
+                        <Border Background="#1A1A24" CornerRadius="10"
+                                Padding="12,8" HorizontalAlignment="Center"
+                                VerticalAlignment="Bottom" Margin="0,0,0,20">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Name="statusDot" Width="8" Height="8"
+                                        CornerRadius="4" Background="#10B981"
+                                        Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                <TextBlock Name="lblStatus" Text="Ready"
+                                           FontSize="12" Foreground="#9CA3AF"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Footer Stats -->
+                <Border Grid.Row="2" Background="#0F0F15" Padding="20,12"
+                        BorderBrush="#1E1E2E" BorderThickness="0,1,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>*, *, *, *</Grid.ColumnDefinitions>
+
+                        <!-- Duration -->
+                        <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                            <TextBlock Text="Duration" FontSize="10" 
+                                       Foreground="#6B7280" TextAlignment="Center"/>
+                            <TextBlock Name="lblDuration" Text="500ms" FontSize="16" 
+                                       FontWeight="Bold" Foreground="#8B5CF6"
+                                       TextAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Easing -->
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                            <TextBlock Text="Easing" FontSize="10" 
+                                       Foreground="#6B7280" TextAlignment="Center"/>
+                            <TextBlock Name="lblEasing" Text="EaseOut" FontSize="16" 
+                                       FontWeight="Bold" Foreground="#3B82F6"
+                                       TextAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Property -->
+                        <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                            <TextBlock Text="Property" FontSize="10" 
+                                       Foreground="#6B7280" TextAlignment="Center"/>
+                            <TextBlock Name="lblProperty" Text="—" FontSize="16" 
+                                       FontWeight="Bold" Foreground="#10B981"
+                                       TextAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Play Count -->
+                        <StackPanel Grid.Column="3" HorizontalAlignment="Center">
+                            <TextBlock Text="Played" FontSize="10" 
+                                       Foreground="#6B7280" TextAlignment="Center"/>
+                            <TextBlock Name="lblPlayCount" Text="0" FontSize="16" 
+                                       FontWeight="Bold" Foreground="#F59E0B"
+                                       TextAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </UI>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--                    LOGIC                    -->
+    <!-- ═══════════════════════════════════════════ -->
+    <Logic>
+        <!-- State Variables -->
+        <Var Name="playCount" Value="0" Type="int"/>
+        <Var Name="animSpeed" Value="500" Type="int"/>
+        <Var Name="isAnimating" Value="false" Type="bool"/>
+
+        <!-- ══════════════════════════════════ -->
+        <!--           INITIALIZE               -->
+        <!-- ══════════════════════════════════ -->
+        <Handler Name="OnAppLoad">
+            <Set Target="lblStatus" Property="Text" Value="Ready"/>
+            <Set Target="lblPlayCount" Property="Text" Value="0"/>
+            <Set Target="animBox" Property="Opacity" Value="1"/>
+        </Handler>
+
+        <!-- ══════════════════════════════════ -->
+        <!--          SPEED CONTROLS            -->
+        <!-- ══════════════════════════════════ -->
+        <Handler Name="SetSpeedSlow">
+            <Set Var="animSpeed" Value="1000"/>
+            <Set Target="lblDuration" Property="Text" Value="1000ms"/>
+            <Set Target="btnSlow" Property="Background" Value="#8B5CF6"/>
+            <Set Target="btnSlow" Property="Foreground" Value="White"/>
+            <Set Target="btnNormal" Property="Background" Value="Transparent"/>
+            <Set Target="btnNormal" Property="Foreground" Value="#6B7280"/>
+            <Set Target="btnFast" Property="Background" Value="Transparent"/>
+            <Set Target="btnFast" Property="Foreground" Value="#6B7280"/>
+            <Toast Message="Speed: 0.5x (Slow)" Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="SetSpeedNormal">
+            <Set Var="animSpeed" Value="500"/>
+            <Set Target="lblDuration" Property="Text" Value="500ms"/>
+            <Set Target="btnSlow" Property="Background" Value="Transparent"/>
+            <Set Target="btnSlow" Property="Foreground" Value="#6B7280"/>
+            <Set Target="btnNormal" Property="Background" Value="#8B5CF6"/>
+            <Set Target="btnNormal" Property="Foreground" Value="White"/>
+            <Set Target="btnFast" Property="Background" Value="Transparent"/>
+            <Set Target="btnFast" Property="Foreground" Value="#6B7280"/>
+            <Toast Message="Speed: 1x (Normal)" Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <Handler Name="SetSpeedFast">
+            <Set Var="animSpeed" Value="250"/>
+            <Set Target="lblDuration" Property="Text" Value="250ms"/>
+            <Set Target="btnSlow" Property="Background" Value="Transparent"/>
+            <Set Target="btnSlow" Property="Foreground" Value="#6B7280"/>
+            <Set Target="btnNormal" Property="Background" Value="Transparent"/>
+            <Set Target="btnNormal" Property="Foreground" Value="#6B7280"/>
+            <Set Target="btnFast" Property="Background" Value="#8B5CF6"/>
+            <Set Target="btnFast" Property="Foreground" Value="White"/>
+            <Toast Message="Speed: 2x (Fast)" Type="Info" Position="BottomRight" Duration="1500"/>
+        </Handler>
+
+        <!-- ══════════════════════════════════ -->
+        <!--        ANIMATION: FADE             -->
+        <!-- ══════════════════════════════════ -->
+        <Handler Name="AnimateFade">
+            <Set Target="lblAnimTitle" Property="Text" Value="Fade Animation"/>
+            <Set Target="lblAnimDesc" Property="Text" Value="Opacity transition from 0 to 1"/>
+            <Set Target="lblProperty" Property="Text" Value="Opacity"/>
+            <Set Target="lblEasing" Property="Text" Value="EaseInOut"/>
+            <Set Target="animEmoji" Property="Text" Value="👻"/>
+            <Set Target="animLabel" Property="Text" Value="Fade"/>
+            <Set Target="animBox" Property="Background" Value="#8B5CF6"/>
+
+            <Increment Var="playCount" By="1"/>
+            <Set Target="lblPlayCount" Property="Text" Value="{playCount}"/>
+
+            <Set Target="lblStatus" Property="Text" Value="Playing..."/>
+            <Set Target="statusDot" Property="Background" Value="#F59E0B"/>
+
+            <!-- Fade Out -->
+            <Animate Control="animBox" Property="Opacity" To="0" Duration="{animSpeed}"/>
+            
+            <!-- Wait and Fade In -->
+            <Delay Duration="{animSpeed}"/>
+            <Animate Control="animBox" Property="Opacity" To="1" Duration="{animSpeed}"/>
+
+            <Delay Duration="{animSpeed}"/>
+            <Set Target="lblStatus" Property="Text" Value="Completed"/>
+            <Set Target="statusDot" Property="Background" Value="#10B981"/>
+        </Handler>
+
+        <!-- ══════════════════════════════════ -->
+        <!--        ANIMATION: SCALE            -->
+        <!-- ══════════════════════════════════ -->
+        <Handler Name="AnimateScale">
+            <Set Target="lblAnimTitle" Property="Text" Value="Scale Animation"/>
+            <Set Target="lblAnimDesc" Property="Text" Value="Size transformation effect"/>
+            <Set Target="lblProperty" Property="Text" Value="Scale"/>
+            <Set Target="lblEasing" Property="Text" Value="EaseOut"/>
+            <Set Target="animEmoji" Property="Text" Value="🔍"/>
+            <Set Target="animLabel" Property="Text" Value="Scale"/>
+            <Set Target="animBox" Property="Background" Value="#3B82F6"/>
+
+            <Increment Var="playCount" By="1"/>
+            <Set Target="lblPlayCount" Property="Text" Value="{playCount}"/>
+
+            <Set Target="lblStatus" Property="Text" Value="Playing..."/>
+            <Set Target="statusDot" Property="Background" Value="#F59E0B"/>
+
+            <!-- Scale Up -->
+            <Animate Control="animBox" Property="Width" To="200" Duration="{animSpeed}"/>
+            <Animate Control="animBox" Property="Height" To="200" Duration="{animSpeed}"/>
+
+            <Delay Duration="{animSpeed}"/>
+
+            <!-- Scale Down -->
+            <Animate Control="animBox" Property="Width" To="150" Duration="{animSpeed}"/>
+            <Animate Control="animBox" Property="Height" To="150" Duration="{animSpeed}"/>
+
+            <Delay Duration="{animSpeed}"/>
+            <Set Target="lblStatus" Property="Text" Value="Completed"/>
+            <Set Target="statusDot" Property="Background" Value="#10B981"/>
+        </Handler>
+
+        <!-- ══════════════════════════════════ -->
+        <!--        ANIMATION: ROTATE           -->
+        <!-- ══════════════════════════════════ -->
+        <Handler Name="AnimateRotate">
+            <Set Target="lblAnimTitle" Property="Text" Value="Rotate Animation"/>
+            <Set Target="lblAnimDesc" Property="Text" Value="360° rotation effect"/>
+            <Set Target="lblProperty" Property="Text" Value="Rotation"/>
+            <Set Target="lblEasing" Property="Text" Value="Linear"/>
+            <Set Target="animEmoji" Property="Text" Value="🔄"/>
+            <Set Target="animLabel" Property="Text" Value="Rotate"/>
+            <Set Target="animBox" Property="Background" Value="#10B981"/>
+
+            <Increment Var="playCount" By="1"/>
+            <Set Target="lblPlayCount" Property="Text" Value="{playCount}"/>
+
+            <Set Target="lblStatus" Property="Text" Value="Playing..."/>
+            <Set Target="statusDot" Property="Background" Value="#F59E0B"/>
+
+            <!-- Rotate 360 -->
+            <Animate Control="animBox" Property="Rotation" To="360" Duration="1000"/>
+
+            <Delay Duration="1000"/>
+            
+            <!-- Reset rotation -->
+            <Set Target="animBox" Property="Rotation" Value="0"/>
+            
+            <Set Target="lblStatus" Property="Text" Value="Completed"/>
+            <Set Target="statusDot" Property="Background" Value="#10B981"/>
+        </Handler>
+
+        <!-- ══════════════════════════════════ -->
+        <!--        ANIMATION: SLIDE            -->
+        <!-- ══════════════════════════════════ -->
+        <Handler Name="AnimateSlide">
+            <Set Target="lblAnimTitle" Property="Text" Value="Slide Animation"/>
+            <Set Target="lblAnimDesc" Property="Text" Value="Horizontal movement"/>
+            <Set Target="lblProperty" Property="Text" Value="Position"/>
+            <Set Target="lblEasing" Property="Text" Value="EaseInOut"/>
+            <Set Target="animEmoji" Property="Text" Value="➡️"/>
+            <Set Target="animLabel" Property="Text" Value="Slide"/>
+            <Set Target="animBox" Property="Background" Value="#F59E0B"/>
+
+            <Increment Var="playCount" By="1"/>
+            <Set Target="lblPlayCount" Property="Text" Value="{playCount}"/>
+
+            <Set Target="lblStatus" Property="Text" Value="Playing..."/>
+            <Set Target="statusDot" Property="Background" Value="#F59E0B"/>
+
+            <!-- Slide Right -->
+            <Animate Control="animBox" Property="Margin" To="150,0,0,0" Duration="{animSpeed}"/>
+
+            <Delay Duration="{animSpeed}"/>
+
+            <!-- Slide Left -->
+            <Animate Control="animBox" Property="Margin" To="-150,0,0,0" Duration="{animSpeed}"/>
+
+            <Delay Duration="{animSpeed}"/>
+
+            <!-- Center -->
+            <Animate Control="animBox" Property="Margin" To="0,0,0,0" Duration="{animSpeed}"/>
+
+            <Delay Duration="{animSpeed}"/>
+            <Set Target="lblStatus" Property="Text" Value="Completed"/>
+            <Set Target="statusDot" Property="Background" Value="#10B981"/>
+        </Handler>
+
+        <!-- ══════════════════════════════════ -->
+        <!--        ANIMATION: BOUNCE           -->
+        <!-- ══════════════════════════════════ -->
+        <Handler Name="AnimateBounce">
+            <Set Target="lblAnimTitle" Property="Text" Value="Bounce Animation"/>
+            <Set Target="lblAnimDesc" Property="Text" Value="Elastic bounce effect"/>
+            <Set Target="lblProperty" Property="Text" Value="Position Y"/>
+            <Set Target="lblEasing" Property="Text" Value="Bounce"/>
+            <Set Target="animEmoji" Property="Text" Value="⚽"/>
+            <Set Target="animLabel" Property="Text" Value="Bounce"/>
+            <Set Target="animBox" Property="Background" Value="#EF4444"/>
+
+            <Increment Var="playCount" By="1"/>
+            <Set Target="lblPlayCount" Property="Text" Value="{playCount}"/>
+
+            <Set Target="lblStatus" Property="Text" Value="Playing..."/>
+            <Set Target="statusDot" Property="Background" Value="#F59E0B"/>
+
+            <!-- Bounce Up -->
+            <Animate Control="animBox" Property="Margin" To="0,-80,0,0" Duration="200"/>
+            <Delay Duration="200"/>
+            
+            <!-- Bounce Down -->
+            <Animate Control="animBox" Property="Margin" To="0,0,0,0" Duration="300" Easing="Bounce"/>
+            <Delay Duration="300"/>
+
+            <!-- Small Bounce -->
+            <Animate Control="animBox" Property="Margin" To="0,-30,0,0" Duration="150"/>
+            <Delay Duration="150"/>
+            <Animate Control="animBox" Property="Margin" To="0,0,0,0" Duration="200" Easing="Bounce"/>
+
+            <Delay Duration="300"/>
+            <Set Target="lblStatus" Property="Text" Value="Completed"/>
+            <Set Target="statusDot" Property="Background" Value="#10B981"/>
+        </Handler>
+
+        <!-- ══════════════════════════════════ -->
+        <!--        ANIMATION: COLOR            -->
+        <!-- ══════════════════════════════════ -->
+        <Handler Name="AnimateColor">
+            <Set Target="lblAnimTitle" Property="Text" Value="Color Animation"/>
+            <Set Target="lblAnimDesc" Property="Text" Value="Background color transition"/>
+            <Set Target="lblProperty" Property="Text" Value="Background"/>
+            <Set Target="lblEasing" Property="Text" Value="Linear"/>
+            <Set Target="animEmoji" Property="Text" Value="🎨"/>
+            <Set Target="animLabel" Property="Text" Value="Color"/>
+
+            <Increment Var="playCount" By="1"/>
+            <Set Target="lblPlayCount" Property="Text" Value="{playCount}"/>
+
+            <Set Target="lblStatus" Property="Text" Value="Playing..."/>
+            <Set Target="statusDot" Property="Background" Value="#F59E0B"/>
+
+            <!-- Color sequence -->
+            <Animate Control="animBox" Property="Background" To="#EF4444" Duration="400"/>
+            <Delay Duration="400"/>
+            
+            <Animate Control="animBox" Property="Background" To="#F59E0B" Duration="400"/>
+            <Delay Duration="400"/>
+            
+            <Animate Control="animBox" Property="Background" To="#10B981" Duration="400"/>
+            <Delay Duration="400"/>
+            
+            <Animate Control="animBox" Property="Background" To="#3B82F6" Duration="400"/>
+            <Delay Duration="400"/>
+            
+            <Animate Control="animBox" Property="Background" To="#8B5CF6" Duration="400"/>
+            <Delay Duration="400"/>
+            
+            <Animate Control="animBox" Property="Background" To="#EC4899" Duration="400"/>
+            <Delay Duration="400"/>
+
+            <Set Target="lblStatus" Property="Text" Value="Completed"/>
+            <Set Target="statusDot" Property="Background" Value="#10B981"/>
+        </Handler>
+
+        <!-- ══════════════════════════════════ -->
+        <!--        ANIMATION: PULSE            -->
+        <!-- ══════════════════════════════════ -->
+        <Handler Name="AnimatePulse">
+            <Set Target="lblAnimTitle" Property="Text" Value="Pulse Animation"/>
+            <Set Target="lblAnimDesc" Property="Text" Value="Heartbeat pulsing effect"/>
+            <Set Target="lblProperty" Property="Text" Value="Scale"/>
+            <Set Target="lblEasing" Property="Text" Value="EaseInOut"/>
+            <Set Target="animEmoji" Property="Text" Value="💓"/>
+            <Set Target="animLabel" Property="Text" Value="Pulse"/>
+            <Set Target="animBox" Property="Background" Value="#EC4899"/>
+
+            <Increment Var="playCount" By="1"/>
+            <Set Target="lblPlayCount" Property="Text" Value="{playCount}"/>
+
+            <Set Target="lblStatus" Property="Text" Value="Playing..."/>
+            <Set Target="statusDot" Property="Background" Value="#F59E0B"/>
+
+            <!-- Pulse 1 -->
+            <Animate Control="animBox" Property="Width" To="170" Duration="150"/>
+            <Animate Control="animBox" Property="Height" To="170" Duration="150"/>
+            <Delay Duration="150"/>
+            <Animate Control="animBox" Property="Width" To="150" Duration="150"/>
+            <Animate Control="animBox" Property="Height" To="150" Duration="150"/>
+            <Delay Duration="200"/>
+
+            <!-- Pulse 2 -->
+            <Animate Control="animBox" Property="Width" To="180" Duration="150"/>
+            <Animate Control="animBox" Property="Height" To="180" Duration="150"/>
+            <Delay Duration="150"/>
+            <Animate Control="animBox" Property="Width" To="150" Duration="200"/>
+            <Animate Control="animBox" Property="Height" To="150" Duration="200"/>
+            <Delay Duration="300"/>
+
+            <!-- Pulse 3 -->
+            <Animate Control="animBox" Property="Width" To="165" Duration="150"/>
+            <Animate Control="animBox" Property="Height" To="165" Duration="150"/>
+            <Delay Duration="150"/>
+            <Animate Control="animBox" Property="Width" To="150" Duration="150"/>
+            <Animate Control="animBox" Property="Height" To="150" Duration="150"/>
+
+            <Delay Duration="200"/>
+            <Set Target="lblStatus" Property="Text" Value="Completed"/>
+            <Set Target="statusDot" Property="Background" Value="#10B981"/>
+        </Handler>
+
+        <!-- ══════════════════════════════════ -->
+        <!--        ANIMATION: SHAKE            -->
+        <!-- ══════════════════════════════════ -->
+        <Handler Name="AnimateShake">
+            <Set Target="lblAnimTitle" Property="Text" Value="Shake Animation"/>
+            <Set Target="lblAnimDesc" Property="Text" Value="Vibration shake effect"/>
+            <Set Target="lblProperty" Property="Text" Value="Position X"/>
+            <Set Target="lblEasing" Property="Text" Value="Linear"/>
+            <Set Target="animEmoji" Property="Text" Value="📳"/>
+            <Set Target="animLabel" Property="Text" Value="Shake"/>
+            <Set Target="animBox" Property="Background" Value="#F97316"/>
+
+            <Increment Var="playCount" By="1"/>
+            <Set Target="lblPlayCount" Property="Text" Value="{playCount}"/>
+
+            <Set Target="lblStatus" Property="Text" Value="Playing..."/>
+            <Set Target="statusDot" Property="Background" Value="#F59E0B"/>
+
+            <!-- Shake sequence -->
+            <Animate Control="animBox" Property="Margin" To="15,0,0,0" Duration="50"/>
+            <Delay Duration="50"/>
+            <Animate Control="animBox" Property="Margin" To="-15,0,0,0" Duration="50"/>
+            <Delay Duration="50"/>
+            <Animate Control="animBox" Property="Margin" To="12,0,0,0" Duration="50"/>
+            <Delay Duration="50"/>
+            <Animate Control="animBox" Property="Margin" To="-12,0,0,0" Duration="50"/>
+            <Delay Duration="50"/>
+            <Animate Control="animBox" Property="Margin" To="8,0,0,0" Duration="50"/>
+            <Delay Duration="50"/>
+            <Animate Control="animBox" Property="Margin" To="-8,0,0,0" Duration="50"/>
+            <Delay Duration="50"/>
+            <Animate Control="animBox" Property="Margin" To="4,0,0,0" Duration="50"/>
+            <Delay Duration="50"/>
+            <Animate Control="animBox" Property="Margin" To="0,0,0,0" Duration="50"/>
+
+            <Delay Duration="100"/>
+            <Set Target="lblStatus" Property="Text" Value="Completed"/>
+            <Set Target="statusDot" Property="Background" Value="#10B981"/>
+        </Handler>
+
+        <!-- ══════════════════════════════════ -->
+        <!--           RESET ALL                -->
+        <!-- ══════════════════════════════════ -->
+        <Handler Name="ResetAll">
+            <Set Var="playCount" Value="0"/>
+            <Set Target="lblPlayCount" Property="Text" Value="0"/>
+            
+            <Set Target="lblAnimTitle" Property="Text" Value="Welcome!"/>
+            <Set Target="lblAnimDesc" Property="Text" Value="Select an animation from the sidebar"/>
+            <Set Target="lblProperty" Property="Text" Value="—"/>
+            <Set Target="lblEasing" Property="Text" Value="EaseOut"/>
+            <Set Target="lblDuration" Property="Text" Value="500ms"/>
+
+            <Set Target="animBox" Property="Background" Value="#8B5CF6"/>
+            <Set Target="animBox" Property="Width" Value="150"/>
+            <Set Target="animBox" Property="Height" Value="150"/>
+            <Set Target="animBox" Property="Margin" Value="0"/>
+            <Set Target="animBox" Property="Opacity" Value="1"/>
+            <Set Target="animBox" Property="Rotation" Value="0"/>
+            
+            <Set Target="animEmoji" Property="Text" Value="✨"/>
+            <Set Target="animLabel" Property="Text" Value="Nimbus"/>
+            
+            <Set Target="lblStatus" Property="Text" Value="Reset"/>
+            <Set Target="statusDot" Property="Background" Value="#10B981"/>
+
+            <Toast Message="All animations reset!" Type="Success" Position="BottomRight" Duration="2000"/>
+        </Handler>
+
+    </Logic>
+</App>

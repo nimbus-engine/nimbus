@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="utf-8"?>
+<NimbusApp Name="Glass AI" Theme="Dark" Width="450" Height="750" OnLoad="OnAppLoad">
+    
+    <UI>
+        <Grid>
+            <!-- 1. ORQA FON (BACKGROUND) -->
+            <Grid Background="#02052A">
+                <!-- Liquid Blob 1 (Binafsha nur - Tepada) -->
+                <Border Width="400" Height="400" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-100,-100,0" CornerRadius="200" Opacity="0.6">
+                </Border>
+
+                <!-- Liquid Blob 2 (Moviy nur - Pastda) -->
+                <Border Name="Bordertepa" Width="350" Height="350" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-50,0,0,-50" CornerRadius="175" Opacity="0.6">
+                    
+                </Border>
+            </Grid>
+
+            <!-- 2. MAIN GLASS CARD (Asosiy Shisha Panel) -->
+            <Border Name="Bodym" Margin="2" CornerRadius="5" BorderThickness="1" BorderBrush="#FFFFFF33">
+               
+                
+                <Grid>
+                    <Grid.RowDefinitions>80, *, 90</Grid.RowDefinitions>
+
+                    <!-- HEADER -->
+                    <Border Name="tepasi" Grid.Row="0" BorderBrush="#FFFFFF10" BorderThickness="0,0,0,1" Margin="20,0" Background="Transparent">
+                        <Grid Name="headerr" Background="Transparent">
+                            <Grid.ColumnDefinitions>Auto, *</Grid.ColumnDefinitions>
+                            <!-- AI Avatar (Liquid Gradient) -->
+                            <Border Name="headerrr" Background="Transparent" Grid.Column="0" Width="44" Height="44" CornerRadius="0">
+                                
+                                <TextBlock Text="✨" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" Foreground="White"/>
+                            </Border>
+                            
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="15,0,0,0">
+                                <TextBlock Name="headername" Text="Nimbus AI" FontSize="18" FontWeight="Bold" Foreground="White"/>
+                                <TextBlock Text="Online • Super Fast" FontSize="12" Foreground="#94A3B8"/>
+                            </StackPanel>
+                            <Border Name="btnTest" Grid.Column="2" Width="44" Height="44" CornerRadius="10" HorizontalAlignment="Right"  BorderThickness="1" BorderBrush="blue" onClick="test">
+                                
+                                <TextBlock Text="=" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" Padding="0,0,0,13" Foreground="White" />
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- CHAT HISTORY -->
+                    <ScrollViewer Grid.Row="1" Name="chatScroll" VerticalScrollBarVisibility="Hidden" Padding="20">
+                        <StackPanel Name="chatContainer">
+                            <Border HorizontalAlignment="Left" Margin="0,10,50,10" CornerRadius="4,20,20,20" Padding="15" Background="#4F2F0F">
+                                <StackPanel>
+                                    <Button Name="testbtn2" Content="Button 1" HoverColor="#101010" Background="Black" PressedColor="#141414" CornerRadius="20" FocusBorderColor="Black" PlaceholderColor="Black" AccentBottom="Black" HoverBorderColor="Black" BorderThickness="0"/>
+                                </StackPanel>
+                            </Border>
+                            <!-- AI Message (Glass Style) -->
+                            <Border HorizontalAlignment="Left" Margin="0,10,50,10" CornerRadius="4,20,20,20" Padding="15" Background="#4F2F0F">
+                                <StackPanel>
+                                    <TextBlock Text="Salom! Men sizning shaxsiy yordamchingizman. Dizayn qanday chiqdi? 🎨" Foreground="White" TextWrapping="Wrap" FontSize="14" LineHeight="22"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- User Message (Gradient Style) -->
+                            <Border HorizontalAlignment="Right" Margin="50,10,0,10" CornerRadius="20,4,20,20" Padding="15" Background="#103669">
+                                <TextBlock Text="Daxshat! Shisha effekti juda zo'r ko'rinyapti. 🔥" Foreground="White" TextWrapping="Wrap" FontSize="14"/>
+                            </Border>
+                            <Border HorizontalAlignment="Left" Margin="0,10,50,10" CornerRadius="4,20,20,20" Padding="15" Background="#4F2F0F">
+                                <StackPanel>
+                                    <TextBlock Text="Yogee bu shisha emasku, hozircha menimcha nimbusda bu yoq" Foreground="White" TextWrapping="Wrap" FontSize="14" LineHeight="22"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- User Message (Gradient Style) -->
+                            <Border HorizontalAlignment="Right" Margin="50,10,0,10" CornerRadius="20,4,20,20" Padding="15" Background="#103669">
+                                <TextBlock Text="Xa lekin tez orada boladi shekilli" Foreground="White" TextWrapping="Wrap" FontSize="14"/>
+                            </Border>
+                            <Border HorizontalAlignment="Left" Margin="0,10,50,10" CornerRadius="4,20,20,20" Padding="15" Background="#4F2F0F">
+                                <StackPanel>
+                                    <TextBlock Text="Xa, kundan kun yangilanishlar bo'layotgani tufayli nimbus juda kuchayib ketadi hali" Foreground="White" TextWrapping="Wrap" FontSize="14" LineHeight="22"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- User Message (Gradient Style) -->
+                            <Border HorizontalAlignment="Right" Margin="50,10,0,10" CornerRadius="20,4,20,20" Padding="15" Background="#103669">
+                                <TextBlock Text="Xa mayli" Foreground="White" TextWrapping="Wrap" FontSize="14"/>
+                            </Border>
+
+                            <!-- User Message (Gradient Style) -->
+                            <Border HorizontalAlignment="Right" Margin="50,10,0,10" CornerRadius="20,4,20,20" Padding="15" Background="#103669">
+                                <TextBlock Text="." Foreground="White" TextWrapping="Wrap" FontSize="14"/>
+                            </Border>
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- INPUT AREA -->
+                    <Border Grid.Row="2" Padding="17">
+                        <Border Name="inputbar" Height="55" CornerRadius="25" Background="#07092D" BorderBrush="#FFFFFF15" BorderThickness="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>*, Auto</Grid.ColumnDefinitions>
+                                
+                                <TextBox Name="txtInput" Margin="20,0" Placeholder="Biror narsa yozing..." 
+                                         Background="Transparent" Foreground="#94A3B8" 
+                                         BorderThickness="0" VerticalAlignment="Center" FontSize="14"
+                                         onEnter="UserSend"
+                                         HoverColor="Blue"
+                                         PressedColor="Blue"
+                                         PlaceholderColor="Blue"
+                                         BorderThickness="0"
+                                         DisabledBackground="True"/>
+                                <Border
+                                    Name="btnSend"
+                                    onClick="UserSend"
+                                    Background="#204F1C"
+                                    Width="45" 
+                                    Margin="0,0,5,0"
+                                    Height="45"
+                                    Grid.Column="1"
+                                    CornerRadius="25"
+
+                                    >
+
+                                    <TextBlock Text="➤" Foreground="White" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" onClick="UserSend"/>
+                                </Border>
+
+                                <!-- Send Button (Glowing) -->
+                                <!-- <Button Grid.Column="1" Name="btnSend" Width="45" Height="45" Margin="0,0,5,0"  onClick="UserSend" Background="Transparent"> -->
+                                    
+                                <!-- </Button> -->
+                            </Grid>
+                        </Border>
+                    </Border>
+
+                </Grid>
+            </Border>
+        </Grid>
+    </UI>
+<Logic>
+    <!-- ManualC-->
+            <!-- <ManualC id="NotepadHelper" method="CountLines">
+using System;
+using System.Text;
+
+public static int CountLines(string text)
+{
+    if (string.IsNullOrEmpty(text)) return 1;
+    int count = 1;
+    for (int i = 0; i &lt; text.Length; i++)
+    {
+        if (text[i] == '\n') count++;
+    }
+    return count;
+}
+
+public static string GenerateLineNumbers(int count)
+{
+    StringBuilder sb = new StringBuilder();
+    for (int i = 1; i &lt;= count; i++)
+    {
+        if (i > 1) sb.Append("\n");
+        sb.Append(i.ToString());
+    }
+    return sb.ToString();
+}
+
+public static int CountWords(string text)
+{
+    if (string.IsNullOrEmpty(text)) return 0;
+    int count = 0;
+    bool inWord = false;
+    for (int i = 0; i &lt; text.Length; i++)
+    {
+        if (char.IsLetterOrDigit(text[i]))
+        {
+            if (!inWord) { count++; inWord = true; }
+        }
+        else
+        {
+            inWord = false;
+        }
+    }
+    return count;
+}
+
+public static string GetFileInfo(string path)
+{
+    try
+    {
+        System.IO.FileInfo fi = new System.IO.FileInfo(path);
+        long size = fi.Length;
+        string sizeStr;
+        if (size &lt; 1024) sizeStr = size + " B";
+        else if (size &lt; 1024 * 1024) sizeStr = (size / 1024.0).ToString("F1") + " KB";
+        else sizeStr = (size / (1024.0 * 1024.0)).ToString("F2") + " MB";
+        return "Size: " + sizeStr + " | Modified: " + fi.LastWriteTime.ToString("yyyy-MM-dd HH:mm");
+    }
+    catch { return ""; }
+}
+        </ManualC> -->
+
+    <Var Name="Var1" Type="string" Value="This is demo value of var"/>
+    <Var Name="Var2" Value="2"/>
+    <Var Name="saveContent" Value=""/>
+
+    <!-- Plugin -->
+    <Plugin Name="FilePlugin"/>
+
+
+        <Handler Name="OnAppLoad">
+            <ScrollToBottom Control="chatScroll"/>
+            <DropShadow Control="inputbar" Color="Blue" Animate="true" BlurRadius="35" ShadowDepth="1" Opacity="5"/>
+            <Focus Control="txtInput"/>
+        </Handler>
+        <Handler Name="UserSend">
+            <!-- Xabarni ro'yxatga qo'shish -->
+            <AddMessage Container="chatContainer" Sender="me" Type="Border" Text="{txtInput.Text}"/>
+            
+            <!-- Inputni tozalash -->
+            <Set Control="txtInput" Property="Text" Value=""/>
+            
+            <!-- Pastga tushirish -->
+            <ScrollToBottom Control="chatScroll"/>
+            
+            <!-- Tugma animatsiyasi -->
+            <Animate Control="txtInput" Property="opacity" From="1" To="150" Duration="100" />
+            <!-- <Glow Control="headername" Color="Blur" Animate="True" Duration="150"/> -->
+
+        </Handler>
+        <Handler Name="test">
+            <!-- Confirm is used for getting yes or not -->
+            <!-- <Confirm Title="Confirm" Message="Are you sure for testing!">
+                <Yes>
+                    <Call Handler=""/>
+                </Yes>
+            </Confirm> -->
+
+            <!-- Alert icon types> error, warning, question, information(default) -->
+            <!-- <Alert Message="This is alert test" Icon="Warning" Title="Alert title"/> -->
+            <!-- <MessageBox Message="This is alert test" Icon="Warning" Title="Alert title"/> -->
+            <!-- Disable can be used for disable control -->
+            <!-- <Disable Control="txtInput"/> -->
+            <!-- Exit the app -->
+            <!-- <Exit/> -->
+            <!-- Close window -->
+            <!-- <Close window="1"/> -->
+            <!-- This openwindow not working very well but can be fixed in latest versions of nimbus -->
+            <!-- <OpenWindow Source="notepad.xml"/> -->
+            <!-- Logging methods to Nimbus engine and console -->
+            <!-- <Log Message="This is log" Level="INFO"/> -->
+            <!-- <Print Text="Printed text !"/> -->
+            <!-- Log with debug time and info and status -->
+            <!-- <Debug Message="Login error: Oauth not working very well (Test) from Modderboy" Level="Info"/> -->
+
+            <!-- Change property of controls like editing text or design -->
+            <!-- <Set Control="txtInput" Property="Text" Value="This is set text"/> -->
+            <!-- <Set Control="inputbar" Property="CornerRadius" Value="5"/> -->
+
+            <!-- Focus to control -->
+            <!-- <Focus Control="txtInput"/> -->
+
+
+            <!-- Variable and Get and Print gybrid work that getting input text and set to var1 and print it -->
+            <!-- <Get Control="txtInput" Property="Text" ToState="Var1"/> -->
+            <!-- <Print Text="{Var1}"/> -->
+
+
+            <!-- If condition   -->
+            <!-- <If Condition="{Var1}==This is demo value of var">
+                <Set Var="Var1" Property="Text" Value="This is if condition"/>
+                <Print Text="{Var1}"/>
+            </If> -->
+
+
+
+            <!-- Opacity transition bilan korsatish/yashirish -->
+            <!-- <Hide Control="chatContainer" Animate="true" Duration="200"/> -->
+            <!-- <Show Control="chatContainer" Animate="True" Duration="200"/> -->
+
+            <!-- Visible/Unvisible qilish -->
+            <!-- <Toggle Control="headername"/> -->
+
+            <!-- Enable/Disable control -->
+            <!-- <Enable Control="txtInput"/> -->
+            <!-- <Disable Control="txtInput"/> -->
+
+            <!-- Increase/Decrease By ham Value ham ishlaydi va Var ni orniga Variable ham ishlaydi (State ham ishlaydi)-->
+            <!-- <Increment Var="Var2" By="1"/>
+            <Print Text="{Var2}"/>
+            <Decrement Var="Var2" By="1"/>
+            <Print Text="{Var2}"/> -->
+            
+            <!-- Kopaytirish/Bolish By ham Value ham ishlaydi va Var ni orniga Variable ham ishlaydi (State ham ishlaydi)-->
+            <!-- <Multiply Var="Var2" By="1"/>
+            <Print Text="{Var2}"/>
+            <Divide Var="Var2" By="1"/>
+            <Print Text="{Var2}"/> -->
+
+            <!-- Hisoblash yani barcha *, /, +, - lar ham bor -->
+            <!-- ToProperty va ToControl ham kiritish mumkin -->
+            <!-- <Calculate Expression="7*2" ToState="Var2"/>
+            <Print Text="{Var2}"/> -->
+
+            <!-- Text Qoshish/Tozalash -->
+            <!-- <AppendText Control="txtInput" Text="AddedText"/>
+            <ClearText Control="txtInput"/> -->
+
+
+            <!-- Chatda xabar yuborishdek xabar buble yaratish AddMessage da Time="16:00" qilib ozgartirish ham mumkin soatni-->
+            <!-- <AddMessage Container="chatContainer" Text="Salom ishlar yaxshimi" Sender="me"/>
+            <ScrollToBottom Control="chatScroll"/> -->
+
+            <!-- Type: TextBlock, Button, Card, Border yani item qoshish -->
+            <!-- <AddItem Container="chatContainer" Type="TextBlock" Text="Salom ishlar yaxshimi"/> -->
+
+            <!-- Index orqali o'chirish, bunda -1 pastdan boshlaydi -->
+            <!-- <RemoveItem Container="chatContainer" Index="-1"/> -->
+
+            <!-- Itemlarni toliq tozalash -->
+            <!-- <ClearItems Container="chatContainer"/> -->
+
+            <!-- Shadow qoshish va eng muhumi 0.4 yoki . lik sonlar ishlatma faqat butun son ishlat valuelarga -->
+            <!-- <DropShadow Control="inputbar" Color="Blue" Animate="true" BlurRadius="35" ShadowDepth="1" Opacity="5"/> -->
+            <!-- <Shadow Control="inputbar" Color="Blue" Animate="true" BlurRadius="35" ShadowDepth="1" Opacity="5"/> -->
+
+
+            <!-- Kuttirish sleep -->
+            <!-- <Delay Milliseconds="1000"/>
+            <Wait Milliseconds="1000"/> -->
+
+
+            <!-- Blur qilish  duration qoymasa ham default 300-->
+            <!-- <Blur Control="headerrr" Radius="15" Animate="True" Duration="300"/>
+            <BlurEffect Control="chatContainer" Radius="15" Animate="True"/> -->
+
+            <!-- Opacity hali uncha ishlashi yaxshi emas -->
+            <!-- <Opacity Control="btnSend"  Animate="true" Duration="300"/> -->
+
+            <!-- Glow effekti -->
+            <!-- <Glow Control="btnSend" Animate="true" Opacity="1" Intensity="50" Color="#00D4FF" Duration="500"/> -->
+
+            <!-- Effektni ochirish usullari toliq -->
+            <!-- <ClearEffect Control="btnSend"/>
+            <RemoveEffect Control="btnSend"/> -->
+
+            <!-- Animatsiya qilishlar mana -->
+            <!-- <Animate Control="btnSend" Property="Width" To="50" Duration="300"/>
+            <Animate Control="btnSend" Property="Height" To="50" Duration="300"/>
+            <Animate Control="btnSend" Property="Opacity" To="1" Duration="300"/> -->
+
+
+            <!-- Tepasiga yoki eng pastiga otkazish -->
+            <!-- <ScrollToBottom Control="chatScroll"/>
+            <ScrollToTop Control="chatScroll"/> -->
+
+
+            <!-- Http request qilish -->
+            <!-- <Fetch Method="Get"
+                Url="https://nimbus.modderboy.uz/"
+                Body=""
+                ToState="Var1"
+                ToControl="txtInput"
+                ToProperty="Text"/>
+            <HttpRequest Method="Get"
+                Url="https://nimbus.modderboy.uz/"
+                Body=""
+                ToState="Var1"
+                ToControl="txtInput"
+                ToProperty="Text"/>
+            <Http Method="Get"
+                Url="https://nimbus.modderboy.uz/"
+                Body=""
+                ToState="Var1"
+                ToControl="txtInput"
+                ToProperty="Text"/>
+            <Print Text="Var1"/> -->
+
+
+
+            <!-- Saqlash as file -->
+            <!-- <Get Control="txtInput" Property="Text" ToState="saveContent"/>
+            <SaveFile FromControl="txtInput" Content="{saveContent}"/> -->
+
+            <!-- Ochish fileni va ichidagini olish -->
+            <!-- <OpenFile ToControl="txtInput"
+                      ToState="saveContent"
+                      Filter="Text Files|*.txt|All Files|*.*|C# Files|*.cs|XML Files|*.xml|HTML Files|*.html|CSS Files|*.css|JavaScript|*.js|Python|*.py|Markdownn|*.md|JSON|*.json|Log Files|*.log"/>   -->
+
+
+            <!-- Copy qilish ikki yol bilan          -->
+            <!-- <Copy FromController="txtInput" Text="Birorta variablemi {} da"/>            -->
+
+            <!-- Paste qilish -->
+            <!-- <Paste ToControl="txtInput" ToState="Var2"/> -->
+
+
+
+
+            <!-- ManualC ga murojaat qilish bunda CallManualC, CallCSharp, CallCode ishlatiladi-->
+            <!-- <CallManualC id="nimadir" Method="CountLines">
+                <Param Value="{editorText}" Type="string"/>
+                <ToState>lineCount</ToState>
+            </CallManualC> -->
+
+
+
+            <!-- Plugin ishlatish bu example va bunda UsePlugin yoki CallPlugin deb boshlasa ham boladi-->
+            <!-- <Plugin Name="StringPlugin" Method="length">
+                    <Params>{openedContent}</Params>
+                    <ToState>charCount</ToState>
+                </Plugin> -->
+
+
+
+            <!-- Loop ni qanday qilishni bilmadim yani <Loop/> va <ForEach/> bir xil -->
+
+
+
+         </Handler>   
+
+         <!-- Execute Handler qilish -->
+        <!-- <ExecuteCall Handler="OnAppLoad"/>  -->
+
+
+        <!-- While loop menimcha shunday -->
+        <!-- <While Condition="{Var1}==This is demo value of var">
+            <Print Text="{Var1}"/>
+        </While> -->
+    </Logic>
+
+</NimbusApp>

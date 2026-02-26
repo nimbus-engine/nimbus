@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="Hello Nimbus" 
+     Width="600" Height="400" 
+     Theme="Dark" 
+     DarkMode="true"
+     DevMode="true"
+     Version="1.0.0">
+
+    <UI>
+        <Grid Background="#1E1E1E">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                
+                <TextBlock Name="lblTitle" 
+                           Text="Hello, Nimbus!" 
+                           FontSize="42" 
+                           FontWeight="Bold" 
+                           Foreground="#00D4FF" 
+                           HorizontalAlignment="Center"/>
+
+                <TextBlock Name="lblSubtitle" 
+                           Text="Your first Nimbus app" 
+                           FontSize="16" 
+                           Foreground="#888888" 
+                           HorizontalAlignment="Center" 
+                           Margin="0,5,0,30"/>
+
+                <Button Name="btnClick" 
+                        Content="Click Me!" 
+                        Background="#0078D4" 
+                        Foreground="White" 
+                        Padding="40,12" 
+                        FontSize="16"
+                        onClick="OnClick"/>
+
+                <TextBlock Name="lblCount" 
+                           Text="Clicks: 0" 
+                           FontSize="14" 
+                           Foreground="#AAAAAA" 
+                           HorizontalAlignment="Center" 
+                           Margin="0,15,0,0"/>
+
+                <TextBlock Name="lblMessage" 
+                           Text="" 
+                           FontSize="13" 
+                           Foreground="#4EC9B0" 
+                           HorizontalAlignment="Center" 
+                           Margin="0,10,0,0"/>
+
+            </StackPanel>
+        </Grid>
+    </UI>
+
+    <Logic>
+        <Var Name="count" Value="0" Type="int"/>
+
+        <Handler Name="OnClick">
+            <Increment Var="count" By="1"/>
+            <Set Target="lblCount" Property="Text" Value="Clicks: {count}"/>
+
+            <If Condition="{count} == 5">
+                <Set Target="lblMessage" Property="Text" Value="Nice! 5 clicks!"/>
+            </If>
+
+            <If Condition="{count} == 10">
+                <Alert Message="You clicked 10 times!" Title="Hello Nimbus"/>
+                <Set Var="count" Value="0"/>
+                <Set Target="lblCount" Property="Text" Value="Clicks: 0"/>
+                <Set Target="lblMessage" Property="Text" Value="Reset! Try again"/>
+            </If>
+        </Handler>
+    </Logic>
+
+</App>

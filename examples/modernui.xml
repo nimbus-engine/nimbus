@@ -1,0 +1,685 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="Nimbus Studio" Theme="Dark" Width="520" Height="820" OnLoad="OnAppLoad" DarkMode="true">
+
+    <UI>
+        <Grid>
+            <!-- ═══════════ BACKGROUND LAYERS ═══════════ -->
+            <Grid Background="#0A0E1A">
+
+                <!-- Gradient Blob - Top Right (Purple) -->
+                <Border Width="500" Height="500" HorizontalAlignment="Right" VerticalAlignment="Top"
+                        Margin="0,-180,-150,0" CornerRadius="250" Opacity="0.35"
+                        Background="#6C2BD9"/>
+
+                <!-- Gradient Blob - Bottom Left (Blue) -->
+                <Border Width="450" Height="450" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                        Margin="-120,0,0,-100" CornerRadius="225" Opacity="0.3"
+                        Background="#1E40AF"/>
+
+                <!-- Gradient Blob - Center (Cyan accent) -->
+                <Border Width="300" Height="300" HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Margin="100,200,0,0" CornerRadius="150" Opacity="0.15"
+                        Background="#06B6D4"/>
+            </Grid>
+
+            <!-- ═══════════ MAIN CONTAINER ═══════════ -->
+            <Border Name="mainContainer" Margin="0" CornerRadius="0" Background="Transparent">
+                <Grid>
+                    <Grid.RowDefinitions>72, Auto, *, Auto, 80</Grid.RowDefinitions>
+
+                    <!-- ═══════════ ROW 0: TOP BAR ═══════════ -->
+                    <Border Grid.Row="0" Background="#0D111F99" BorderBrush="#FFFFFF08" BorderThickness="0,0,0,1">
+                        <Grid Margin="20,0">
+                            <Grid.ColumnDefinitions>Auto, *, Auto, Auto</Grid.ColumnDefinitions>
+
+                            <!-- Logo -->
+                            <Border Grid.Column="0" Width="40" Height="40" CornerRadius="12"
+                                    Background="#6C2BD920" VerticalAlignment="Center">
+                                <TextBlock Text="◆" FontSize="20" Foreground="#A78BFA"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+
+                            <!-- Title -->
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="14,0,0,0">
+                                <TextBlock Name="appTitle" Text="Nimbus Studio" FontSize="17"
+                                           FontWeight="Bold" Foreground="#F1F5F9"/>
+                                <TextBlock Name="appSubtitle" Text="v3.0 • Dashboard" FontSize="11"
+                                           Foreground="#64748B" Margin="0,1,0,0"/>
+                            </StackPanel>
+
+                            <!-- Notification Bell -->
+                            <Border Name="btnNotification" Grid.Column="2" Width="40" Height="40"
+                                    CornerRadius="12" Background="#FFFFFF06" Margin="0,0,8,0"
+                                    VerticalAlignment="Center" onClick="OnNotification">
+                                <Grid>
+                                    <TextBlock Text="🔔" FontSize="17"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <!-- Badge -->
+                                    <Border Width="18" Height="18" CornerRadius="9"
+                                            Background="#EF4444" HorizontalAlignment="Right"
+                                            VerticalAlignment="Top" Margin="0,-2,-2,0">
+                                        <TextBlock Name="badgeCount" Text="3" FontSize="10"
+                                                   Foreground="White" FontWeight="Bold"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                            <!-- Settings -->
+                            <Border Name="btnSettings" Grid.Column="3" Width="40" Height="40"
+                                    CornerRadius="12" Background="#FFFFFF06"
+                                    VerticalAlignment="Center" onClick="OnSettings">
+                                <TextBlock Text="⚙" FontSize="18" Foreground="#94A3B8"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- ═══════════ ROW 1: WELCOME CARD ═══════════ -->
+                    <Border Grid.Row="1" Margin="16,16,16,8" CornerRadius="20"
+                            Background="#6C2BD918" BorderBrush="#A78BFA20" BorderThickness="1"
+                            Padding="24,20">
+                        <Grid>
+                            <Grid.ColumnDefinitions>*, Auto</Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                <TextBlock Text="Xush kelibsiz! 👋" FontSize="14" Foreground="#A78BFA"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Name="welcomeName" Text="Modderboy" FontSize="26"
+                                           FontWeight="Bold" Foreground="#F8FAFC" Margin="0,4,0,0"/>
+                                <TextBlock Text="Bugun qanday loyiha qilamiz?" FontSize="13"
+                                           Foreground="#64748B" Margin="0,6,0,0"/>
+                            </StackPanel>
+
+                            <!-- Avatar -->
+                            <Border Grid.Column="1" Width="64" Height="64" CornerRadius="32"
+                                    Background="#6C2BD930" VerticalAlignment="Center">
+                                <TextBlock Text="🧑‍💻" FontSize="32"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- ═══════════ ROW 2: SCROLLABLE CONTENT ═══════════ -->
+                    <ScrollViewer Grid.Row="2" Name="mainScroll" VerticalScrollBarVisibility="Hidden"
+                                  Padding="0">
+                        <StackPanel Margin="16,8,16,8">
+
+                            <!-- ── STATS CARDS ROW ── -->
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>*, 10, *, 10, *</Grid.ColumnDefinitions>
+
+                                <!-- Stat 1: Projects -->
+                                <Border Grid.Column="0" CornerRadius="16" Background="#1E293B80"
+                                        BorderBrush="#334155" BorderThickness="1" Padding="16,14">
+                                    <StackPanel>
+                                        <Border Width="36" Height="36" CornerRadius="10"
+                                                Background="#3B82F620" HorizontalAlignment="Left">
+                                            <TextBlock Text="📁" FontSize="18"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <TextBlock Name="statProjects" Text="12" FontSize="24"
+                                                   FontWeight="Bold" Foreground="#F1F5F9" Margin="0,10,0,0"/>
+                                        <TextBlock Text="Loyihalar" FontSize="11" Foreground="#64748B"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Stat 2: Plugins -->
+                                <Border Grid.Column="2" CornerRadius="16" Background="#1E293B80"
+                                        BorderBrush="#334155" BorderThickness="1" Padding="16,14">
+                                    <StackPanel>
+                                        <Border Width="36" Height="36" CornerRadius="10"
+                                                Background="#8B5CF620" HorizontalAlignment="Left">
+                                            <TextBlock Text="🧩" FontSize="18"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <TextBlock Name="statPlugins" Text="8" FontSize="24"
+                                                   FontWeight="Bold" Foreground="#F1F5F9" Margin="0,10,0,0"/>
+                                        <TextBlock Text="Pluginlar" FontSize="11" Foreground="#64748B"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Stat 3: Tasks -->
+                                <Border Grid.Column="4" CornerRadius="16" Background="#1E293B80"
+                                        BorderBrush="#334155" BorderThickness="1" Padding="16,14">
+                                    <StackPanel>
+                                        <Border Width="36" Height="36" CornerRadius="10"
+                                                Background="#10B98120" HorizontalAlignment="Left">
+                                            <TextBlock Text="✅" FontSize="18"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <TextBlock Name="statTasks" Text="5" FontSize="24"
+                                                   FontWeight="Bold" Foreground="#F1F5F9" Margin="0,10,0,0"/>
+                                        <TextBlock Text="Vazifalar" FontSize="11" Foreground="#64748B"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <!-- ── QUICK ACTIONS SECTION ── -->
+                            <TextBlock Text="Tezkor amallar" FontSize="15" FontWeight="SemiBold"
+                                       Foreground="#CBD5E1" Margin="4,12,0,10"/>
+
+                            <!-- Action 1: New Project -->
+                            <Border Name="btnNewProject" Margin="0,0,0,8" CornerRadius="16"
+                                    Background="#1E293B90" BorderBrush="#33415560" BorderThickness="1"
+                                    Padding="18,16" onClick="OnNewProject">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto, *, Auto</Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Width="46" Height="46" CornerRadius="14"
+                                            Background="#3B82F615">
+                                        <TextBlock Text="🚀" FontSize="22"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="16,0,0,0">
+                                        <TextBlock Text="Yangi Loyiha" FontSize="15" FontWeight="SemiBold"
+                                                   Foreground="#E2E8F0"/>
+                                        <TextBlock Text="Bo'sh shablon yoki tayyor template" FontSize="12"
+                                                   Foreground="#64748B" Margin="0,3,0,0"/>
+                                    </StackPanel>
+
+                                    <Border Grid.Column="2" Width="32" Height="32" CornerRadius="8"
+                                            Background="#FFFFFF08" VerticalAlignment="Center">
+                                        <TextBlock Text="→" FontSize="16" Foreground="#64748B"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                            <!-- Action 2: Open File -->
+                            <Border Name="btnOpenFile" Margin="0,0,0,8" CornerRadius="16"
+                                    Background="#1E293B90" BorderBrush="#33415560" BorderThickness="1"
+                                    Padding="18,16" onClick="OnOpenFile">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto, *, Auto</Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Width="46" Height="46" CornerRadius="14"
+                                            Background="#8B5CF615">
+                                        <TextBlock Text="📂" FontSize="22"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="16,0,0,0">
+                                        <TextBlock Text="Faylni Ochish" FontSize="15" FontWeight="SemiBold"
+                                                   Foreground="#E2E8F0"/>
+                                        <TextBlock Text="XML, CS, JSON va boshqalar" FontSize="12"
+                                                   Foreground="#64748B" Margin="0,3,0,0"/>
+                                    </StackPanel>
+
+                                    <Border Grid.Column="2" Width="32" Height="32" CornerRadius="8"
+                                            Background="#FFFFFF08" VerticalAlignment="Center">
+                                        <TextBlock Text="→" FontSize="16" Foreground="#64748B"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                            <!-- Action 3: Run DevTools -->
+                            <Border Name="btnDevTools" Margin="0,0,0,8" CornerRadius="16"
+                                    Background="#1E293B90" BorderBrush="#33415560" BorderThickness="1"
+                                    Padding="18,16" onClick="OnDevTools">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto, *, Auto</Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Width="46" Height="46" CornerRadius="14"
+                                            Background="#06B6D415">
+                                        <TextBlock Text="🛠" FontSize="22"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="16,0,0,0">
+                                        <TextBlock Text="DevTools" FontSize="15" FontWeight="SemiBold"
+                                                   Foreground="#E2E8F0"/>
+                                        <TextBlock Text="Debug, inspect va hot reload" FontSize="12"
+                                                   Foreground="#64748B" Margin="0,3,0,0"/>
+                                    </StackPanel>
+
+                                    <Border Grid.Column="2" Width="32" Height="32" CornerRadius="8"
+                                            Background="#FFFFFF08" VerticalAlignment="Center">
+                                        <TextBlock Text="→" FontSize="16" Foreground="#64748B"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                            <!-- Action 4: Build EXE -->
+                            <Border Name="btnBuild" Margin="0,0,0,8" CornerRadius="16"
+                                    Background="#1E293B90" BorderBrush="#33415560" BorderThickness="1"
+                                    Padding="18,16" onClick="OnBuild">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto, *, Auto</Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Width="46" Height="46" CornerRadius="14"
+                                            Background="#10B98115">
+                                        <TextBlock Text="📦" FontSize="22"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="16,0,0,0">
+                                        <TextBlock Text="Build EXE" FontSize="15" FontWeight="SemiBold"
+                                                   Foreground="#E2E8F0"/>
+                                        <TextBlock Text="Standalone dastur yaratish" FontSize="12"
+                                                   Foreground="#64748B" Margin="0,3,0,0"/>
+                                    </StackPanel>
+
+                                    <Border Grid.Column="2" Width="32" Height="32" CornerRadius="8"
+                                            Background="#FFFFFF08" VerticalAlignment="Center">
+                                        <TextBlock Text="→" FontSize="16" Foreground="#64748B"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                            <!-- ── RECENT PROJECTS SECTION ── -->
+                            <TextBlock Text="Oxirgi loyihalar" FontSize="15" FontWeight="SemiBold"
+                                       Foreground="#CBD5E1" Margin="4,16,0,10"/>
+
+                            <!-- Project Card 1 -->
+                            <Border Name="project1" Margin="0,0,0,8" CornerRadius="16"
+                                    Background="#1E293B70" BorderBrush="#33415540" BorderThickness="1"
+                                    Padding="16,14" onClick="OnProject1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto, *, Auto</Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Width="42" Height="42" CornerRadius="12"
+                                            Background="#F59E0B18">
+                                        <TextBlock Text="💬" FontSize="20"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="14,0,0,0">
+                                        <TextBlock Text="Glass AI Chat" FontSize="14" FontWeight="SemiBold"
+                                                   Foreground="#E2E8F0"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                            <Border CornerRadius="4" Background="#3B82F620" Padding="6,2">
+                                                <TextBlock Text="UI" FontSize="10" Foreground="#60A5FA"/>
+                                            </Border>
+                                            <TextBlock Text=" • 2 soat oldin" FontSize="11" Foreground="#475569"
+                                                       VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <Border Grid.Column="2" Width="8" Height="8" CornerRadius="4"
+                                            Background="#10B981" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Project Card 2 -->
+                            <Border Name="project2" Margin="0,0,0,8" CornerRadius="16"
+                                    Background="#1E293B70" BorderBrush="#33415540" BorderThickness="1"
+                                    Padding="16,14" onClick="OnProject2">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto, *, Auto</Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Width="42" Height="42" CornerRadius="12"
+                                            Background="#EF444418">
+                                        <TextBlock Text="📝" FontSize="20"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="14,0,0,0">
+                                        <TextBlock Text="Nimbus Notepad" FontSize="14" FontWeight="SemiBold"
+                                                   Foreground="#E2E8F0"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                            <Border CornerRadius="4" Background="#8B5CF620" Padding="6,2">
+                                                <TextBlock Text="Tool" FontSize="10" Foreground="#A78BFA"/>
+                                            </Border>
+                                            <TextBlock Text=" • 1 kun oldin" FontSize="11" Foreground="#475569"
+                                                       VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <Border Grid.Column="2" Width="8" Height="8" CornerRadius="4"
+                                            Background="#F59E0B" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Project Card 3 -->
+                            <Border Name="project3" Margin="0,0,0,8" CornerRadius="16"
+                                    Background="#1E293B70" BorderBrush="#33415540" BorderThickness="1"
+                                    Padding="16,14" onClick="OnProject3">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>Auto, *, Auto</Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Width="42" Height="42" CornerRadius="12"
+                                            Background="#06B6D418">
+                                        <TextBlock Text="🎮" FontSize="20"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="14,0,0,0">
+                                        <TextBlock Text="Calculator Pro" FontSize="14" FontWeight="SemiBold"
+                                                   Foreground="#E2E8F0"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                            <Border CornerRadius="4" Background="#10B98120" Padding="6,2">
+                                                <TextBlock Text="App" FontSize="10" Foreground="#34D399"/>
+                                            </Border>
+                                            <TextBlock Text=" • 3 kun oldin" FontSize="11" Foreground="#475569"
+                                                       VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <Border Grid.Column="2" Width="8" Height="8" CornerRadius="4"
+                                            Background="#64748B" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- ── SYSTEM INFO CARD ── -->
+                            <TextBlock Text="Tizim ma'lumotlari" FontSize="15" FontWeight="SemiBold"
+                                       Foreground="#CBD5E1" Margin="4,16,0,10"/>
+
+                            <Border Margin="0,0,0,8" CornerRadius="16"
+                                    Background="#1E293B60" BorderBrush="#33415540" BorderThickness="1"
+                                    Padding="18,16">
+                                <StackPanel>
+                                    <!-- Info Row 1 -->
+                                    <Grid Margin="0,0,0,12">
+                                        <Grid.ColumnDefinitions>*, *</Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="Engine" FontSize="11" Foreground="#64748B"/>
+                                            <TextBlock Text="Nimbus v3.0" FontSize="13" Foreground="#E2E8F0"
+                                                       FontWeight="SemiBold" Margin="0,2,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="Render" FontSize="11" Foreground="#64748B"/>
+                                            <TextBlock Text="WPF XAML" FontSize="13" Foreground="#E2E8F0"
+                                                       FontWeight="SemiBold" Margin="0,2,0,0"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <!-- Separator -->
+                                    <Border Height="1" Background="#FFFFFF08" Margin="0,0,0,12"/>
+
+                                    <!-- Info Row 2 -->
+                                    <Grid Margin="0,0,0,12">
+                                        <Grid.ColumnDefinitions>*, *</Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="Platformasi" FontSize="11" Foreground="#64748B"/>
+                                            <TextBlock Name="sysOS" Text=".NET 4.0+" FontSize="13"
+                                                       Foreground="#E2E8F0" FontWeight="SemiBold" Margin="0,2,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="Holatim" FontSize="11" Foreground="#64748B"/>
+                                            <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                                                <Border Width="8" Height="8" CornerRadius="4"
+                                                        Background="#10B981" VerticalAlignment="Center"
+                                                        Margin="0,0,6,0"/>
+                                                <TextBlock Text="Faol" FontSize="13" Foreground="#10B981"
+                                                           FontWeight="SemiBold"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <!-- Separator -->
+                                    <Border Height="1" Background="#FFFFFF08" Margin="0,0,0,12"/>
+
+                                    <!-- Info Row 3 -->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>*, *</Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="Soat" FontSize="11" Foreground="#64748B"/>
+                                            <TextBlock Name="clockLabel" Text="--:--:--" FontSize="13"
+                                                       Foreground="#A78BFA" FontWeight="SemiBold" Margin="0,2,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="Sana" FontSize="11" Foreground="#64748B"/>
+                                            <TextBlock Name="dateLabel" Text="----" FontSize="13"
+                                                       Foreground="#E2E8F0" FontWeight="SemiBold" Margin="0,2,0,0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Bottom spacing -->
+                            <Border Height="20"/>
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- ═══════════ ROW 3: QUICK INPUT BAR ═══════════ -->
+                    <Border Grid.Row="3" Margin="16,4,16,8">
+                        <Border Name="searchBar" Height="52" CornerRadius="16" Background="#1E293B"
+                                BorderBrush="#33415580" BorderThickness="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>Auto, *, Auto</Grid.ColumnDefinitions>
+
+                                <!-- Search Icon -->
+                                <Border Grid.Column="0" Width="44" Height="44" Margin="4,0,0,0">
+                                    <TextBlock Text="🔍" FontSize="16"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+
+                                <!-- Input -->
+                                <TextBox Name="txtSearch" Grid.Column="1" Margin="0,0,8,0"
+                                         Placeholder="Buyruq yoki qidiruv..."
+                                         Background="Transparent" Foreground="#CBD5E1"
+                                         BorderThickness="0" VerticalAlignment="Center"
+                                         FontSize="14" onEnter="OnSearch"/>
+
+                                <!-- Execute Button -->
+                                <Border Name="btnSearch" Grid.Column="2" Width="40" Height="40"
+                                        CornerRadius="12" Background="#6C2BD930" Margin="0,0,6,0"
+                                        VerticalAlignment="Center" onClick="OnSearch">
+                                    <TextBlock Text="➤" FontSize="15" Foreground="#A78BFA"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </Border>
+
+                    <!-- ═══════════ ROW 4: BOTTOM NAVIGATION ═══════════ -->
+                    <Border Grid.Row="4" Background="#0D111FDD" BorderBrush="#FFFFFF08"
+                            BorderThickness="0,1,0,0">
+                        <Grid Margin="8,0">
+                            <Grid.ColumnDefinitions>*, *, *, *, *</Grid.ColumnDefinitions>
+
+                            <!-- Nav: Home (Active) -->
+                            <Border Name="navHome" Grid.Column="0" CornerRadius="12"
+                                    Margin="4,8" Background="#6C2BD920" onClick="OnNavHome">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="🏠" FontSize="20" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Bosh" FontSize="10" Foreground="#A78BFA"
+                                               HorizontalAlignment="Center" Margin="0,2,0,0" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Nav: Projects -->
+                            <Border Name="navProjects" Grid.Column="1" CornerRadius="12"
+                                    Margin="4,8" Background="Transparent" onClick="OnNavProjects">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="📁" FontSize="20" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Loyiha" FontSize="10" Foreground="#475569"
+                                               HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Nav: Code -->
+                            <Border Name="navCode" Grid.Column="2" CornerRadius="12"
+                                    Margin="4,8" Background="Transparent" onClick="OnNavCode">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="💻" FontSize="20" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Kod" FontSize="10" Foreground="#475569"
+                                               HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Nav: Plugins -->
+                            <Border Name="navPlugins" Grid.Column="3" CornerRadius="12"
+                                    Margin="4,8" Background="Transparent" onClick="OnNavPlugins">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="🧩" FontSize="20" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Plugin" FontSize="10" Foreground="#475569"
+                                               HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Nav: Profile -->
+                            <Border Name="navProfile" Grid.Column="4" CornerRadius="12"
+                                    Margin="4,8" Background="Transparent" onClick="OnNavProfile">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="👤" FontSize="20" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Profil" FontSize="10" Foreground="#475569"
+                                               HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                </Grid>
+            </Border>
+        </Grid>
+    </UI>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!--                  LOGIC                  -->
+    <!-- ═══════════════════════════════════════ -->
+    <Logic>
+        <!-- Variables -->
+        <Var Name="projectCount" Type="int" Value="12"/>
+        <Var Name="pluginCount" Type="int" Value="8"/>
+        <Var Name="taskCount" Type="int" Value="5"/>
+        <Var Name="notifCount" Type="int" Value="3"/>
+        <Var Name="currentTab" Type="string" Value="home"/>
+        <Var Name="searchText" Type="string" Value=""/>
+        <Var Name="userName" Type="string" Value="Modderboy"/>
+        <Var Name="fileContent" Type="string" Value=""/>
+
+        <!-- Plugins -->
+        <Plugin Name="FilePlugin"/>
+        <Plugin Name="DatePlugin"/>
+        <Plugin Name="StringPlugin"/>
+
+        <!-- ═══ HANDLERS ═══ -->
+
+        <Handler Name="OnAppLoad">
+            <!-- Search bar glow -->
+            <DropShadow Control="searchBar" Color="#6C2BD9" Animate="true"
+                        BlurRadius="25" ShadowDepth="0" Opacity="3"/>
+            <Focus Control="txtSearch"/>
+
+            <!-- Sana ko'rsatish -->
+            <Plugin Name="DatePlugin" Method="today">
+                <ToState>todayDate</ToState>
+            </Plugin>
+            <Set Control="dateLabel" Property="Text" Value="{todayDate}"/>
+        </Handler>
+
+        <!-- Notification -->
+        <Handler Name="OnNotification">
+            <Alert Message="Sizda {notifCount} ta yangi xabar bor!" Title="🔔 Xabarlar" Icon="Information"/>
+        </Handler>
+
+        <!-- Settings -->
+        <Handler Name="OnSettings">
+            <Confirm Title="⚙ Sozlamalar" Message="Sozlamalar sahifasini ochmoqchimisiz?">
+                <Yes>
+                    <Alert Message="Sozlamalar hali tayyor emas. Tez orada qo'shiladi!" Title="Info"/>
+                </Yes>
+            </Confirm>
+        </Handler>
+
+        <!-- New Project -->
+        <Handler Name="OnNewProject">
+            <Increment Var="projectCount" By="1"/>
+            <Set Control="statProjects" Property="Text" Value="{projectCount}"/>
+            <Alert Message="Yangi loyiha yaratildi! Jami: {projectCount}" Title="🚀 Yangi Loyiha"/>
+        </Handler>
+
+        <!-- Open File -->
+        <Handler Name="OnOpenFile">
+            <OpenFile ToControl="txtSearch" ToState="fileContent"
+                      Filter="All Files|*.*|XML Files|*.xml|C# Files|*.cs|JSON|*.json|Text|*.txt"/>
+        </Handler>
+
+        <!-- DevTools -->
+        <Handler Name="OnDevTools">
+            <Alert Message="DevTools ishga tushirilmoqda...\n\nKonsolda 'nimbus dev App.xml' buyrug'ini ishga tushiring"
+                   Title="🛠 DevTools" Icon="Information"/>
+        </Handler>
+
+        <!-- Build -->
+        <Handler Name="OnBuild">
+            <Confirm Title="📦 Build" Message="Loyihani EXE ga build qilmoqchimisiz?">
+                <Yes>
+                    <Alert Message="Build jarayoni boshlandi!\n\nKonsolda 'nimbus build App.xml' buyrug'ini ishga tushiring"
+                           Title="Build" Icon="Information"/>
+                </Yes>
+            </Confirm>
+        </Handler>
+
+        <!-- Project Click Handlers -->
+        <Handler Name="OnProject1">
+            <Alert Message="Glass AI Chat loyihasi ochildi" Title="💬 Glass AI Chat"/>
+        </Handler>
+
+        <Handler Name="OnProject2">
+            <Alert Message="Nimbus Notepad loyihasi ochildi" Title="📝 Nimbus Notepad"/>
+        </Handler>
+
+        <Handler Name="OnProject3">
+            <Alert Message="Calculator Pro loyihasi ochildi" Title="🎮 Calculator Pro"/>
+        </Handler>
+
+        <!-- Search / Command -->
+        <Handler Name="OnSearch">
+            <Get Control="txtSearch" Property="Text" ToState="searchText"/>
+            <If Condition="{searchText} != ">
+                <Alert Message="Qidiruv: {searchText}" Title="🔍 Natija"/>
+                <Set Control="txtSearch" Property="Text" Value=""/>
+            </If>
+        </Handler>
+
+        <!-- Navigation Handlers -->
+        <Handler Name="OnNavHome">
+            <Set Var="currentTab" Value="home"/>
+            <Set Control="navHome" Property="Background" Value="#6C2BD920"/>
+            <Set Control="navProjects" Property="Background" Value="Transparent"/>
+            <Set Control="navCode" Property="Background" Value="Transparent"/>
+            <Set Control="navPlugins" Property="Background" Value="Transparent"/>
+            <Set Control="navProfile" Property="Background" Value="Transparent"/>
+            <Set Control="appSubtitle" Property="Text" Value="v3.0 • Dashboard"/>
+        </Handler>
+
+        <Handler Name="OnNavProjects">
+            <Set Var="currentTab" Value="projects"/>
+            <Set Control="navHome" Property="Background" Value="Transparent"/>
+            <Set Control="navProjects" Property="Background" Value="#3B82F620"/>
+            <Set Control="navCode" Property="Background" Value="Transparent"/>
+            <Set Control="navPlugins" Property="Background" Value="Transparent"/>
+            <Set Control="navProfile" Property="Background" Value="Transparent"/>
+            <Set Control="appSubtitle" Property="Text" Value="v3.0 • Loyihalar"/>
+        </Handler>
+
+        <Handler Name="OnNavCode">
+            <Set Var="currentTab" Value="code"/>
+            <Set Control="navHome" Property="Background" Value="Transparent"/>
+            <Set Control="navProjects" Property="Background" Value="Transparent"/>
+            <Set Control="navCode" Property="Background" Value="#06B6D420"/>
+            <Set Control="navPlugins" Property="Background" Value="Transparent"/>
+            <Set Control="navProfile" Property="Background" Value="Transparent"/>
+            <Set Control="appSubtitle" Property="Text" Value="v3.0 • Kod Muharriri"/>
+        </Handler>
+
+        <Handler Name="OnNavPlugins">
+            <Set Var="currentTab" Value="plugins"/>
+            <Set Control="navHome" Property="Background" Value="Transparent"/>
+            <Set Control="navProjects" Property="Background" Value="Transparent"/>
+            <Set Control="navCode" Property="Background" Value="Transparent"/>
+            <Set Control="navPlugins" Property="Background" Value="#8B5CF620"/>
+            <Set Control="navProfile" Property="Background" Value="Transparent"/>
+            <Set Control="appSubtitle" Property="Text" Value="v3.0 • Pluginlar"/>
+        </Handler>
+
+        <Handler Name="OnNavProfile">
+            <Set Var="currentTab" Value="profile"/>
+            <Set Control="navHome" Property="Background" Value="Transparent"/>
+            <Set Control="navProjects" Property="Background" Value="Transparent"/>
+            <Set Control="navCode" Property="Background" Value="Transparent"/>
+            <Set Control="navPlugins" Property="Background" Value="Transparent"/>
+            <Set Control="navProfile" Property="Background" Value="#F59E0B20"/>
+            <Set Control="appSubtitle" Property="Text" Value="v3.0 • Profil"/>
+        </Handler>
+
+    </Logic>
+</App>

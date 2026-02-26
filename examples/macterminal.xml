@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="Terminal"
+     Width="800"
+     Height="500"
+     Theme="Dark"
+     DarkMode="true"
+     Acrylic="true" 
+     Mica="true"
+     Transparent="true"
+     ResizeMode="CanResizeWithGrip"
+     OnLoad="InitTerminal">
+
+    <Shortcuts>
+        <KeyBinding Key="Return" Handler="HandleInput"/>
+        <KeyBinding Key="Escape" Handler="CloseApp"/>
+    </Shortcuts>
+
+    <UI>
+        <!-- Asosiy Oyna (Title Bar yo'q, faqat border va content) -->
+        <Border Background="#E61E1E1E" CornerRadius="8" 
+                BorderBrush="#33FFFFFF" BorderThickness="1"
+                Padding="16"
+                onMouseDown="WindowDrag" Cursor="Arrow">
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/> <!-- Traffic Lights (Absolute) -->
+                    <RowDefinition Height="*"/>    <!-- Terminal -->
+                </Grid.RowDefinitions>
+
+                <!-- Traffic Lights (Oynaning ichida, tepa chap burchakda) -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" 
+                            VerticalAlignment="Top" Margin="0,0,0,16">
+                    <Border Width="12" Height="12" CornerRadius="6" Background="#FF5F56" Margin="0,8,8,0" Cursor="Hand" onClick="CloseApp"/>
+                    <Border Width="12" Height="12" CornerRadius="6" Background="#FFBD2E" Margin="0,8,8,0" Cursor="Hand" onClick="MinimizeApp"/>
+                    <Border Width="12" Height="12" CornerRadius="6" Background="#27C93F" Margin="0,8,8,0" Cursor="Hand" onClick="MaximizeApp"/>
+                </StackPanel>
+
+                <!-- Terminal Content -->
+                <ScrollViewer Grid.Row="1" Name="terminalScroll" 
+                              VerticalScrollBarVisibility="Hidden" 
+                              HorizontalScrollBarVisibility="Disabled">
+                    
+                    <StackPanel Name="terminalContainer">
+                        <!-- History -->
+                        <TextBlock Name="historyText" Text="" 
+                                   Foreground="#F0F0F0" FontSize="15" 
+                                   FontFamily="Consolas, Lucida Console"
+                                   TextWrapping="Wrap" LineHeight="22"/>
+
+                        <!-- Input Line -->
+                        <DockPanel Margin="0,4,0,0" LastChildFill="True">
+                            <TextBlock Name="promptLabel" Text="➜  ~ " 
+                                       Foreground="#33FF00" FontSize="15" FontWeight="Bold"
+                                       FontFamily="Consolas, Lucida Console"
+                                       DockPanel.Dock="Left"/>
+                            
+                            <TextBox Name="cmdInput"
+                                     Background="Transparent" 
+                                     Foreground="#FFFFFF" 
+                                     BorderThickness="0" 
+                                     FontSize="15"
+                                     FontFamily="Consolas, Lucida Console"
+                                     CaretBrush="#FFFFFF"
+                                     Padding="0"
+                                     AcceptsReturn="False"/>
+                        </DockPanel>
+                    </StackPanel>
+                </ScrollViewer>
+
+            </Grid>
+        </Border>
+    </UI>
+
+    <Logic>
+        <Var Name="currentDir" Value="" Type="string"/>
+        <Var Name="rawCmd" Value="" Type="string"/>
+        <Var Name="cmdOutput" Value="" Type="string"/>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!--                TERMINAL BACKEND                     -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        <ManualC id="TerminalCore">
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Text;
+
+public static string currentPath = "";
+
+public static string InitPath() {
+    currentPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+    return currentPath;
+}
+
+public static string GetShortPath() {
+    if (string.IsNullOrEmpty(currentPath)) InitPath();
+    string home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+    if (currentPath.StartsWith(home)) return "~" + currentPath.Substring(home.Length).Replace("\\", "/");
+    return currentPath.Replace("\\", "/");
+}
+
+public static string RunCommand(string command) {
+    if (string.IsNullOrWhiteSpace(command)) return "";
+    command = command.Trim();
+
+    // CD Handling
+    if (command.StartsWith("cd ") || command == "cd") {
+        string newDir = command.Length > 3 ? command.Substring(3).Trim() : "";
+        if (string.IsNullOrEmpty(newDir) || newDir == "~") {
+            currentPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            return "";
+        }
+        try {
+            string target = Path.IsPathRooted(newDir) ? newDir : Path.Combine(currentPath, newDir);
+            if (Directory.Exists(target)) {
+                currentPath = Path.GetFullPath(target);
+                return "";
+            }
+            return "cd: no such file or directory: " + newDir;
+        } catch { return "cd: error"; }
+    }
+
+    // Interaktiv dasturlar (python, node, wsl) -> Yangi oynada ochish
+    if (command == "python" || command == "node" || command == "wsl" || command == "powershell" || command == "bash") {
+        try {
+            Process.Start(new ProcessStartInfo {
+                FileName = command,
+                WorkingDirectory = currentPath,
+                UseShellExecute = true
+            });
+            return "[Launched in external window]";
+        } catch { return "command not found: " + command; }
+    }
+
+    // Oddiy buyruqlar
+    try {
+        ProcessStartInfo psi = new ProcessStartInfo();
+        psi.FileName = "cmd.exe";
+        psi.Arguments = "/c " + command;
+        psi.RedirectStandardOutput = true;
+        psi.RedirectStandardError = true;
+        psi.UseShellExecute = false;
+        psi.CreateNoWindow = true;
+        psi.WorkingDirectory = currentPath;
+        psi.StandardOutputEncoding = Encoding.GetEncoding(866); // Cyrillic fix
+
+        using (Process p = Process.Start(psi)) {
+            string output = p.StandardOutput.ReadToEnd();
+            string error = p.StandardError.ReadToEnd();
+            p.WaitForExit();
+            
+            if (output.StartsWith("Microsoft Windows")) 
+                output = output.Substring(output.IndexOf("\n\n") + 2);
+
+            return string.IsNullOrEmpty(error) ? output.TrimEnd() : error.Trim();
+        }
+    } catch {
+        return "zsh: command not found: " + command;
+    }
+}
+        </ManualC>
+
+        <Handler Name="InitTerminal">
+            <CallManualC id="TerminalCore" Method="InitPath" ToState="currentDir"/>
+            <Set Target="historyText" Property="Text" Value="Last login: {currentDate} on ttys000&#x0a;Welcome to Nimbus Terminal v3.0&#x0a;&#x0a;"/>
+            <Call Handler="UpdatePrompt"/>
+            <Focus Control="cmdInput"/>
+        </Handler>
+
+        <Handler Name="HandleInput">
+            <Get Control="cmdInput" Property="Text" ToState="rawCmd"/>
+            <Get Control="promptLabel" Property="Text" ToState="pLabel"/>
+            
+            <If Condition="{rawCmd} == ">
+                <AppendText Control="historyText" Text="{pLabel}&#x0a;"/>
+                <Return/>
+            </If>
+            
+            <If Condition="{rawCmd} == clear">
+                <Set Target="historyText" Property="Text" Value=""/>
+                <Set Target="cmdInput" Property="Text" Value=""/>
+                <Call Handler="UpdatePrompt"/>
+                <Return/>
+            </If>
+            <If Condition="{rawCmd} == cls">
+                <Set Target="historyText" Property="Text" Value=""/>
+                <Set Target="cmdInput" Property="Text" Value=""/>
+                <Call Handler="UpdatePrompt"/>
+                <Return/>
+            </If>
+
+            <CallManualC id="TerminalCore" Method="RunCommand" Params="{rawCmd}" ToState="cmdOutput"/>
+            
+            <AppendText Control="historyText" Text="{pLabel}{rawCmd}&#x0a;"/>
+            <If Condition="{cmdOutput} != ">
+                 <AppendText Control="historyText" Text="{cmdOutput}&#x0a;"/>
+            </If>
+
+            <Set Target="cmdInput" Property="Text" Value=""/>
+            <Call Handler="UpdatePrompt"/>
+            <ScrollToBottom Control="terminalScroll"/>
+            <Focus Control="cmdInput"/>
+        </Handler>
+
+        <Handler Name="UpdatePrompt">
+            <CallManualC id="TerminalCore" Method="GetShortPath" ToState="shortPath"/>
+            <Set Target="promptLabel" Property="Text" Value="{userName}@{computerName} {shortPath} % "/>
+        </Handler>
+
+        <Handler Name="WindowDrag">
+            <!-- Drag Logic via WpfUI -->
+        </Handler>
+
+        <Handler Name="CloseApp">
+            <Close/>
+        </Handler>
+
+        <Handler Name="MinimizeApp">
+            <Animate Control="terminalScroll" Property="Opacity" To="0.5" Duration="200"/>
+        </Handler>
+
+        <Handler Name="MaximizeApp">
+            <!-- Future -->
+        </Handler>
+
+    </Logic>
+</App>

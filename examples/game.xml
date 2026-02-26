@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="Snake Game" 
+     Width="520" Height="580" 
+     Theme="Dark" 
+     DarkMode="true"
+     DevMode="true"
+     Version="1.0.0"
+     OnLoad="OnGameInit">
+
+    <UI>
+        <Grid Background="#111111">
+            <Grid.RowDefinitions>Auto,*,Auto</Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="#1A1A2E" Padding="15,10">
+                <Grid>
+                    <Grid.ColumnDefinitions>*,Auto,*</Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <TextBlock Text="SCORE: " Foreground="#888888" FontSize="16" FontWeight="Bold"/>
+                        <TextBlock Name="lblScore" Text="0" Foreground="#00FF88" FontSize="16" FontWeight="Bold"/>
+                    </StackPanel>
+                    <TextBlock Name="lblTitle" Grid.Column="1" Text="SNAKE" 
+                               Foreground="#00D4FF" FontSize="20" FontWeight="Bold"
+                               HorizontalAlignment="Center"/>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock Text="BEST: " Foreground="#888888" FontSize="16" FontWeight="Bold"/>
+                        <TextBlock Name="lblBest" Text="0" Foreground="#FFD700" FontSize="16" FontWeight="Bold"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1" Background="#0A0A0A" Margin="10" 
+                    BorderBrush="#333333" BorderThickness="2" CornerRadius="5">
+                <Grid>
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Name="row0"  Text=". . . . . . . . . . . . . . . . . . . ." FontFamily="Consolas" FontSize="14" Foreground="#1A1A1A" HorizontalAlignment="Center"/>
+                        <TextBlock Name="row1"  Text=". . . . . . . . . . . . . . . . . . . ." FontFamily="Consolas" FontSize="14" Foreground="#1A1A1A" HorizontalAlignment="Center"/>
+                        <TextBlock Name="row2"  Text=". . . . . . . . . . . . . . . . . . . ." FontFamily="Consolas" FontSize="14" Foreground="#1A1A1A" HorizontalAlignment="Center"/>
+                        <TextBlock Name="row3"  Text=". . . . . . . . . . . . . . . . . . . ." FontFamily="Consolas" FontSize="14" Foreground="#1A1A1A" HorizontalAlignment="Center"/>
+                        <TextBlock Name="row4"  Text=". . . . . . . . . . . . . . . . . . . ." FontFamily="Consolas" FontSize="14" Foreground="#1A1A1A" HorizontalAlignment="Center"/>
+                        <TextBlock Name="row5"  Text=". . . . . . . . . . . . . . . . . . . ." FontFamily="Consolas" FontSize="14" Foreground="#1A1A1A" HorizontalAlignment="Center"/>
+                        <TextBlock Name="row6"  Text=". . . . . . . . . . . . . . . . . . . ." FontFamily="Consolas" FontSize="14" Foreground="#1A1A1A" HorizontalAlignment="Center"/>
+                        <TextBlock Name="row7"  Text=". . . . . . . . . . . . . . . . . . . ." FontFamily="Consolas" FontSize="14" Foreground="#1A1A1A" HorizontalAlignment="Center"/>
+                        <TextBlock Name="row8"  Text=". . . . . . . . . . . . . . . . . . . ." FontFamily="Consolas" FontSize="14" Foreground="#1A1A1A" HorizontalAlignment="Center"/>
+                        <TextBlock Name="row9"  Text=". . . . . . . . . . . . . . . . . . . ." FontFamily="Consolas" FontSize="14" Foreground="#1A1A1A" HorizontalAlignment="Center"/>
+                        <TextBlock Name="row10" Text=". . . . . . . . . . . . . . . . . . . ." FontFamily="Consolas" FontSize="14" Foreground="#1A1A1A" HorizontalAlignment="Center"/>
+                        <TextBlock Name="row11" Text=". . . . . . . . . . . . . . . . . . . ." FontFamily="Consolas" FontSize="14" Foreground="#1A1A1A" HorizontalAlignment="Center"/>
+                        <TextBlock Name="row12" Text=". . . . . . . . . . . . . . . . . . . ." FontFamily="Consolas" FontSize="14" Foreground="#1A1A1A" HorizontalAlignment="Center"/>
+                        <TextBlock Name="row13" Text=". . . . . . . . . . . . . . . . . . . ." FontFamily="Consolas" FontSize="14" Foreground="#1A1A1A" HorizontalAlignment="Center"/>
+                        <TextBlock Name="row14" Text=". . . . . . . . . . . . . . . . . . . ." FontFamily="Consolas" FontSize="14" Foreground="#1A1A1A" HorizontalAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Name="startScreen" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Text="SNAKE GAME" Foreground="#00D4FF" FontSize="36" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="WASD or Arrows to move" Foreground="#666666" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,5"/>
+                        <TextBlock Text="Press SPACE to start" Foreground="#888888" FontSize="13" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                        <Button Name="btnStart" Content="  START GAME  " Background="#00AA55" Foreground="White" Padding="30,12" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" onClick="OnStartGame"/>
+                    </StackPanel>
+
+                    <StackPanel Name="gameOverScreen" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Text="GAME OVER" Foreground="#FF4444" FontSize="36" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Name="lblFinalScore" Text="Score: 0" Foreground="#FFFFFF" FontSize="18" HorizontalAlignment="Center" Margin="0,10,0,5"/>
+                        <TextBlock Name="lblNewBest" Text="" Foreground="#FFD700" FontSize="14" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                        <Button Name="btnRestart" Content="  PLAY AGAIN  " Background="#0078D4" Foreground="White" Padding="30,12" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" onClick="OnStartGame"/>
+                    </StackPanel>
+
+                    <StackPanel Name="pauseScreen" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Text="PAUSED" Foreground="#FFAA00" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Press SPACE to resume" Foreground="#888888" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="2" Background="#1A1A2E" Padding="10,8">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content=" W " Background="#333355" Foreground="#AAAAAA" Width="40" Height="35" FontSize="14" FontWeight="Bold" Margin="5,0" onClick="OnMoveUp"/>
+                    <Button Content=" A " Background="#333355" Foreground="#AAAAAA" Width="40" Height="35" FontSize="14" FontWeight="Bold" Margin="5,0" onClick="OnMoveLeft"/>
+                    <Button Content=" S " Background="#333355" Foreground="#AAAAAA" Width="40" Height="35" FontSize="14" FontWeight="Bold" Margin="5,0" onClick="OnMoveDown"/>
+                    <Button Content=" D " Background="#333355" Foreground="#AAAAAA" Width="40" Height="35" FontSize="14" FontWeight="Bold" Margin="5,0" onClick="OnMoveRight"/>
+                    <TextBlock Text="   " Foreground="Transparent"/>
+                    <Button Content=" PAUSE " Background="#555533" Foreground="#CCCC88" Padding="15,0" Height="35" FontSize="12" Margin="5,0" onClick="OnTogglePause"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </UI>
+
+    <Shortcuts>
+        <KeyBinding Key="Space" Handler="OnSpacePress"/>
+        <KeyBinding Key="W" Handler="OnMoveUp"/>
+        <KeyBinding Key="A" Handler="OnMoveLeft"/>
+        <KeyBinding Key="S" Handler="OnMoveDown"/>
+        <KeyBinding Key="D" Handler="OnMoveRight"/>
+        <KeyBinding Key="Up" Handler="OnMoveUp"/>
+        <KeyBinding Key="Down" Handler="OnMoveDown"/>
+        <KeyBinding Key="Left" Handler="OnMoveLeft"/>
+        <KeyBinding Key="Right" Handler="OnMoveRight"/>
+        <KeyBinding Key="P" Handler="OnTogglePause"/>
+    </Shortcuts>
+
+    <Logic>
+        <Var Name="score" Value="0" Type="int"/>
+        <Var Name="bestScore" Value="0" Type="int"/>
+        <Var Name="gameState" Value="menu" Type="string"/>
+        <Var Name="direction" Value="right" Type="string"/>
+        <Var Name="nextDir" Value="right" Type="string"/>
+        <Var Name="dx" Value="1" Type="int"/>
+        <Var Name="dy" Value="0" Type="int"/>
+        <Var Name="dead" Value="0" Type="int"/>
+        <Var Name="moveCount" Value="0" Type="int"/>
+
+        <Var Name="hx" Value="10" Type="int"/>
+        <Var Name="hy" Value="7" Type="int"/>
+        <Var Name="t1x" Value="9" Type="int"/>
+        <Var Name="t1y" Value="7" Type="int"/>
+        <Var Name="t2x" Value="8" Type="int"/>
+        <Var Name="t2y" Value="7" Type="int"/>
+        <Var Name="t3x" Value="7" Type="int"/>
+        <Var Name="t3y" Value="7" Type="int"/>
+        <Var Name="t4x" Value="6" Type="int"/>
+        <Var Name="t4y" Value="7" Type="int"/>
+        <Var Name="t5x" Value="5" Type="int"/>
+        <Var Name="t5y" Value="7" Type="int"/>
+        <Var Name="px" Value="0" Type="int"/>
+        <Var Name="py" Value="0" Type="int"/>
+        <Var Name="p2x" Value="0" Type="int"/>
+        <Var Name="p2y" Value="0" Type="int"/>
+        <Var Name="p3x" Value="0" Type="int"/>
+        <Var Name="p3y" Value="0" Type="int"/>
+        <Var Name="p4x" Value="0" Type="int"/>
+        <Var Name="p4y" Value="0" Type="int"/>
+        <Var Name="p5x" Value="0" Type="int"/>
+        <Var Name="p5y" Value="0" Type="int"/>
+        <Var Name="fx" Value="15" Type="int"/>
+        <Var Name="fy" Value="5" Type="int"/>
+        <Var Name="len" Value="4" Type="int"/>
+
+        <Var Name="empty" Value=". . . . . . . . . . . . . . . . . . . ." Type="string"/>
+
+        <Handler Name="OnGameInit">
+            <Set Target="lblScore" Property="Text" Value="0"/>
+            <Set Target="lblBest" Property="Text" Value="0"/>
+        </Handler>
+
+        <Handler Name="OnStartGame">
+            <Set Var="score" Value="0"/>
+            <Set Var="dead" Value="0"/>
+            <Set Var="moveCount" Value="0"/>
+            <Set Var="len" Value="4"/>
+            <Set Var="hx" Value="10"/>
+            <Set Var="hy" Value="7"/>
+            <Set Var="t1x" Value="9"/>
+            <Set Var="t1y" Value="7"/>
+            <Set Var="t2x" Value="8"/>
+            <Set Var="t2y" Value="7"/>
+            <Set Var="t3x" Value="7"/>
+            <Set Var="t3y" Value="7"/>
+            <Set Var="t4x" Value="6"/>
+            <Set Var="t4y" Value="7"/>
+            <Set Var="t5x" Value="5"/>
+            <Set Var="t5y" Value="7"/>
+            <Set Var="fx" Value="15"/>
+            <Set Var="fy" Value="5"/>
+            <Set Var="direction" Value="right"/>
+            <Set Var="nextDir" Value="right"/>
+            <Set Var="dx" Value="1"/>
+            <Set Var="dy" Value="0"/>
+            <Set Var="gameState" Value="playing"/>
+            <Set Target="lblScore" Property="Text" Value="0"/>
+            <Set Target="lblNewBest" Property="Text" Value=""/>
+            <Hide Control="startScreen"/>
+            <Hide Control="gameOverScreen"/>
+            <Hide Control="pauseScreen"/>
+            <Call Handler="ClearGrid"/>
+            <Call Handler="DrawAll"/>
+        </Handler>
+
+        <Handler Name="ClearGrid">
+            <Set Target="row0"  Property="Text" Value="{empty}"/>
+            <Set Target="row1"  Property="Text" Value="{empty}"/>
+            <Set Target="row2"  Property="Text" Value="{empty}"/>
+            <Set Target="row3"  Property="Text" Value="{empty}"/>
+            <Set Target="row4"  Property="Text" Value="{empty}"/>
+            <Set Target="row5"  Property="Text" Value="{empty}"/>
+            <Set Target="row6"  Property="Text" Value="{empty}"/>
+            <Set Target="row7"  Property="Text" Value="{empty}"/>
+            <Set Target="row8"  Property="Text" Value="{empty}"/>
+            <Set Target="row9"  Property="Text" Value="{empty}"/>
+            <Set Target="row10" Property="Text" Value="{empty}"/>
+            <Set Target="row11" Property="Text" Value="{empty}"/>
+            <Set Target="row12" Property="Text" Value="{empty}"/>
+            <Set Target="row13" Property="Text" Value="{empty}"/>
+            <Set Target="row14" Property="Text" Value="{empty}"/>
+            <Set Target="row0"  Property="Foreground" Value="#1A1A1A"/>
+            <Set Target="row1"  Property="Foreground" Value="#1A1A1A"/>
+            <Set Target="row2"  Property="Foreground" Value="#1A1A1A"/>
+            <Set Target="row3"  Property="Foreground" Value="#1A1A1A"/>
+            <Set Target="row4"  Property="Foreground" Value="#1A1A1A"/>
+            <Set Target="row5"  Property="Foreground" Value="#1A1A1A"/>
+            <Set Target="row6"  Property="Foreground" Value="#1A1A1A"/>
+            <Set Target="row7"  Property="Foreground" Value="#1A1A1A"/>
+            <Set Target="row8"  Property="Foreground" Value="#1A1A1A"/>
+            <Set Target="row9"  Property="Foreground" Value="#1A1A1A"/>
+            <Set Target="row10" Property="Foreground" Value="#1A1A1A"/>
+            <Set Target="row11" Property="Foreground" Value="#1A1A1A"/>
+            <Set Target="row12" Property="Foreground" Value="#1A1A1A"/>
+            <Set Target="row13" Property="Foreground" Value="#1A1A1A"/>
+            <Set Target="row14" Property="Foreground" Value="#1A1A1A"/>
+        </Handler>
+
+        <Handler Name="DrawAll">
+            <Call Handler="ClearGrid"/>
+
+            <!-- Draw food row - make that row green with food marker -->
+            <If Condition="{fy} == 0"><Set Target="row0" Property="Foreground" Value="#FF4444"/><Set Target="row0" Property="Text" Value="  . . . . . . . . . @ . . . . . . . . ."/></If>
+            <If Condition="{fy} == 1"><Set Target="row1" Property="Foreground" Value="#FF4444"/><Set Target="row1" Property="Text" Value="  . . . . . . . . . @ . . . . . . . . ."/></If>
+            <If Condition="{fy} == 2"><Set Target="row2" Property="Foreground" Value="#FF4444"/><Set Target="row2" Property="Text" Value="  . . . . . . . . . @ . . . . . . . . ."/></If>
+            <If Condition="{fy} == 3"><Set Target="row3" Property="Foreground" Value="#FF4444"/><Set Target="row3" Property="Text" Value="  . . . . . . . . . @ . . . . . . . . ."/></If>
+            <If Condition="{fy} == 4"><Set Target="row4" Property="Foreground" Value="#FF4444"/><Set Target="row4" Property="Text" Value="  . . . . . . . . . @ . . . . . . . . ."/></If>
+            <If Condition="{fy} == 5"><Set Target="row5" Property="Foreground" Value="#FF4444"/><Set Target="row5" Property="Text" Value="  . . . . . . . . . @ . . . . . . . . ."/></If>
+            <If Condition="{fy} == 6"><Set Target="row6" Property="Foreground" Value="#FF4444"/><Set Target="row6" Property="Text" Value="  . . . . . . . . . @ . . . . . . . . ."/></If>
+            <If Condition="{fy} == 7"><Set Target="row7" Property="Foreground" Value="#FF4444"/><Set Target="row7" Property="Text" Value="  . . . . . . . . . @ . . . . . . . . ."/></If>
+            <If Condition="{fy} == 8"><Set Target="row8" Property="Foreground" Value="#FF4444"/><Set Target="row8" Property="Text" Value="  . . . . . . . . . @ . . . . . . . . ."/></If>
+            <If Condition="{fy} == 9"><Set Target="row9" Property="Foreground" Value="#FF4444"/><Set Target="row9" Property="Text" Value="  . . . . . . . . . @ . . . . . . . . ."/></If>
+            <If Condition="{fy} == 10"><Set Target="row10" Property="Foreground" Value="#FF4444"/><Set Target="row10" Property="Text" Value="  . . . . . . . . . @ . . . . . . . . ."/></If>
+            <If Condition="{fy} == 11"><Set Target="row11" Property="Foreground" Value="#FF4444"/><Set Target="row11" Property="Text" Value="  . . . . . . . . . @ . . . . . . . . ."/></If>
+            <If Condition="{fy} == 12"><Set Target="row12" Property="Foreground" Value="#FF4444"/><Set Target="row12" Property="Text" Value="  . . . . . . . . . @ . . . . . . . . ."/></If>
+            <If Condition="{fy} == 13"><Set Target="row13" Property="Foreground" Value="#FF4444"/><Set Target="row13" Property="Text" Value="  . . . . . . . . . @ . . . . . . . . ."/></If>
+            <If Condition="{fy} == 14"><Set Target="row14" Property="Foreground" Value="#FF4444"/><Set Target="row14" Property="Text" Value="  . . . . . . . . . @ . . . . . . . . ."/></If>
+
+            <!-- Draw snake head row - override with green -->
+            <If Condition="{hy} == 0"><Set Target="row0" Property="Foreground" Value="#00FF88"/><Set Target="row0" Property="Text" Value="      Head [{hx},{hy}]  Food [{fx},{fy}]  Score: {score}"/></If>
+            <If Condition="{hy} == 1"><Set Target="row1" Property="Foreground" Value="#00FF88"/><Set Target="row1" Property="Text" Value="      Head [{hx},{hy}]  Food [{fx},{fy}]  Score: {score}"/></If>
+            <If Condition="{hy} == 2"><Set Target="row2" Property="Foreground" Value="#00FF88"/><Set Target="row2" Property="Text" Value="      Head [{hx},{hy}]  Food [{fx},{fy}]  Score: {score}"/></If>
+            <If Condition="{hy} == 3"><Set Target="row3" Property="Foreground" Value="#00FF88"/><Set Target="row3" Property="Text" Value="      Head [{hx},{hy}]  Food [{fx},{fy}]  Score: {score}"/></If>
+            <If Condition="{hy} == 4"><Set Target="row4" Property="Foreground" Value="#00FF88"/><Set Target="row4" Property="Text" Value="      Head [{hx},{hy}]  Food [{fx},{fy}]  Score: {score}"/></If>
+            <If Condition="{hy} == 5"><Set Target="row5" Property="Foreground" Value="#00FF88"/><Set Target="row5" Property="Text" Value="      Head [{hx},{hy}]  Food [{fx},{fy}]  Score: {score}"/></If>
+            <If Condition="{hy} == 6"><Set Target="row6" Property="Foreground" Value="#00FF88"/><Set Target="row6" Property="Text" Value="      Head [{hx},{hy}]  Food [{fx},{fy}]  Score: {score}"/></If>
+            <If Condition="{hy} == 7"><Set Target="row7" Property="Foreground" Value="#00FF88"/><Set Target="row7" Property="Text" Value="      Head [{hx},{hy}]  Food [{fx},{fy}]  Score: {score}"/></If>
+            <If Condition="{hy} == 8"><Set Target="row8" Property="Foreground" Value="#00FF88"/><Set Target="row8" Property="Text" Value="      Head [{hx},{hy}]  Food [{fx},{fy}]  Score: {score}"/></If>
+            <If Condition="{hy} == 9"><Set Target="row9" Property="Foreground" Value="#00FF88"/><Set Target="row9" Property="Text" Value="      Head [{hx},{hy}]  Food [{fx},{fy}]  Score: {score}"/></If>
+            <If Condition="{hy} == 10"><Set Target="row10" Property="Foreground" Value="#00FF88"/><Set Target="row10" Property="Text" Value="      Head [{hx},{hy}]  Food [{fx},{fy}]  Score: {score}"/></If>
+            <If Condition="{hy} == 11"><Set Target="row11" Property="Foreground" Value="#00FF88"/><Set Target="row11" Property="Text" Value="      Head [{hx},{hy}]  Food [{fx},{fy}]  Score: {score}"/></If>
+            <If Condition="{hy} == 12"><Set Target="row12" Property="Foreground" Value="#00FF88"/><Set Target="row12" Property="Text" Value="      Head [{hx},{hy}]  Food [{fx},{fy}]  Score: {score}"/></If>
+            <If Condition="{hy} == 13"><Set Target="row13" Property="Foreground" Value="#00FF88"/><Set Target="row13" Property="Text" Value="      Head [{hx},{hy}]  Food [{fx},{fy}]  Score: {score}"/></If>
+            <If Condition="{hy} == 14"><Set Target="row14" Property="Foreground" Value="#00FF88"/><Set Target="row14" Property="Text" Value="      Head [{hx},{hy}]  Food [{fx},{fy}]  Score: {score}"/></If>
+
+            <!-- Tail rows - make them darker green -->
+            <If Condition="{t1y} == 0"><Set Target="row0" Property="Foreground" Value="#008844"/></If>
+            <If Condition="{t1y} == 1"><Set Target="row1" Property="Foreground" Value="#008844"/></If>
+            <If Condition="{t1y} == 2"><Set Target="row2" Property="Foreground" Value="#008844"/></If>
+            <If Condition="{t1y} == 3"><Set Target="row3" Property="Foreground" Value="#008844"/></If>
+            <If Condition="{t1y} == 4"><Set Target="row4" Property="Foreground" Value="#008844"/></If>
+            <If Condition="{t1y} == 5"><Set Target="row5" Property="Foreground" Value="#008844"/></If>
+            <If Condition="{t1y} == 6"><Set Target="row6" Property="Foreground" Value="#008844"/></If>
+            <If Condition="{t1y} == 7"><Set Target="row7" Property="Foreground" Value="#008844"/></If>
+            <If Condition="{t1y} == 8"><Set Target="row8" Property="Foreground" Value="#008844"/></If>
+            <If Condition="{t1y} == 9"><Set Target="row9" Property="Foreground" Value="#008844"/></If>
+            <If Condition="{t1y} == 10"><Set Target="row10" Property="Foreground" Value="#008844"/></If>
+            <If Condition="{t1y} == 11"><Set Target="row11" Property="Foreground" Value="#008844"/></If>
+            <If Condition="{t1y} == 12"><Set Target="row12" Property="Foreground" Value="#008844"/></If>
+            <If Condition="{t1y} == 13"><Set Target="row13" Property="Foreground" Value="#008844"/></If>
+            <If Condition="{t1y} == 14"><Set Target="row14" Property="Foreground" Value="#008844"/></If>
+
+            <Set Target="lblTitle" Property="Text" Value="SNAKE [{hx},{hy}] dir:{direction}"/>
+        </Handler>
+
+        <Handler Name="OnGameTick">
+            <If Condition="{gameState} == playing">
+                <If Condition="{dead} == 0">
+                    <Set Var="direction" Value="{nextDir}"/>
+
+                    <If Condition="{direction} == right">
+                        <Set Var="dx" Value="1"/>
+                        <Set Var="dy" Value="0"/>
+                    </If>
+                    <If Condition="{direction} == left">
+                        <Set Var="dx" Value="-1"/>
+                        <Set Var="dy" Value="0"/>
+                    </If>
+                    <If Condition="{direction} == up">
+                        <Set Var="dx" Value="0"/>
+                        <Set Var="dy" Value="-1"/>
+                    </If>
+                    <If Condition="{direction} == down">
+                        <Set Var="dx" Value="0"/>
+                        <Set Var="dy" Value="1"/>
+                    </If>
+
+                    <Set Var="p5x" Value="{t4x}"/>
+                    <Set Var="p5y" Value="{t4y}"/>
+                    <Set Var="p4x" Value="{t3x}"/>
+                    <Set Var="p4y" Value="{t3y}"/>
+                    <Set Var="p3x" Value="{t2x}"/>
+                    <Set Var="p3y" Value="{t2y}"/>
+                    <Set Var="p2x" Value="{t1x}"/>
+                    <Set Var="p2y" Value="{t1y}"/>
+                    <Set Var="px" Value="{hx}"/>
+                    <Set Var="py" Value="{hy}"/>
+
+                    <Increment Var="hx" By="{dx}"/>
+                    <Increment Var="hy" By="{dy}"/>
+                    <Increment Var="moveCount" By="1"/>
+
+                    <Set Var="t1x" Value="{px}"/>
+                    <Set Var="t1y" Value="{py}"/>
+                    <Set Var="t2x" Value="{p2x}"/>
+                    <Set Var="t2y" Value="{p2y}"/>
+                    <Set Var="t3x" Value="{p3x}"/>
+                    <Set Var="t3y" Value="{p3y}"/>
+                    <Set Var="t4x" Value="{p4x}"/>
+                    <Set Var="t4y" Value="{p4y}"/>
+                    <Set Var="t5x" Value="{p5x}"/>
+                    <Set Var="t5y" Value="{p5y}"/>
+
+                    <Call Handler="CheckWalls"/>
+
+                    <If Condition="{dead} == 0">
+                        <Call Handler="CheckSelfHit"/>
+                    </If>
+
+                    <If Condition="{dead} == 0">
+                        <Call Handler="CheckFood"/>
+                        <Call Handler="DrawAll"/>
+                    </If>
+                </If>
+            </If>
+        </Handler>
+
+        <Handler Name="CheckWalls">
+            <If Condition="{hx} >= 20">
+                <Call Handler="OnGameOver"/>
+            </If>
+            <If Condition="{hx} &lt;= -1">
+                <Call Handler="OnGameOver"/>
+            </If>
+            <If Condition="{hy} >= 15">
+                <Call Handler="OnGameOver"/>
+            </If>
+            <If Condition="{hy} &lt;= -1">
+                <Call Handler="OnGameOver"/>
+            </If>
+        </Handler>
+
+        <Handler Name="CheckSelfHit">
+            <If Condition="{moveCount} >= 5">
+                <If Condition="{hx} == {t3x}">
+                    <If Condition="{hy} == {t3y}">
+                        <Call Handler="OnGameOver"/>
+                    </If>
+                </If>
+                <If Condition="{hx} == {t4x}">
+                    <If Condition="{hy} == {t4y}">
+                        <Call Handler="OnGameOver"/>
+                    </If>
+                </If>
+                <If Condition="{hx} == {t5x}">
+                    <If Condition="{hy} == {t5y}">
+                        <Call Handler="OnGameOver"/>
+                    </If>
+                </If>
+            </If>
+        </Handler>
+
+        <Handler Name="CheckFood">
+            <If Condition="{hx} == {fx}">
+                <If Condition="{hy} == {fy}">
+                    <Increment Var="score" By="10"/>
+                    <Increment Var="len" By="1"/>
+                    <Set Target="lblScore" Property="Text" Value="{score}"/>
+                    <Call Handler="NewFood"/>
+                </If>
+            </If>
+        </Handler>
+
+        <Handler Name="NewFood">
+            <Increment Var="fx" By="7"/>
+            <If Condition="{fx} >= 19">
+                <Set Var="fx" Value="2"/>
+                <Increment Var="fy" By="5"/>
+            </If>
+            <If Condition="{fy} >= 14">
+                <Set Var="fy" Value="1"/>
+                <Increment Var="fx" By="3"/>
+            </If>
+            <If Condition="{fx} >= 19">
+                <Set Var="fx" Value="4"/>
+            </If>
+        </Handler>
+
+        <Handler Name="OnGameOver">
+            <Set Var="dead" Value="1"/>
+            <Set Var="gameState" Value="gameover"/>
+            <Set Target="lblFinalScore" Property="Text" Value="Score: {score}"/>
+            <If Condition="{score} > {bestScore}">
+                <Set Var="bestScore" Value="{score}"/>
+                <Set Target="lblBest" Property="Text" Value="{bestScore}"/>
+                <Set Target="lblNewBest" Property="Text" Value="NEW HIGH SCORE!"/>
+            </If>
+            <Show Control="gameOverScreen"/>
+        </Handler>
+
+        <Handler Name="OnMoveUp">
+            <If Condition="{direction} != down">
+                <Set Var="nextDir" Value="up"/>
+            </If>
+            <If Condition="{gameState} == playing">
+                <Call Handler="OnGameTick"/>
+            </If>
+        </Handler>
+
+        <Handler Name="OnMoveDown">
+            <If Condition="{direction} != up">
+                <Set Var="nextDir" Value="down"/>
+            </If>
+            <If Condition="{gameState} == playing">
+                <Call Handler="OnGameTick"/>
+            </If>
+        </Handler>
+
+        <Handler Name="OnMoveLeft">
+            <If Condition="{direction} != right">
+                <Set Var="nextDir" Value="left"/>
+            </If>
+            <If Condition="{gameState} == playing">
+                <Call Handler="OnGameTick"/>
+            </If>
+        </Handler>
+
+        <Handler Name="OnMoveRight">
+            <If Condition="{direction} != left">
+                <Set Var="nextDir" Value="right"/>
+            </If>
+            <If Condition="{gameState} == playing">
+                <Call Handler="OnGameTick"/>
+            </If>
+        </Handler>
+
+        <Handler Name="OnTogglePause">
+            <If Condition="{gameState} == playing">
+                <Set Var="gameState" Value="paused"/>
+                <Show Control="pauseScreen"/>
+            </If>
+            <If Condition="{gameState} == paused">
+                <Set Var="gameState" Value="playing"/>
+                <Hide Control="pauseScreen"/>
+            </If>
+        </Handler>
+
+        <Handler Name="OnSpacePress">
+            <If Condition="{gameState} == menu">
+                <Call Handler="OnStartGame"/>
+            </If>
+            <If Condition="{gameState} == gameover">
+                <Call Handler="OnStartGame"/>
+            </If>
+            <If Condition="{gameState} == playing">
+                <Call Handler="OnTogglePause"/>
+            </If>
+            <If Condition="{gameState} == paused">
+                <Call Handler="OnTogglePause"/>
+            </If>
+        </Handler>
+    </Logic>
+</App>

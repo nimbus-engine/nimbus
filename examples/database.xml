@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<App Name="Nimbus Database" 
+     Width="1000" Height="700" 
+     Theme="Dark" 
+     DarkMode="true" 
+     DevMode="true"
+     OnLoad="OnAppLoad">
+
+    <UI>
+        <Grid Background="#1E1E2E">
+            <Grid.RowDefinitions>Auto, *, Auto</Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>250, *</Grid.ColumnDefinitions>
+
+            <!-- Header -->
+            <Border Grid.Row="0" Grid.ColumnSpan="2" Background="#15151A" Padding="20,15">
+                <Grid>
+                    <Grid.ColumnDefinitions>Auto, *, Auto</Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <TextBlock Text="📊" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock Text="NIMBUS DB" FontSize="20" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <TextBlock Text="Records: " Foreground="#888899" VerticalAlignment="Center"/>
+                        <TextBlock Name="lblCount" Text="0" Foreground="#00FF88" FontWeight="Bold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Sidebar -->
+            <Border Grid.Row="1" Grid.Column="0" Background="#20202A" Padding="20">
+                <StackPanel>
+                    <TextBlock Text="NEW RECORD" FontSize="14" FontWeight="Bold" Foreground="#6C63FF" Margin="0,0,0,20"/>
+
+                    <TextBlock Text="Name" Foreground="#888899" FontSize="12" Margin="0,0,0,5"/>
+                    <TextBox Name="txtName" Text="" Height="35" Background="#2A2A35" Foreground="White" BorderThickness="0" Padding="10,8"/>
+
+                    <TextBlock Text="Role" Foreground="#888899" FontSize="12" Margin="0,15,0,5"/>
+                    <TextBox Name="txtRole" Text="" Height="35" Background="#2A2A35" Foreground="White" BorderThickness="0" Padding="10,8"/>
+
+                    <TextBlock Text="Department" Foreground="#888899" FontSize="12" Margin="0,15,0,5"/>
+                    <TextBox Name="txtDept" Text="" Height="35" Background="#2A2A35" Foreground="White" BorderThickness="0" Padding="10,8"/>
+
+                    <TextBlock Text="Salary" Foreground="#888899" FontSize="12" Margin="0,15,0,5"/>
+                    <TextBox Name="txtSalary" Text="" Height="35" Background="#2A2A35" Foreground="White" BorderThickness="0" Padding="10,8"/>
+
+                    <Button Name="btn11" Content="ADD RECORD" Background="#6C63FF" Foreground="White" Padding="10" Margin="0,30,0,0" onClick="OnAddRecord"/>
+                    <Button Name="btn23" Content="CLEAR" Background="#333344" Foreground="#AAAAAA" Padding="10" Margin="0,10,0,0" onClick="OnClearForm"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Main Content -->
+            <Grid Grid.Row="1" Grid.Column="1" Background="#181820">
+                <Grid.RowDefinitions>Auto, *</Grid.RowDefinitions>
+                
+                <Border Grid.Row="0" Padding="20" Background="#1E1E2E">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Name="btn25" Content="REFRESH TABLE" Background="#2ECC71" Foreground="White" Padding="15,8" onClick="RenderTable"/>
+                        <Button Name="btn24" Content="DELETE ALL" Background="#FF4444" Foreground="White" Padding="15,8" Margin="10,0,0,0" onClick="OnDeleteAll"/>
+                    </StackPanel>
+                </Border>
+
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel Name="tableRows" Margin="20"/>
+                </ScrollViewer>
+            </Grid>
+
+            <!-- Status -->
+            <Border Grid.Row="2" Grid.ColumnSpan="2" Background="#15151A" Padding="10,5">
+                <TextBlock Name="lblStatus" Text="Ready" Foreground="#666677" FontSize="11"/>
+            </Border>
+        </Grid>
+    </UI>
+
+    <Logic>
+        <Var Name="db" Value="[]" Type="string"/>
+        <Var Name="idCounter" Value="1" Type="int"/>
+        <Var Name="count" Value="0" Type="int"/>
+        <Var Name="name" Value="" Type="string"/>
+        <Var Name="role" Value="" Type="string"/>
+        <Var Name="dept" Value="" Type="string"/>
+        <Var Name="salary" Value="" Type="string"/>
+
+        <Handler Name="OnAppLoad">
+            <Set Target="lblStatus" Property="Text" Value="System Ready"/>
+            <Call Handler="RenderTable"/>
+        </Handler>
+        <Handler Name="OnAddRecord">
+
+            <Get Control="txtName" Property="Text" ToState="name"/>
+            <Get Control="txtRole" Property="Text" ToState="role"/>
+            <Get Control="txtDept" Property="Text" ToState="dept"/>
+            <Get Control="txtSalary" Property="Text" ToState="salary"/>
+            
+            <If Condition="{name} is empty">
+                <Alert Message="Name is required" Title="Error"/>
+            </If>
+
+            <If Condition="{name} is not empty">
+                <!-- Using plugin command directly inside logic -->
+                <JsonArrayPush Source="{db}" Item="{&quot;id&quot;:{idCounter},&quot;name&quot;:&quot;{name}&quot;,&quot;role&quot;:&quot;{role}&quot;,&quot;dept&quot;:&quot;{dept}&quot;,&quot;salary&quot;:&quot;{salary}&quot;}" ToState="db"/>
+                
+                <Increment Var="idCounter" By="1"/>
+                <Call Handler="OnClearForm"/>
+                <Call Handler="RenderTable"/>
+                <Set Target="lblStatus" Property="Text" Value="Record added"/>
+            </If>
+        </Handler>
+
+        <Handler Name="OnClearForm">
+            <Set Target="txtName" Property="Text" Value=""/>
+            <Set Target="txtRole" Property="Text" Value=""/>
+            <Set Target="txtDept" Property="Text" Value=""/>
+            <Set Target="txtSalary" Property="Text" Value=""/>
+        </Handler>
+
+        <Handler Name="RenderTable">
+            <JsonTable Source="{db}" Container="tableRows"/>
+            <JsonCount Source="{db}" ToState="count"/>
+            <Set Target="lblCount" Property="Text" Value="{count}"/>
+        </Handler>
+
+        <Handler Name="OnDeleteAll">
+            <Set Var="db" Value="[]"/>
+            <Set Var="idCounter" Value="1"/>
+            <Call Handler="RenderTable"/>
+            <Set Target="lblStatus" Property="Text" Value="Database cleared"/>
+        </Handler>
+    </Logic>
+</App>

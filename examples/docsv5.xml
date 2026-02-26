@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                         NIMBUS FRAMEWORK DOCUMENTATION                       ║
+║                              Version 2.0.0                                   ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+📖 QUICK START GUIDE
+====================
+
+1. Create a new project:
+   > nimbus new myapp
+
+2. Run in dev mode (auto-refresh):
+   > nimbus dev app.xml
+
+3. Build executable:
+   > nimbus build app.xml -o ./dist -i icon.ico
+
+-->
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     📄 BASIC APP STRUCTURE
+     ═══════════════════════════════════════════════════════════════════════════ -->
+
+<App Name="My Application"
+     Width="1024"
+     Height="768"
+     Theme="Dark"
+     DevMode="true"
+     Version="1.0.0"
+     Author="Your Name"
+     Icon="icon.ico"
+     DarkMode="true"
+     Mica="true"
+     Blur="false"
+     OnLoad="OnAppStart">
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         🎨 STYLES (defined inline on controls for simplicity)
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         🖼️ USER INTERFACE
+         All UI elements go here
+         ═══════════════════════════════════════════════════════════════════════ -->
+    
+    <UI>
+        <!-- 
+        LAYOUT CONTAINERS:
+        
+        <Grid>           - Grid layout with rows and columns
+        <StackPanel>     - Stack children vertically or horizontally
+        <DockPanel>      - Dock children to edges
+        <WrapPanel>      - Wrap children to next line
+        <Canvas>         - Absolute positioning
+        <ScrollViewer>   - Scrollable content
+        <Border>         - Single child with border/background
+        -->
+        
+        <Grid>
+            <!-- Define rows -->
+            <Grid.RowDefinitions>Auto, *, Auto</Grid.RowDefinitions>
+            
+            <!-- Define columns -->
+            <Grid.ColumnDefinitions>200, *</Grid.ColumnDefinitions>
+            
+            <!-- 
+            ═══════════════════════════════════════════════════════════════════
+            BASIC CONTROLS:
+            
+            <TextBlock>     - Display text (read-only)
+            <TextBox>       - Text input
+            <Button>        - Clickable button
+            <Label>         - Label with content
+            <Image>         - Display image
+            <Border>        - Container with styling
+            <CheckBox>      - Checkbox
+            <RadioButton>   - Radio button
+            <ComboBox>      - Dropdown list
+            <ListBox>       - List of items
+            <Slider>        - Slider control
+            <ProgressBar>   - Progress indicator
+            <PasswordBox>   - Password input
+            ═══════════════════════════════════════════════════════════════════
+            -->
+            
+            <!-- Header -->
+            <Border Row="0" Column="0" ColumnSpan="2" Background="#1E1E1E" Padding="20">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="🚀" FontSize="24" VerticalAlignment="Center"/>
+                    <TextBlock Text="My App" FontSize="20" FontWeight="Bold" 
+                               Foreground="White" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Sidebar -->
+            <Border Row="1" Column="0" Background="#252526" Padding="10">
+                <StackPanel>
+                    <Button Name="btnHome" Content="🏠 Home" onClick="OnHomeClick"
+                            Background="Transparent" Foreground="White" 
+                            HAlign="Stretch" Margin="0,5"/>
+                    <Button Name="btnSettings" Content="⚙️ Settings" onClick="OnSettingsClick"
+                            Background="Transparent" Foreground="White" 
+                            HAlign="Stretch" Margin="0,5"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Main Content -->
+            <ScrollViewer Row="1" Column="1" Name="mainContent">
+                <StackPanel Margin="20">
+                    
+                    <!-- Text Input Example -->
+                    <TextBlock Text="Enter your name:" Foreground="White" Margin="0,0,0,5"/>
+                    <TextBox Name="txtName" 
+                             Width="300"
+                             Background="#1E1E1E"
+                             Foreground="White"
+                             Padding="10,8"
+                             onChange="OnNameChange"
+                             onEnter="OnNameSubmit"/>
+                    
+                    <!-- Button with click handler -->
+                    <Button Name="btnSubmit" 
+                            Content="Submit" 
+                            onClick="OnSubmitClick"
+                            Background="#0078D4"
+                            Foreground="White"
+                            Padding="20,10"
+                            Margin="0,20,0,0"/>
+                    
+                    <!-- Display result -->
+                    <TextBlock Name="lblResult" 
+                               Text="" 
+                               Foreground="#00D4FF" 
+                               FontSize="18"
+                               Margin="0,20,0,0"/>
+                    
+                    <!-- Card Example -->
+                    <Border Background="#2D2D30" CornerRadius="10" Padding="20" Margin="0,30,0,0" Width="400">
+                        <StackPanel>
+                            <TextBlock Text="📊 Statistics" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                            <Grid Margin="0,15,0,0">
+                                <Grid.ColumnDefinitions>*,*,*</Grid.ColumnDefinitions>
+                                
+                                <StackPanel Column="0" HAlign="Center">
+                                    <TextBlock Name="stat1" Text="0" FontSize="28" FontWeight="Bold" Foreground="#00D4FF"/>
+                                    <TextBlock Text="Users" Foreground="#888888" FontSize="12"/>
+                                </StackPanel>
+                                
+                                <StackPanel Column="1" HAlign="Center">
+                                    <TextBlock Name="stat2" Text="0" FontSize="28" FontWeight="Bold" Foreground="#4CAF50"/>
+                                    <TextBlock Text="Sales" Foreground="#888888" FontSize="12"/>
+                                </StackPanel>
+                                
+                                <StackPanel Column="2" HAlign="Center">
+                                    <TextBlock Name="stat3" Text="0" FontSize="28" FontWeight="Bold" Foreground="#FF9800"/>
+                                    <TextBlock Text="Orders" Foreground="#888888" FontSize="12"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- Radio Button Group -->
+                    <TextBlock Text="Select Theme:" Foreground="White" Margin="0,30,0,10"/>
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton Name="rdLight" Content="Light" GroupName="theme" Foreground="White" Margin="0,0,20,0"/>
+                        <RadioButton Name="rdDark" Content="Dark" GroupName="theme" Foreground="White" IsChecked="true" Margin="0,0,20,0"/>
+                        <RadioButton Name="rdBlue" Content="Blue" GroupName="theme" Foreground="White"/>
+                    </StackPanel>
+                    
+                    <!-- Slider -->
+                    <TextBlock Text="Volume:" Foreground="White" Margin="0,30,0,10"/>
+                    <Slider Name="slVolume" Minimum="0" Maximum="100" Value="50" Width="300" 
+                            onValueChanged="OnVolumeChange"/>
+                    <TextBlock Name="lblVolume" Text="50%" Foreground="#888888"/>
+                    
+                    <!-- Progress Bar -->
+                    <TextBlock Text="Progress:" Foreground="White" Margin="0,30,0,10"/>
+                    <ProgressBar Name="progressBar" Value="35" Maximum="100" Height="10" Width="300"/>
+                    
+                    <!-- Shapes -->
+                    <Canvas Name="shapesCanvas" Width="400" Height="200" Background="#1E1E1E" Margin="0,30,0,0">
+                        <!-- Shapes can be added dynamically via Logic -->
+                    </Canvas>
+                    
+                </StackPanel>
+            </ScrollViewer>
+            
+            <!-- Footer / Status Bar -->
+            <Border Row="2" Column="0" ColumnSpan="2" Background="#007ACC" Padding="10,5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Name="statusText" Text="Ready" Foreground="White" FontSize="12"/>
+                    <TextBlock Text=" | " Foreground="White" Opacity="0.5"/>
+                    <TextBlock Name="clockLabel" Text="00:00:00" Foreground="White" FontSize="12"/>
+                </StackPanel>
+            </Border>
+            
+        </Grid>
+    </UI>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         🧠 LOGIC SECTION
+         Event handlers and application logic
+         ═══════════════════════════════════════════════════════════════════════ -->
+    
+    <Logic>
+        <!-- 
+        VARIABLES:
+        Define state variables that persist across handlers
+        -->
+        <Var Name="counter" Type="int" Value="0"/>
+        <Var Name="userName" Type="string" Value=""/>
+        <Var Name="isLoggedIn" Type="bool" Value="false"/>
+        <Var Name="items" Type="list" Value="Apple,Banana,Orange"/>
+        
+        <!-- 
+        ═══════════════════════════════════════════════════════════════════════
+        HANDLER COMMANDS REFERENCE:
+        
+        BASIC:
+        <Set>           - Set control property or state variable
+        <Get>           - Get value and store in state
+        <Alert>         - Show message box
+        <Confirm>       - Yes/No dialog
+        <Show>          - Show control (with optional animation)
+        <Hide>          - Hide control (with optional animation)
+        <Toggle>        - Toggle visibility
+        <Enable>        - Enable control
+        <Disable>       - Disable control
+        <Focus>         - Set focus to control
+        <Close>         - Close window
+        <Exit>          - Exit application
+        
+        MATH OPERATIONS:
+        <Increment>     - += operator (State="var" Value="1")
+        <Decrement>     - -= operator
+        <Multiply>      - *= operator
+        <Divide>        - /= operator
+        <Modulo>        - %= operator
+        <Calculate>     - Evaluate expression
+        
+        LOOPS:
+        <For>           - For loop (Range="0,10" or Start="0" End="10" Step="1")
+        <While>         - While loop (Condition="counter < 10")
+        <ForEach>       - ForEach loop (Variable="item" In="items")
+        <Break>         - Break out of loop
+        <Continue>      - Skip to next iteration
+        
+        CONDITIONALS:
+        <If>            - If condition (Condition="x == y")
+        <Switch>        - Switch statement
+        
+        TEXT:
+        <AppendText>    - Append text to control
+        <ClearText>     - Clear text from control
+        
+        LIST/ITEMS:
+        <CreateList>    - Create new list
+        <ListAdd>       - Add item to list
+        <ListRemove>    - Remove item from list
+        <AddItem>       - Add UI item to container
+        <AddMessage>    - Add chat bubble message
+        <RemoveItem>    - Remove UI item
+        <ClearItems>    - Clear all items from container
+        <Filter>        - Filter items by text
+        
+        EFFECTS:
+        <Shadow>        - Add drop shadow effect
+        <Blur>          - Add blur effect
+        <Glow>          - Add glow effect
+        <Opacity>       - Set opacity with animation
+        <ClearEffect>   - Remove effects
+        <Animate>       - Animate property
+        
+        SHAPES:
+        <AddRectangle>  - Add rectangle shape
+        <AddEllipse>    - Add ellipse/circle
+        <AddLine>       - Add line
+        <AddCard>       - Add styled card
+        
+        POPUPS:
+        <ShowPopup>     - Show custom popup
+        <InputDialog>   - Show input dialog
+        
+        RADIO:
+        <CreateRadioGroup>  - Create radio button group
+        <GetRadioValue>     - Get selected radio value
+        
+        DEBUG:
+        <Print>         - Print to console
+        <Debug>         - Debug log with level (Info, Warning, Error, Success)
+        
+        HTTP:
+        <HttpRequest>   - Make HTTP request (Method, Url, Body, Headers, ToState)
+        
+        FILE:
+        <SaveFile>      - Save file dialog
+        <OpenFile>      - Open file dialog
+        
+        CLIPBOARD:
+        <Copy>          - Copy to clipboard
+        <Paste>         - Paste from clipboard
+        
+        OS:
+        <CheckOS>       - Get OS information
+        <IfWindows7/8/10/11>  - Conditional by Windows version
+        <IfSupportsBlur>      - Check blur support
+        <IfSupportsMica>      - Check Mica support
+        
+        WINDOW EFFECTS:
+        <EnableBlur>    - Enable window blur
+        <EnableMica>    - Enable Mica (Windows 11)
+        <SetDarkMode>   - Set dark mode
+        
+        OTHER:
+        <Call>          - Call another handler
+        <Delay>         - Wait milliseconds
+        <ScrollToBottom>- Scroll to bottom
+        <ScrollToTop>   - Scroll to top
+        ═══════════════════════════════════════════════════════════════════════
+        -->
+        
+        <!-- App Start Handler -->
+        <Handler Name="OnAppStart">
+            <Print Text="Application started!" Color="Green"/>
+            <CheckOS ToState="osInfo"/>
+            <Debug Message="OS: {osInfo}" Level="Info"/>
+            
+            <!-- Add some shapes -->
+            <AddRectangle Container="shapesCanvas" Fill="#0078D4" Width="80" Height="80" CornerRadius="10"/>
+            <AddEllipse Container="shapesCanvas" Fill="#4CAF50" Width="60" Height="60"/>
+        </Handler>
+        
+        <!-- Button Click Handler -->
+        <Handler Name="OnSubmitClick">
+            <Get Control="txtName" Property="Text" ToState="userName"/>
+            
+            <If Condition="userName != ''">
+                <Then>
+                    <Set Control="lblResult" Property="Text" Value="Hello, {userName}!"/>
+                    <Glow Control="lblResult" Color="#00D4FF" Intensity="20" Animate="true"/>
+                    <Increment State="counter" Value="1"/>
+                    <Set Control="stat1" Property="Text" Value="{counter}"/>
+                    <Print Text="User submitted: {userName}"/>
+                </Then>
+                <Else>
+                    <ShowPopup Type="warning" Title="Warning" Message="Please enter your name!"/>
+                </Else>
+            </If>
+        </Handler>
+        
+        <!-- Text Changed Handler -->
+        <Handler Name="OnNameChange">
+            <Get Control="txtName" Property="Text" ToState="currentText"/>
+            <Set Control="statusText" Property="Text" Value="Typing: {currentText}"/>
+        </Handler>
+        
+        <!-- Enter Key Handler -->
+        <Handler Name="OnNameSubmit">
+            <Call Handler="OnSubmitClick"/>
+        </Handler>
+        
+        <!-- Volume Slider Handler -->
+        <Handler Name="OnVolumeChange">
+            <Get Control="slVolume" Property="Value" ToState="volume"/>
+            <Set Control="lblVolume" Property="Text" Value="{volume}%"/>
+        </Handler>
+        
+        <!-- Navigation Handlers -->
+        <Handler Name="OnHomeClick">
+            <Set Control="statusText" Property="Text" Value="Home clicked"/>
+            <Shadow Control="btnHome" Color="#0078D4" BlurRadius="10" Animate="true"/>
+        </Handler>
+        
+        <Handler Name="OnSettingsClick">
+            <Set Control="statusText" Property="Text" Value="Settings clicked"/>
+            <Shadow Control="btnSettings" Color="#4CAF50" BlurRadius="10" Animate="true"/>
+        </Handler>
+        
+        <!-- Loop Example -->
+        <Handler Name="LoadItems">
+            <For Variable="i" Range="1,10">
+                <AddCard Container="mainContent" 
+                         Title="Item {i}" 
+                         Content="This is item number {i}"
+                         Shadow="true"/>
+            </For>
+        </Handler>
+        
+        <!-- HTTP Request Example -->
+        <Handler Name="FetchData">
+            <HttpRequest 
+                Method="GET" 
+                Url="https://api.example.com/data"
+                ToState="apiResponse"/>
+            
+            <If Condition="apiResponse != ''">
+                <Then>
+                    <Set Control="lblResult" Property="Text" Value="{apiResponse}"/>
+                </Then>
+            </If>
+        </Handler>
+        
+    </Logic>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         ⌨️ KEYBOARD SHORTCUTS
+         ═══════════════════════════════════════════════════════════════════════ -->
+    
+    <Shortcuts>
+        <KeyBinding Key="F5" Handler="OnSubmitClick"/>
+        <KeyBinding Key="S" Modifiers="Control" Handler="SaveData"/>
+        <KeyBinding Key="O" Modifiers="Control" Handler="OpenData"/>
+        <KeyBinding Key="Escape" Handler="OnEscapePressed"/>
+        <KeyBinding Key="F1" Handler="ShowHelp"/>
+    </Shortcuts>
+
+</App>
+
+<!--
+═══════════════════════════════════════════════════════════════════════════════
+📋 ATTRIBUTE REFERENCE
+
+WINDOW ATTRIBUTES:
+  Name              - Window title
+  Width, Height     - Window size
+  Theme             - "Dark" or "Light"
+  DevMode           - Enable auto-refresh ("true" or "false")
+  Version           - App version string
+  Author            - Author name
+  Icon              - Path to .ico file
+  DarkMode          - Enable Windows dark mode ("true")
+  Mica              - Enable Mica effect (Windows 11) ("true")
+  Blur              - Enable blur effect ("true")
+  Acrylic           - Enable acrylic effect ("true")
+  OnLoad            - Handler to run on app start
+
+CONTROL ATTRIBUTES:
+  Name/x:Name       - Control identifier (for Logic reference)
+  Text              - Text content
+  Content           - Button/Label content
+  Background        - Background color (#RRGGBB or color name)
+  Foreground        - Text color
+  FontSize          - Font size in pixels
+  FontWeight        - "Normal", "Bold", "Light"
+  Width, Height     - Size (number or "Auto")
+  MinWidth, MaxWidth, MinHeight, MaxHeight
+  Margin            - Outer spacing ("all" or "left,top,right,bottom")
+  Padding           - Inner spacing
+  Opacity           - 0.0 to 1.0
+  Visibility        - "Visible", "Collapsed", "Hidden"
+  IsEnabled         - "true" or "false"
+  IsReadOnly        - For TextBox ("true" or "false")
+  HAlign            - "Left", "Center", "Right", "Stretch"
+  VAlign            - "Top", "Center", "Bottom", "Stretch"
+  CornerRadius      - Border corner radius
+  BorderThickness   - Border width
+  BorderBrush       - Border color
+  Orientation       - For StackPanel ("Horizontal" or "Vertical")
+  ToolTip           - Tooltip text
+  Cursor            - Cursor type ("Hand", "Arrow", etc.)
+
+GRID PLACEMENT:
+  Row               - Grid row (0-based)
+  Column            - Grid column (0-based)
+  RowSpan           - Span multiple rows
+  ColumnSpan        - Span multiple columns
+
+EVENT HANDLERS:
+  onClick           - Click event
+  onChange          - Text changed event
+  onEnter           - Enter key pressed
+  onValueChanged    - Slider/Progress value changed
+  onMouseEnter      - Mouse enter
+  onMouseLeave      - Mouse leave
+
+═══════════════════════════════════════════════════════════════════════════════
+🎨 COLOR REFERENCE
+
+THEME COLORS (Dark):
+  Background:   #1E1E1E
+  Surface:      #252526
+  Border:       #3C3C3C
+  Text:         #FFFFFF
+  Muted:        #888888
+  Accent:       #0078D4
+  Success:      #4CAF50
+  Warning:      #FF9800
+  Error:        #F44336
+  Info:         #2196F3
+
+ACCENT COLORS:
+  Blue:         #0078D4
+  Cyan:         #00D4FF
+  Purple:       #9C27B0
+  Pink:         #E91E63
+  Red:          #F44336
+  Orange:       #FF9800
+  Yellow:       #FFEB3B
+  Green:        #4CAF50
+  Teal:         #009688
+
+═══════════════════════════════════════════════════════════════════════════════
+-->
