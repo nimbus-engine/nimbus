@@ -1,122 +1,186 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nimbus v3.0 Documentation</title>
+    <title>Nimbus Framework v3.0 - Documentation</title>
+    
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
-    <!-- Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="docs-layout">
-        <!-- Sidebar -->
-        <aside class="sidebar">
+
+    <!-- Layout Container -->
+    <div class="layout">
+        
+        <!-- Sidebar (Navigation Drawer) -->
+        <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <a href="../../index.html" class="logo">🌩️ Nimbus</a>
-                <div class="version-selector">
-                    <select onchange="location = this.value;">
-                        <option value="../v3/" selected>v3.0 (Latest)</option>
+                <a href="#" class="logo">
+                    <span class="material-symbols-rounded logo-icon">thunderstorm</span>
+                    <span>Nimbus</span>
+                </a>
+                <button class="icon-btn close-sidebar-btn" id="closeSidebar">
+                    <span class="material-symbols-rounded">menu_open</span>
+                </button>
+            </div>
+
+            <div class="version-control">
+                <label>Version</label>
+                <div class="select-wrapper">
+                    <select id="versionSelect">
+                        <option value="../v3/" selected>v3.0 (Stable)</option>
                         <option value="../v2/">v2.0</option>
                         <option value="../v1/">v1.0</option>
                     </select>
+                    <span class="material-symbols-rounded select-arrow">expand_more</span>
                 </div>
             </div>
-            
-            <nav class="sidebar-nav">
+
+            <nav class="nav-menu">
                 <div class="nav-group">
-                    <span>Getting Started</span>
-                    <a href="index.html" class="active">Introduction</a>
-                    <a href="installation.html">Installation</a>
-                    <a href="quickstart.html">Quick Start</a>
+                    <span class="nav-label">Start Here</span>
+                    <a href="index.html" class="nav-link active">
+                        <span class="material-symbols-rounded">home</span>
+                        Introduction
+                    </a>
+                    <a href="installation.html" class="nav-link">
+                        <span class="material-symbols-rounded">download</span>
+                        Installation
+                    </a>
                 </div>
-                
+
                 <div class="nav-group">
-                    <span>Core Concepts</span>
-                    <a href="structure.html">App Structure</a>
-                    <a href="commands.html">Logic Commands</a>
-                    <a href="components.html">UI Components</a>
+                    <span class="nav-label">Core</span>
+                    <a href="commands.html" class="nav-link">
+                        <span class="material-symbols-rounded">code</span>
+                        Logic Commands
+                    </a>
+                    <a href="components.html" class="nav-link">
+                        <span class="material-symbols-rounded">widgets</span>
+                        UI Components
+                    </a>
                 </div>
-                
+
                 <div class="nav-group">
-                    <span>Advanced</span>
-                    <a href="plugins.html">Plugin System</a>
-                    <a href="devtools.html">DevTools</a>
-                    <a href="building.html">Building EXE</a>
+                    <span class="nav-label">Advanced</span>
+                    <a href="plugins.html" class="nav-link">
+                        <span class="material-symbols-rounded">extension</span>
+                        Plugins
+                    </a>
+                    <a href="devtools.html" class="nav-link">
+                        <span class="material-symbols-rounded">build</span>
+                        DevTools
+                    </a>
                 </div>
             </nav>
         </aside>
 
-        <!-- Main Content -->
-        <main class="content">
-            <header class="content-header">
-                <div class="breadcrumbs">Docs / v3.0 / Introduction</div>
-                <div class="actions">
-                    <a href="https://github.com/modderboyy/nimbus-engine" target="_blank" class="github-link">
-                        GitHub
+        <!-- Main Content Area -->
+        <div class="main-wrapper">
+            
+            <!-- Top App Bar -->
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <button class="icon-btn menu-btn" id="openSidebar">
+                        <span class="material-symbols-rounded">menu</span>
+                    </button>
+                    <span class="page-title">Introduction</span>
+                </div>
+                <div class="top-bar-right">
+                    <a href="https://github.com/modderboyy/nimbus-engine" target="_blank" class="icon-btn github-btn" title="View on GitHub">
+                        <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
                     </a>
+                    <button class="icon-btn theme-toggle" id="themeToggle">
+                        <span class="material-symbols-rounded theme-icon-light">light_mode</span>
+                        <span class="material-symbols-rounded theme-icon-dark">dark_mode</span>
+                    </button>
                 </div>
             </header>
 
-            <article class="markdown-body">
-                <h1>🌩️ Nimbus Framework v3.0</h1>
-                <p class="lead">Build beautiful Windows desktop applications with simple XML. No XAML required.</p>
-                
-                <div class="alert info">
-                    <strong>New in v3.0:</strong> Hot Reload, Built-in DevTools, and 10+ new plugins!
-                </div>
-
-                <h2>What is Nimbus?</h2>
-                <p>Nimbus is a declarative UI framework for WPF that allows you to build applications using XML markup for both UI and Logic. It abstracts away the complexity of C# and XAML, making desktop development accessible to everyone.</p>
-
-                <div class="feature-grid">
-                    <div class="card">
-                        <h3>🔥 Hot Reload</h3>
-                        <p>See changes instantly without restarting your app.</p>
+            <!-- Main Content -->
+            <main class="content">
+                <div class="content-container">
+                    
+                    <!-- Hero / Intro -->
+                    <div class="hero-block">
+                        <h1>Nimbus Framework <span class="badge">v3.0</span></h1>
+                        <p class="lead">Build native Windows applications with descriptive XML. Zero C# knowledge required for UI logic.</p>
                     </div>
-                    <div class="card">
-                        <h3>🛠️ DevTools</h3>
-                        <p>Browser-based debugger for state inspection.</p>
-                    </div>
-                    <div class="card">
-                        <h3>📦 Single EXE</h3>
-                        <p>Compile to a standalone executable file.</p>
-                    </div>
-                </div>
 
-                <h2>Code Example</h2>
-                <pre><code class="xml">&lt;App Name="Hello"&gt;
+                    <!-- Alert Box -->
+                    <div class="callout callout-info">
+                        <span class="material-symbols-rounded callout-icon">info</span>
+                        <div class="callout-body">
+                            <strong>New in v3.0:</strong> Hot Reload support, built-in DevTools server, and 10+ new plugins.
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+
+                    <h2>Why Nimbus?</h2>
+                    <div class="cards-grid">
+                        <div class="card">
+                            <div class="card-icon">🔥</div>
+                            <h3>Hot Reload</h3>
+                            <p>Edit your XML files and see changes instantly without restarting.</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon">🛠️</div>
+                            <h3>DevTools</h3>
+                            <p>Inspect state, view logs, and execute commands from your browser.</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon">📦</div>
+                            <h3>Standalone</h3>
+                            <p>Compile everything into a single, portable .exe file.</p>
+                        </div>
+                    </div>
+
+                    <h2>Code Example</h2>
+                    <p>Here is a simple "Hello World" application structure.</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">App.xml</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <span class="material-symbols-rounded">content_copy</span>
+                            </button>
+                        </div>
+                        <pre><code>&lt;App Name="Hello"&gt;
     &lt;UI&gt;
-        &lt;Button Content="Click Me" onClick="SayHello"/&gt;
+        &lt;StackPanel VerticalAlignment="Center"&gt;
+            &lt;TextBlock Text="Hello World!" FontSize="24"/&gt;
+            &lt;Button Content="Click Me" onClick="ShowAlert"/&gt;
+        &lt;/StackPanel&gt;
     &lt;/UI&gt;
     &lt;Logic&gt;
-        &lt;Handler Name="SayHello"&gt;
-            &lt;Alert Message="Hello World!"/&gt;
+        &lt;Handler Name="ShowAlert"&gt;
+            &lt;Alert Message="Welcome to Nimbus v3.0!"/&gt;
         &lt;/Handler&gt;
     &lt;/Logic&gt;
 &lt;/App&gt;</code></pre>
+                    </div>
 
-                <div class="next-steps">
-                    <h2>Next Steps</h2>
-                    <div class="steps-grid">
-                        <a href="installation.html" class="step-card">
-                            <span class="step-num">1</span>
-                            <h4>Install</h4>
-                            <p>Set up Nimbus on your machine</p>
-                        </a>
-                        <a href="quickstart.html" class="step-card">
-                            <span class="step-num">2</span>
-                            <h4>Quick Start</h4>
-                            <p>Create your first application</p>
+                    <div class="navigation-footer">
+                        <a href="installation.html" class="nav-btn next">
+                            <span class="nav-text">
+                                <span class="nav-subtitle">Next</span>
+                                <span class="nav-title">Installation</span>
+                            </span>
+                            <span class="material-symbols-rounded">arrow_forward</span>
                         </a>
                     </div>
+
                 </div>
-            </article>
-            
-            <footer class="content-footer">
-                <p>&copy; 2024 Nimbus Framework. Built by modderboyy.</p>
-            </footer>
-        </main>
+            </main>
+        </div>
     </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
