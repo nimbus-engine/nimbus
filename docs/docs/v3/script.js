@@ -1,13 +1,96 @@
+/* ═══════════════════════════════════════════════════════════
+   NIMBUS DOCS V3 - CORE LOGIC
+   Handles: Theme, Sidebar Generation, Versioning, Copy Code
+   ═══════════════════════════════════════════════════════════ */
+
+// Navigatsiya ma'lumotlari (Sitemap)
+const NAV_DATA = [
+    {
+        label: "The Basics",
+        items: [
+            { icon: "home", text: "Introduction", link: "index.html" },
+            { icon: "code", text: "Syntax & Grammar", link: "syntax.html" },
+            { icon: "download", text: "Installation", link: "installation.html" },
+            { icon: "rocket_launch", text: "Examples", link: "examples.html" }
+        ]
+    },
+    {
+        label: "UI & Design",
+        items: [
+            { icon: "dashboard", text: "Layouts", link: "ui-layout.html" },
+            { icon: "toggle_on", text: "Controls", link: "ui-controls.html" },
+            { icon: "widgets", text: "Custom Components", link: "ui-custom.html" },
+            { icon: "palette", text: "Styling & Effects", link: "ui-styling.html" },
+            { icon: "chat", text: "Alerts & Dialogs", link: "ui-popups.html" }
+        ]
+    },
+    {
+        label: "Logic & Behavior",
+        items: [
+            { icon: "touch_app", text: "Events & Handlers", link: "logic-handlers.html" },
+            { icon: "database", text: "State & Binding", link: "logic-state.html" },
+            { icon: "account_tree", text: "Control Flow", link: "logic-flow.html" },
+            { icon: "animation", text: "UI Manipulation", link: "logic-ui.html" },
+            { icon: "cloud", text: "Data & HTTP", link: "logic-data.html" },
+            { icon: "build_circle", text: "Utilities", link: "logic-utils.html" },
+            { icon: "javascript", text: "ManualC (C#)", link: "manual-c.html" }
+        ]
+    },
+    {
+        label: "Advanced",
+        items: [
+            { icon: "extension", text: "Plugins", link: "plugins.html" },
+            { icon: "bug_report", text: "DevTools", link: "devtools.html" },
+            { icon: "inventory_2", text: "Building EXE", link: "building.html" },
+            { icon: "architecture", text: "Engineering", link: "engineering.html" }
+        ]
+    },
+    {
+        label: "Reference",
+        items: [
+            { icon: "terminal", text: "CLI Reference", link: "cli.html" },
+            { icon: "menu_book", text: "API Cheat Sheet", link: "api.html" }
+        ]
+    }
+];
+
 document.addEventListener('DOMContentLoaded', () => {
     
-    /* ----------------------------------------------------
-       1. THEME SWITCHER (Dark/Light)
-       ---------------------------------------------------- */
+    // 1. SIDEBAR GENERATION
+    // ----------------------------------------------------
+    const navMenu = document.querySelector('.nav-menu');
+    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+
+    if (navMenu) {
+        let navHTML = '';
+
+        NAV_DATA.forEach(group => {
+            navHTML += `<div class="nav-group">`;
+            navHTML += `<span class="nav-label">${group.label}</span>`;
+            
+            group.items.forEach(item => {
+                const isActive = item.link === currentPath ? 'active' : '';
+                navHTML += `
+                    <a href="${item.link}" class="nav-link ${isActive}">
+                        <span class="material-symbols-rounded">${item.icon}</span>
+                        ${item.text}
+                    </a>
+                `;
+            });
+            
+            navHTML += `</div>`;
+        });
+
+        navMenu.innerHTML = navHTML;
+    }
+
+    // 2. THEME SWITCHER
+    // ----------------------------------------------------
     const themeToggle = document.getElementById('themeToggle');
     const htmlEl = document.documentElement;
     const storedTheme = localStorage.getItem('nimbus-theme');
     
-    // Auto-detect system preference if no storage
+    // Auto-detect system preference
     const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
     if (storedTheme) {
@@ -16,17 +99,18 @@ document.addEventListener('DOMContentLoaded', () => {
         htmlEl.setAttribute('data-theme', systemDark ? 'dark' : 'light');
     }
 
-    themeToggle.addEventListener('click', () => {
-        const currentTheme = htmlEl.getAttribute('data-theme');
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-        
-        htmlEl.setAttribute('data-theme', newTheme);
-        localStorage.setItem('nimbus-theme', newTheme);
-    });
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlEl.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            htmlEl.setAttribute('data-theme', newTheme);
+            localStorage.setItem('nimbus-theme', newTheme);
+        });
+    }
 
-    /* ----------------------------------------------------
-       2. MOBILE SIDEBAR
-       ---------------------------------------------------- */
+    // 3. MOBILE SIDEBAR TOGGLE
+    // ----------------------------------------------------
     const sidebar = document.getElementById('sidebar');
     const openBtn = document.getElementById('openSidebar');
     const closeBtn = document.getElementById('closeSidebar');
@@ -36,58 +120,49 @@ document.addEventListener('DOMContentLoaded', () => {
         sidebar.classList.toggle('open');
     }
 
-    openBtn.addEventListener('click', toggleSidebar);
-    closeBtn.addEventListener('click', toggleSidebar);
+    if (openBtn) openBtn.addEventListener('click', toggleSidebar);
+    if (closeBtn) closeBtn.addEventListener('click', toggleSidebar);
 
-    // Close sidebar when clicking outside on mobile
-    mainWrapper.addEventListener('click', () => {
-        if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
-            sidebar.classList.remove('open');
-        }
-    });
-
-    /* ----------------------------------------------------
-       3. VERSION SELECTOR
-       ---------------------------------------------------- */
-    const versionSelect = document.getElementById('versionSelect');
-    
-    versionSelect.addEventListener('change', (e) => {
-        window.location.href = e.target.value;
-    });
-
-    /* ----------------------------------------------------
-       4. COPY CODE BUTTON
-       ---------------------------------------------------- */
-    window.copyCode = function(btn) {
-        const codeBlock = btn.parentElement.nextElementSibling;
-        const codeText = codeBlock.innerText;
-        
-        navigator.clipboard.writeText(codeText).then(() => {
-            const icon = btn.querySelector('.material-symbols-rounded');
-            const originalText = icon.textContent;
-            
-            icon.textContent = 'check';
-            btn.style.color = 'var(--color-success)';
-            
-            setTimeout(() => {
-                icon.textContent = originalText;
-                btn.style.color = '';
-            }, 2000);
+    // Close on click outside (mobile)
+    if (mainWrapper) {
+        mainWrapper.addEventListener('click', () => {
+            if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
         });
-    };
+    }
 
-    /* ----------------------------------------------------
-       5. ACTIVE LINK HIGHLIGHTER
-       ---------------------------------------------------- */
-    const currentPath = window.location.pathname.split('/').pop();
-    const navLinks = document.querySelectorAll('.nav-link');
+    // 4. VERSION SELECTOR
+    // ----------------------------------------------------
+    const versionSelect = document.getElementById('versionSelect');
+    if (versionSelect) {
+        versionSelect.addEventListener('change', (e) => {
+            window.location.href = e.target.value;
+        });
+    }
 
-    navLinks.forEach(link => {
-        const href = link.getAttribute('href');
-        if (href === currentPath || (currentPath === '' && href === 'index.html')) {
-            link.classList.add('active');
-        } else {
-            link.classList.remove('active');
+    // 5. COPY CODE BUTTON
+    // ----------------------------------------------------
+    window.copyCode = function(btn) {
+        // Find pre tag relative to button
+        const codeHeader = btn.parentElement;
+        const codeBlock = codeHeader.nextElementSibling; // pre tag
+        
+        if (codeBlock) {
+            const codeText = codeBlock.innerText;
+            
+            navigator.clipboard.writeText(codeText).then(() => {
+                const icon = btn.querySelector('.material-symbols-rounded');
+                const originalText = icon.textContent;
+                
+                icon.textContent = 'check';
+                btn.style.color = '#4ade80'; // Success color
+                
+                setTimeout(() => {
+                    icon.textContent = originalText;
+                    btn.style.color = '';
+                }, 2000);
+            });
         }
-    });
+    };
 });
