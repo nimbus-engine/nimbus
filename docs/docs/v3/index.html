@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nimbus v3.0 Documentation</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="docs-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="../../index.html" class="logo">🌩️ Nimbus</a>
+                <div class="version-selector">
+                    <select onchange="location = this.value;">
+                        <option value="../v3/" selected>v3.0 (Latest)</option>
+                        <option value="../v2/">v2.0</option>
+                        <option value="../v1/">v1.0</option>
+                    </select>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-group">
+                    <span>Getting Started</span>
+                    <a href="index.html" class="active">Introduction</a>
+                    <a href="installation.html">Installation</a>
+                    <a href="quickstart.html">Quick Start</a>
+                </div>
+                
+                <div class="nav-group">
+                    <span>Core Concepts</span>
+                    <a href="structure.html">App Structure</a>
+                    <a href="commands.html">Logic Commands</a>
+                    <a href="components.html">UI Components</a>
+                </div>
+                
+                <div class="nav-group">
+                    <span>Advanced</span>
+                    <a href="plugins.html">Plugin System</a>
+                    <a href="devtools.html">DevTools</a>
+                    <a href="building.html">Building EXE</a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <header class="content-header">
+                <div class="breadcrumbs">Docs / v3.0 / Introduction</div>
+                <div class="actions">
+                    <a href="https://github.com/modderboyy/nimbus-engine" target="_blank" class="github-link">
+                        GitHub
+                    </a>
+                </div>
+            </header>
+
+            <article class="markdown-body">
+                <h1>🌩️ Nimbus Framework v3.0</h1>
+                <p class="lead">Build beautiful Windows desktop applications with simple XML. No XAML required.</p>
+                
+                <div class="alert info">
+                    <strong>New in v3.0:</strong> Hot Reload, Built-in DevTools, and 10+ new plugins!
+                </div>
+
+                <h2>What is Nimbus?</h2>
+                <p>Nimbus is a declarative UI framework for WPF that allows you to build applications using XML markup for both UI and Logic. It abstracts away the complexity of C# and XAML, making desktop development accessible to everyone.</p>
+
+                <div class="feature-grid">
+                    <div class="card">
+                        <h3>🔥 Hot Reload</h3>
+                        <p>See changes instantly without restarting your app.</p>
+                    </div>
+                    <div class="card">
+                        <h3>🛠️ DevTools</h3>
+                        <p>Browser-based debugger for state inspection.</p>
+                    </div>
+                    <div class="card">
+                        <h3>📦 Single EXE</h3>
+                        <p>Compile to a standalone executable file.</p>
+                    </div>
+                </div>
+
+                <h2>Code Example</h2>
+                <pre><code class="xml">&lt;App Name="Hello"&gt;
+    &lt;UI&gt;
+        &lt;Button Content="Click Me" onClick="SayHello"/&gt;
+    &lt;/UI&gt;
+    &lt;Logic&gt;
+        &lt;Handler Name="SayHello"&gt;
+            &lt;Alert Message="Hello World!"/&gt;
+        &lt;/Handler&gt;
+    &lt;/Logic&gt;
+&lt;/App&gt;</code></pre>
+
+                <div class="next-steps">
+                    <h2>Next Steps</h2>
+                    <div class="steps-grid">
+                        <a href="installation.html" class="step-card">
+                            <span class="step-num">1</span>
+                            <h4>Install</h4>
+                            <p>Set up Nimbus on your machine</p>
+                        </a>
+                        <a href="quickstart.html" class="step-card">
+                            <span class="step-num">2</span>
+                            <h4>Quick Start</h4>
+                            <p>Create your first application</p>
+                        </a>
+                    </div>
+                </div>
+            </article>
+            
+            <footer class="content-footer">
+                <p>&copy; 2024 Nimbus Framework. Built by modderboyy.</p>
+            </footer>
+        </main>
+    </div>
+</body>
+</html>
