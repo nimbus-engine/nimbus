@@ -1,5 +1,6 @@
 # 🌩️ Nimbus Framework
-<img width="800" height="400" alt="image" src="https://github.com/user-attachments/assets/96d84234-5deb-43aa-a51b-78a9f1e0ec1a" />
+<img width="1456" height="720" alt="anon-bob-2_a_Create_a_modern_GitH" src="https://github.com/user-attachments/assets/259936cd-b9bc-47a2-8a04-f890fddf8c7c" />
+
 
 <p align="center">
   <img src="https://img.shields.io/badge/version-3.0.0-blue.svg?style=flat-square" alt="Version">
