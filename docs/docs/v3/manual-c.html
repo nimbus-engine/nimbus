@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ManualC (Inline C#) - Nimbus Framework v3.0</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        .csharp-badge {
+            background: #68217A;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            font-family: 'JetBrains Mono', monospace;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="layout">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="#" class="logo">
+                    <span class="material-symbols-rounded logo-icon">thunderstorm</span>
+                    <span>Nimbus</span>
+                </a>
+                <button class="icon-btn close-sidebar-btn" id="closeSidebar">
+                    <span class="material-symbols-rounded">menu_open</span>
+                </button>
+            </div>
+
+            <div class="version-control">
+                <label>Version</label>
+                <div class="select-wrapper">
+                    <select id="versionSelect">
+                        <option value="../v3/" selected>v3.0 (Latest)</option>
+                        <option value="../v2/">v2.0</option>
+                        <option value="../v1/">v1.0</option>
+                    </select>
+                    <span class="material-symbols-rounded select-arrow">expand_more</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu"></nav> <!-- JS Populates this -->
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-wrapper">
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <button class="icon-btn menu-btn" id="openSidebar">
+                        <span class="material-symbols-rounded">menu</span>
+                    </button>
+                    <span class="page-title">ManualC (Inline C#)</span>
+                </div>
+                <div class="top-bar-right">
+                    <a href="https://github.com/modderboyy/nimbus-engine" target="_blank" class="icon-btn github-btn">
+                        <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    </a>
+                    <button class="icon-btn theme-toggle" id="themeToggle">
+                        <span class="material-symbols-rounded theme-icon-light">light_mode</span>
+                        <span class="material-symbols-rounded theme-icon-dark">dark_mode</span>
+                    </button>
+                </div>
+            </header>
+
+            <main class="content">
+                <div class="content-container">
+                    
+                    <div class="hero-block">
+                        <h1>ManualC <span class="csharp-badge">C#</span></h1>
+                        <p class="lead">Write C# code directly inside your XML. Compile it at runtime and execute it seamlessly.</p>
+                    </div>
+
+                    <div class="table-of-contents">
+                        <h3>Jump to</h3>
+                        <ul>
+                            <li><a href="#intro">Introduction</a></li>
+                            <li><a href="#syntax">Syntax</a></li>
+                            <li><a href="#calling">Calling C#</a></li>
+                            <li><a href="#import">Importing Files</a></li>
+                            <li><a href="#examples">Examples</a></li>
+                        </ul>
+                    </div>
+
+                    <hr class="divider">
+
+                    <!-- INTRO -->
+                    <h2 id="intro">1. Introduction</h2>
+                    <p>Sometimes declarative XML isn't enough. You might need complex math, system API access, or advanced logic. ManualC allows you to embed standard C# methods right into your application.</p>
+
+                    <div class="cards-grid">
+                        <div class="card">
+                            <span class="material-symbols-rounded card-icon">speed</span>
+                            <h3>Runtime Compile</h3>
+                            <p>Code is compiled in memory when the app starts. No Visual Studio needed.</p>
+                        </div>
+                        <div class="card">
+                            <span class="material-symbols-rounded card-icon">api</span>
+                            <h3>Full .NET Access</h3>
+                            <p>Use `System.IO`, `System.Net`, `System.Math` and more.</p>
+                        </div>
+                        <div class="card">
+                            <span class="material-symbols-rounded card-icon">integration_instructions</span>
+                            <h3>Easy Integration</h3>
+                            <p>Call C# methods from XML handlers and get return values back.</p>
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+
+                    <!-- SYNTAX -->
+                    <h2 id="syntax">2. Syntax</h2>
+                    <p>Use the <code>&lt;ManualC&gt;</code> tag inside <code>&lt;Logic&gt;</code>. Always wrap your code in <code>&lt;![CDATA[ ... ]]&gt;</code> to avoid XML parsing errors.</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">App.xml</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <span class="material-symbols-rounded">content_copy</span>
+                            </button>
+                        </div>
+                        <pre><code>&lt;Logic&gt;
+    &lt;ManualC Id="MyMath"&gt;
+        &lt;![CDATA[
+        using System;
+
+        public static class MyMath 
+        {
+            public static double CalculateArea(double radius) 
+            {
+                return Math.PI * radius * radius;
+            }
+            
+            public static string ReverseString(string input)
+            {
+                char[] charArray = input.ToCharArray();
+                Array.Reverse(charArray);
+                return new string(charArray);
+            }
+        }
+        ]]&gt;
+    &lt;/ManualC&gt;
+&lt;/Logic&gt;</code></pre>
+                    </div>
+
+                    <div class="callout callout-info">
+                        <span class="material-symbols-rounded callout-icon">info</span>
+                        <div class="callout-body">
+                            <strong>Requirement:</strong> Your C# methods must be <code>public static</code>. The class name inside CDATA doesn't matter, but using `Id` is best practice.
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+
+                    <!-- CALLING -->
+                    <h2 id="calling">3. Calling C# from XML</h2>
+                    <p>Use the <code>&lt;CallManualC&gt;</code> command to execute your methods. You can pass parameters and store the result in a variable.</p>
+
+                    <div class="code-block">
+                        <pre><code>&lt;Handler Name="OnCalculate"&gt;
+    &lt;!-- Calculate Area --&gt;
+    &lt;CallManualC 
+        Id="MyMath" 
+        Method="CalculateArea" 
+        Params="5.5" 
+        ToState="areaResult"/&gt;
+        
+    &lt;Set Target="lblResult" Property="Text" Value="Area: {areaResult}"/&gt;
+    
+    &lt;!-- Reverse String --&gt;
+    &lt;CallManualC 
+        Id="MyMath" 
+        Method="ReverseString" 
+        Params="{userInput}" 
+        ToState="reversed"/&gt;
+&lt;/Handler&gt;</code></pre>
+                    </div>
+
+                    <table class="api-table">
+                        <thead>
+                            <tr><th>Attribute</th><th>Description</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>Id</code></td><td>The ID of the ManualC block to call.</td></tr>
+                            <tr><td><code>Method</code></td><td>The exact name of the C# static method.</td></tr>
+                            <tr><td><code>Params</code></td><td>Comma-separated arguments (e.g., "10,hello,true").</td></tr>
+                            <tr><td><code>ToState</code></td><td>(Optional) Variable name to store the return value.</td></tr>
+                        </tbody>
+                    </table>
+
+                    <hr class="divider">
+
+                    <!-- IMPORT -->
+                    <h2 id="import">4. Importing External Files</h2>
+                    <p>Instead of writing C# inside XML, you can import external `.cs` files. This keeps your XML clean.</p>
+
+                    <div class="code-block">
+                        <pre><code>&lt;Logic&gt;
+    &lt;!-- Import Helper.cs --&gt;
+    &lt;ImportManualC Source="scripts/Helper.cs" Id="Helper"/&gt;
+    
+    &lt;Handler Name="UseHelper"&gt;
+        &lt;CallManualC Id="Helper" Method="DoWork"/&gt;
+    &lt;/Handler&gt;
+&lt;/Logic&gt;</code></pre>
+                    </div>
+
+                    <p><strong>scripts/Helper.cs:</strong></p>
+                    <div class="code-block">
+                        <pre><code>using System;
+using System.Windows;
+
+public static class Helper 
+{
+    public static void DoWork() 
+    {
+        MessageBox.Show("Working from external file!");
+    }
+}</code></pre>
+                    </div>
+
+                    <hr class="divider">
+
+                    <!-- EXAMPLES -->
+                    <h2 id="examples">5. Real-World Examples</h2>
+
+                    <h3>Example 1: Dynamic Image Generation</h3>
+                    <p>Generate a Bitmap in memory and display it in an Image control.</p>
+
+                    <div class="code-block">
+                        <pre><code>&lt;ManualC Id="ImgGen"&gt;
+    &lt;![CDATA[
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+    
+    public static ImageSource GenerateGradient()
+    {
+        RenderTargetBitmap bmp = new RenderTargetBitmap(200, 200, 96, 96, PixelFormats.Pbgra32);
+        // ... (Drawing logic)
+        return bmp;
+    }
+    ]]&gt;
+&lt;/ManualC&gt;
+
+&lt;Handler Name="ShowImage"&gt;
+    &lt;CallManualC Id="ImgGen" Method="GenerateGradient" ToControl="myImage"/&gt;
+&lt;/Handler&gt;</code></pre>
+                    </div>
+
+                    <h3>Example 2: System Info</h3>
+                    <p>Get detailed OS information that isn't available via standard XML commands.</p>
+
+                    <div class="code-block">
+                        <pre><code>&lt;ManualC Id="SysInfo"&gt;
+    &lt;![CDATA[
+    using System;
+    public static string GetOS() 
+    {
+        return Environment.OSVersion.ToString() + " " + (Environment.Is64BitOperatingSystem ? "64-bit" : "32-bit");
+    }
+    ]]&gt;
+&lt;/ManualC&gt;
+
+&lt;Handler Name="LoadInfo"&gt;
+    &lt;CallManualC Id="SysInfo" Method="GetOS" ToState="osName"/&gt;
+    &lt;Set Target="lblOS" Property="Text" Value="{osName}"/&gt;
+&lt;/Handler&gt;</code></pre>
+                    </div>
+
+                    <div class="navigation-footer">
+                        <a href="logic-utils.html" class="nav-btn prev">
+                            <span class="material-symbols-rounded">arrow_back</span>
+                            <span class="nav-text">
+                                <span class="nav-subtitle">Previous</span>
+                                <span class="nav-title">Utilities</span>
+                            </span>
+                        </a>
+                        <a href="plugins.html" class="nav-btn next">
+                            <span class="nav-text">
+                                <span class="nav-subtitle">Next</span>
+                                <span class="nav-title">Plugins</span>
+                            </span>
+                            <span class="material-symbols-rounded">arrow_forward</span>
+                        </a>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
