@@ -1,72 +1,3 @@
-rem @echo off
-rem echo ========================================
-rem echo   Nimbus WPF Engine v3.0 - Build Script
-rem echo ========================================
-rem echo.
-
-rem set CSC=C:\Windows\Microsoft.NET\Framework\v4.0.30319\csc.exe
-rem set WPF=C:\Windows\Microsoft.NET\Framework\v4.0.30319\WPF
-
-rem if not exist "%CSC%" (
-rem     echo ERROR: CSC.exe not found!
-rem     pause
-rem     exit /b 1
-rem )
-
-rem :: Avtomatik WPF yo'lini topish
-rem if not exist "%WPF%\PresentationCore.dll" (
-rem     echo WPF not found in standard path. Trying runtime dir...
-rem     set WPF=C:\Windows\Microsoft.NET\Framework\v4.0.30319
-rem )
-
-rem if not exist "%WPF%\PresentationCore.dll" (
-rem     echo ERROR: WPF DLLs not found!
-rem     pause
-rem     exit /b 1
-rem )
-
-rem if not exist "bin" mkdir bin
-
-rem echo Compiling Nimbus v3.0...
-rem echo.
-
-rem "%CSC%" ^
-rem /target:exe ^
-rem /out:bin\nimbus.exe ^
-rem /optimize+ ^
-rem /warn:0 ^
-rem /r:System.dll ^
-rem /r:System.Core.dll ^
-rem /r:System.Xml.dll ^
-rem /r:System.Xml.Linq.dll ^
-rem /r:System.Xaml.dll ^
-rem /r:System.Net.dll ^
-rem /r:Microsoft.CSharp.dll ^
-rem /r:"%WPF%\WindowsBase.dll" ^
-rem /r:"%WPF%\PresentationCore.dll" ^
-rem /r:"%WPF%\PresentationFramework.dll" ^
-rem WpfEngine.cs ^
-rem WpfUI.cs ^
-rem XamlRenderer.cs ^
-rem LogicRunner.cs ^
-rem CSharpCompiler.cs ^
-rem XmlParser.cs ^
-rem DevToolsServer.cs ^
-rem Program.cs
-
-rem if %ERRORLEVEL% EQU 0 (
-rem     echo.
-rem     echo ========================================
-rem     echo   BUILD SUCCESS!
-rem     echo   Output: bin\nimbus.exe
-rem     echo ========================================
-rem ) else (
-rem     echo.
-rem     echo   BUILD FAILED!
-rem )
-rem pause
-
-
 
 
 @echo off
@@ -124,6 +55,7 @@ if exist "plugins" (
 /optimize+ ^
 /warn:0 ^
 /platform:anycpu ^
+/win32icon:logo.ico ^
 /r:System.dll ^
 /r:System.Core.dll ^
 /r:System.Xml.dll ^
