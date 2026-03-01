@@ -42,7 +42,7 @@ To use the framework, you need to compile the engine first.
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/modderboyy/nimbus-engine.git
+git clone https://github.com/nimbus-engine/nimbus.git
 cd nimbus-engine
 cd src
 
@@ -54,7 +54,7 @@ build.bat
 ```
 
 ### Option 2: Download Release
-Download the latest binary from the [Releases Page](https://github.com/modderboyy/nimbus-engine/releases).
+Download the latest binary from the [Releases Page](https://github.com/nimbus-engine/nimbus/releases).
 
 ---
 
